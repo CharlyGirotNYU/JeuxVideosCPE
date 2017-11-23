@@ -1,6 +1,7 @@
 // main.cpp
 
 #include <irrlicht.h>
+#include "gui_ids.h"
 
 #include "events.h"
 
@@ -29,8 +30,16 @@ int main()
     //Création fenetre "Settings"
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(420,25,620,460), false, L"Settings");
     gui->addStaticText(L"Value", ic::rect<s32>(22,48,65,66), false, false, window);
-    gui->addButton(ic::rect<s32>(40,74,200,92), window, 1, L"Don't Click me Whatever happen");
-    gui->addEditBox(L"1.0", ic::rect<s32>(65,46,160,66), true, window, 0);
+    gui->addButton(ic::rect<s32>(40,74,200,92), window, WINDOW_BUTTON, L"Don't Click me Whatever happen");
+    gui->addEditBox(L"1.0", ic::rect<s32>(65,46,160,66), true, window, WINDOW_VALUE);
+
+    ig::IGUIContextMenu *menu = gui->addMenu ();
+    menu->addItem (L" File ", -1 , true , true );
+    ig::IGUIContextMenu  *submenu = menu->getSubMenu(0);
+    submenu->addItem (L" New ␣ game ... ", MENU_NEW_GAME );
+    submenu->addItem (L" Quit ", MENU_QUIT );
+
+
 
     // Ajout de l'archive qui contient entre autres un niveau complet
     device->getFileSystem()->addFileArchive("data/map-20kdm2.pk3");
