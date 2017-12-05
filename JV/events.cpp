@@ -77,7 +77,7 @@ bool EventReceiver::mouse_handler(const SEvent &event)
       if (button_pressed)
       {
         ic::vector3df rotation = node->getRotation();
-        rotation.Y -= (event.MouseInput.X - old_x);        
+        rotation.Y -= (event.MouseInput.X - old_x);
         old_x = event.MouseInput.X;
         old_y = event.MouseInput.Y;
         node->setRotation(rotation);
