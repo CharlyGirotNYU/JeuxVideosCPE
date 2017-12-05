@@ -94,7 +94,7 @@ static void load_decors(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
     // Ajout de l'archive qui contient entre autres un niveau complet
 
 
-    meshes.push_back(smgr->getMesh("data/Desert_City/desert_city.obj"));
+    meshes.push_back(smgr->getMesh("data/room3/Street\ environment_V01.obj"));
     nodes.push_back(smgr->addOctreeSceneNode(meshes[0]->getMesh(0), nullptr, -1, 1024));
     nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, false);
 

@@ -12,7 +12,7 @@ newmtl floor_texture
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.1890 0.1890 0.1890
 	Ke 0.0000 0.0000 0.0000
-	map_Ka floor_uv_texture.jpg
+map_Ka floor_uv_texture.jpg
 
 newmtl wire_115115115
 	Ns 32
@@ -23,8 +23,7 @@ newmtl wire_115115115
 	Ka 0.4510 0.4510 0.4510
 	Kd 0.4510 0.4510 0.4510
 	Ks 0.3500 0.3500 0.3500
-	map_Ka wall_texture.jpg
-	
+map_Ka wall_edge.jpg
 
 newmtl texture_1
 	Ns 49.0000
@@ -37,7 +36,7 @@ newmtl texture_1
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.5310 0.5310 0.5310
 	Ke 0.0000 0.0000 0.0000
-	map_Ka texture_1.jpg
+map_Ka IN_UV_PAINTING_TEXTURE.jpg
 
 newmtl texture_2
 	Ns 49.0000
@@ -50,7 +49,7 @@ newmtl texture_2
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.5310 0.5310 0.5310
 	Ke 0.0000 0.0000 0.0000
-	map_Ka texture_2.jpg
+map_Ka IN_UV_PAINTING_texture_2.jpg
 
 newmtl 03___Default
 	Ns 49.0000
@@ -63,7 +62,7 @@ newmtl 03___Default
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.5310 0.5310 0.5310
 	Ke 0.0000 0.0000 0.0000
-	map_Ka texture_3.jpg
+map_Ka IN_UV_PAINTING_texture_3.jpg
 
 newmtl crome
 	Ns 78.0000
@@ -76,8 +75,7 @@ newmtl crome
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.7290 0.7290 0.7290
 	Ke 0.0000 0.0000 0.0000
-	
-	
+	map_refl Map__4_Mix.tga
 
 newmtl table_wood_texture
 	Ns 44.0000
@@ -90,7 +88,7 @@ newmtl table_wood_texture
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.4770 0.4770 0.4770
 	Ke 0.0000 0.0000 0.0000
-	map_Ka teble_wood_uv_texture.jpg
+map_Ka teble_wood_uv_texture.jpg
 
 newmtl sopha_wood_texture
 	Ns 68.0000
@@ -103,7 +101,7 @@ newmtl sopha_wood_texture
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.1890 0.1890 0.1890
 	Ke 0.0000 0.0000 0.0000
-	map_Ka double_sopha_wood_back_uv_texture.jpg
+map_Ka sopha_wood_uv_texture.jpg
 
 newmtl 20___Default
 	Ns 68.0000
@@ -116,7 +114,7 @@ newmtl 20___Default
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.1890 0.1890 0.1890
 	Ke 0.0000 0.0000 0.0000
-	
+
 
 newmtl double_sopha_wood_right_texture
 	Ns 68.0000
@@ -129,4 +127,4 @@ newmtl double_sopha_wood_right_texture
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.1890 0.1890 0.1890
 	Ke 0.0000 0.0000 0.0000
-	map_Ka double_sopha_wood_back_uv_texture.jpg
+map_Ka double_sopha_wood_right_uv_texture.jpg
