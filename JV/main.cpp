@@ -90,20 +90,28 @@ static void create_window(ig::IGUIEnvironment *gui)
  */
 
 static void load_decors(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*> &meshes,
-                        std::vector<is::IMeshSceneNode*> &nodes)
+                        std::vector<is::IMeshSceneNode*> &nodes, iv::IVideoDriver* &driver)
 {
     // Ajout de l'archive qui contient entre autres un niveau complet
 
-
-    meshes.push_back(smgr->getMesh("data/room3/Street_environment_V01.obj"));
+    //Street
+    meshes.push_back(smgr->getMesh("data/Street/Street_environment_V01.obj"));
     nodes.push_back(smgr->addOctreeSceneNode(meshes[0]->getMesh(0), nullptr, -1, 1024));
     nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[0]->setScale(ic::vector3df(30.0f));
     nodes[0]->setPosition(ic::vector3df(0.0f,-50.0f,0.0f));
 
-    meshes.push_back(smgr->getMesh("data/room2/house_interior.obj"));
+    //Room interior 1
+    meshes.push_back(smgr->getMesh("data/room1/house_interior.obj"));
     nodes.push_back(smgr->addOctreeSceneNode(meshes[1]->getMesh(0), nullptr, -1, 1024));
     nodes[1]->setMaterialFlag(iv::EMF_LIGHTING, false);
+
+
+    meshes.push_back(smgr->getMesh("data/room2/Club.3DS"));
+    nodes.push_back(smgr->addOctreeSceneNode(meshes[2]->getMesh(0), nullptr, -1, 1024));
+    nodes[2]->setMaterialFlag(iv::EMF_LIGHTING, false);
+    nodes[2]->setPosition(ic::vector3df(0.0f,-50.0f,0.0f));
+//    nodes[2]->setMaterialTexture(0, driver->getTexture("data/bathroom/obj/BathroomOBJ.mtl"));
 }
 
 static void load_persos(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*> &meshes,
@@ -123,17 +131,26 @@ static void load_persos(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
 static void load_arches(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*> &meshes,
                         std::vector<is::IMeshSceneNode*> &nodes,iv::IVideoDriver* &driver)
 {
-
-    meshes.push_back(smgr->getMesh("data/arbre1/OC26_1.3ds"));
+    meshes.push_back(smgr->getMesh("data/arbre1/Dwarf_2_Low.obj"));
     nodes.push_back(smgr->addOctreeSceneNode(meshes[0]->getMesh(0), nullptr, -1, 1024));
     nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[0]->setScale(ic::vector3df(30.0f));
-    nodes[0]->setMaterialTexture(0, driver->getTexture("data/arbre1/OC26_1.xfr"));
+    nodes[0]->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
+    //nodes[0]->setScale(ic::vector3df(1.0f)); //Not working
+    nodes[0]->setPosition(ic::vector3df(80.0f,-40.0f,0));
+
+    nodes.push_back(smgr->addOctreeSceneNode(meshes[0]->getMesh(0), nullptr, -1, 1024));
+    nodes[1]->setMaterialFlag(iv::EMF_LIGHTING, false);
+    nodes[1]->setScale(ic::vector3df(30.0f));
+    nodes[1]->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
+    //nodes[0]->setScale(ic::vector3df(1.0f)); //Not working
+    nodes[1]->setPosition(ic::vector3df(-80.0f,-40.0f,0));
 
 
 }
 
-void update_decors(std::vector<is::IMeshSceneNode*> &nodes_decors, int visible_node_decor)
+void update_decors(std::vector<is::IMeshSceneNode*> &nodes_decors, std::vector<is::IMeshSceneNode*> &nodes_arches,
+                   scene::ICameraSceneNode* camera, int &visible_node_decor)
 {
     for(int i=0; i< nodes_decors.size(); i++)
     {
@@ -141,6 +158,27 @@ void update_decors(std::vector<is::IMeshSceneNode*> &nodes_decors, int visible_n
             nodes_decors[i]->setVisible(true);
         else
             nodes_decors[i]->setVisible(false);
+    }
+
+    for(int i=0; i<nodes_arches.size(); i++)
+    {
+        //Changement couleur fonciton de la distance a l'arche
+//        is::IMesh* mesh1 = nodes_arches[i]->getMesh();
+
+//        std::vector<ic::vector3df> v = mesh1->getMeshBuffer( 0 )->getVertices();
+
+//        for ( int i = 0; i < v.length; i++ )
+//        {
+//           v[ i ].setColor( new SColor( 120, 100, 200, 150 ) );
+//           v[ i ].setPos( new vector3df( 100, 100, 100 ) );
+//        }
+        //Entrée dans une salle si on passe dans l'arche
+        ic::vector3df position = camera->getPosition();
+        //std::cout << position.getDistanceFrom(nodes_arches[i]->getPosition()) << std::endl;
+        if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 20.0f)
+        {
+            visible_node_decor = i+1;
+        }
     }
 }
 
@@ -174,7 +212,7 @@ int main()
     // Load Decors
     std::vector<is::IAnimatedMesh*> meshes_decors;
     std::vector<is::IMeshSceneNode*> nodes_decors;
-    load_decors(smgr,meshes_decors,nodes_decors);
+    load_decors(smgr,meshes_decors,nodes_decors,driver);
 
     // Load Personnages
     std::vector<is::IAnimatedMesh*> meshes_persos;
@@ -221,7 +259,7 @@ int main()
         gui->drawAll();
 
         //When we change decors
-        update_decors(nodes_decors,visible_node_decor);
+        update_decors(nodes_decors, nodes_arches, camera, visible_node_decor);
         update_perso_1(camera,nodes_persos[0]);
         driver->endScene();
     }
