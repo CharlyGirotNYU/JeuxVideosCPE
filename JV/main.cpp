@@ -261,7 +261,7 @@ int main()
       nodes_decors[0]->setTriangleSelector(selector);
 
 
-      // Et l'animateur/collisionneur
+      // Création animateur collisionneur initiale avec le décor de départ
        scene::ISceneNodeAnimator *anim;
        anim = smgr->createCollisionResponseAnimator(selector,
                                                     camera,  // Le noeud que l'on veut gérer
