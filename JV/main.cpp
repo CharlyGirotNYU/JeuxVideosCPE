@@ -149,8 +149,19 @@ static void load_arches(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
 
 }
 
-void update_decors(std::vector<is::IMeshSceneNode*> &nodes_decors, std::vector<is::IMeshSceneNode*> &nodes_arches,
-                   scene::ICameraSceneNode* camera, int &visible_node_decor)
+void update_selector(is::ISceneManager* &smgr, std::vector<is::IMeshSceneNode*> &nodes_decors,scene::ITriangleSelector* &selector, const int visible_node_decor )
+{
+    selector = smgr->createOctreeTriangleSelector(nodes_decors[visible_node_decor]->getMesh(), nodes_decors[visible_node_decor]);
+    nodes_decors[visible_node_decor]->setTriangleSelector(selector);
+}
+
+void update_decors(std::vector<is::IMeshSceneNode*> &nodes_decors,
+                   std::vector<is::IMeshSceneNode*> &nodes_arches,
+                   scene::ICameraSceneNode* camera,
+                   int &visible_node_decor,
+                   is::ISceneManager* &smgr,
+                   scene::ITriangleSelector* &selector,
+                   scene::ISceneNodeAnimator* &anim)
 {
     for(int i=0; i< nodes_decors.size(); i++)
     {
@@ -178,6 +189,13 @@ void update_decors(std::vector<is::IMeshSceneNode*> &nodes_decors, std::vector<i
         if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 20.0f)
         {
             visible_node_decor = i+1;
+            update_selector(smgr, nodes_decors,selector,visible_node_decor);
+            anim = smgr->createCollisionResponseAnimator(selector,
+                                                         camera,  // Le noeud que l'on veut gérer
+                                                         ic::vector3df(8,20,8), // "rayons" de la caméra
+                                                         ic::vector3df(0, -10, 0),  // gravité
+                                                         ic::vector3df(0,0,0));  // décalage du centre
+            camera->addAnimator(anim);
         }
     }
 }
@@ -192,6 +210,8 @@ void update_perso_1(scene::ICameraSceneNode* camera,is::IAnimatedMeshSceneNode* 
                                           0.0f));
     node_perso->setPosition(cam_pos-decalage);
 }
+
+
 
 int main()
 {
@@ -240,6 +260,7 @@ int main()
       selector = smgr->createOctreeTriangleSelector(nodes_decors[0]->getMesh(), nodes_decors[0]);
       nodes_decors[0]->setTriangleSelector(selector);
 
+
       // Et l'animateur/collisionneur
        scene::ISceneNodeAnimator *anim;
        anim = smgr->createCollisionResponseAnimator(selector,
@@ -259,8 +280,9 @@ int main()
         gui->drawAll();
 
         //When we change decors
-        update_decors(nodes_decors, nodes_arches, camera, visible_node_decor);
+        update_decors(nodes_decors, nodes_arches, camera, visible_node_decor,smgr,selector, anim);
         update_perso_1(camera,nodes_persos[0]);
+
         driver->endScene();
     }
     device->drop();
