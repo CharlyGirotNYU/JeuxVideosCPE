@@ -5,6 +5,7 @@
 #include<iostream> //debug
 #include "events.h"
 #include "gui_ids.h"
+#include <cmath>
 
 using namespace irr;
 
@@ -89,21 +90,50 @@ static void create_window(ig::IGUIEnvironment *gui)
  */
 
 static void load_decors(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*> &meshes,
-                        std::vector<is::ISceneNode*> &nodes)
+                        std::vector<is::IMeshSceneNode*> &nodes)
 {
     // Ajout de l'archive qui contient entre autres un niveau complet
 
 
-    meshes.push_back(smgr->getMesh("data/room3/Street\ environment_V01.obj"));
+    meshes.push_back(smgr->getMesh("data/room3/Street_environment_V01.obj"));
     nodes.push_back(smgr->addOctreeSceneNode(meshes[0]->getMesh(0), nullptr, -1, 1024));
     nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, false);
+    nodes[0]->setScale(ic::vector3df(30.0f));
+    nodes[0]->setPosition(ic::vector3df(0.0f,-50.0f,0.0f));
 
     meshes.push_back(smgr->getMesh("data/room2/house_interior.obj"));
     nodes.push_back(smgr->addOctreeSceneNode(meshes[1]->getMesh(0), nullptr, -1, 1024));
     nodes[1]->setMaterialFlag(iv::EMF_LIGHTING, false);
 }
 
-void update_decors(std::vector<is::ISceneNode*> &nodes_decors, int visible_node_decor)
+static void load_persos(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*> &meshes,
+                        std::vector<is::IAnimatedMeshSceneNode*> &nodes,iv::IVideoDriver* &driver)
+{
+    // Ajout de l'archive qui contient entre autres un niveau complet
+
+
+    meshes.push_back(smgr->getMesh("data/base/tris.md2"));
+    nodes.push_back(smgr->addAnimatedMeshSceneNode(meshes[0]));
+    nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, false);
+    nodes[0]->setMD2Animation(is::EMAT_STAND);
+    nodes[0]->setMaterialTexture(0, driver->getTexture("data/base/blue_texture.pcx"));
+
+}
+
+static void load_arches(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*> &meshes,
+                        std::vector<is::IMeshSceneNode*> &nodes,iv::IVideoDriver* &driver)
+{
+
+    meshes.push_back(smgr->getMesh("data/arbre1/OC26_1.3ds"));
+    nodes.push_back(smgr->addOctreeSceneNode(meshes[0]->getMesh(0), nullptr, -1, 1024));
+    nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, false);
+    nodes[0]->setScale(ic::vector3df(30.0f));
+    nodes[0]->setMaterialTexture(0, driver->getTexture("data/arbre1/OC26_1.xfr"));
+
+
+}
+
+void update_decors(std::vector<is::IMeshSceneNode*> &nodes_decors, int visible_node_decor)
 {
     for(int i=0; i< nodes_decors.size(); i++)
     {
@@ -114,11 +144,22 @@ void update_decors(std::vector<is::ISceneNode*> &nodes_decors, int visible_node_
     }
 }
 
+void update_perso_1(scene::ICameraSceneNode* camera,is::IAnimatedMeshSceneNode* node_perso)
+{
+    ic::vector3df cam_pos = camera->getPosition();
+    ic::vector3df cam_rot = camera->getRotation();
+    ic::vector3df decalage = ic::vector3df(0.0f,+100.0f,-50.0f);
+    node_perso->setRotation(ic::vector3df(.0f,
+                                          cam_rot.Y,
+                                          0.0f));
+    node_perso->setPosition(cam_pos-decalage);
+}
+
 int main()
 {
     // Le gestionnaire d'événements
     EventReceiver receiver;
-    int visible_node_decor = 1;
+    int visible_node_decor = 0;
 
     // Création de la fenêtre et du système de rendu.
     IrrlichtDevice *device = createDevice(iv::EDT_OPENGL,
@@ -131,12 +172,45 @@ int main()
 
 
     // Load Decors
-    std::vector<is::IAnimatedMesh*> meshes;
-    std::vector<is::ISceneNode*> nodes_decors;
-    load_decors(smgr,meshes,nodes_decors);
+    std::vector<is::IAnimatedMesh*> meshes_decors;
+    std::vector<is::IMeshSceneNode*> nodes_decors;
+    load_decors(smgr,meshes_decors,nodes_decors);
+
+    // Load Personnages
+    std::vector<is::IAnimatedMesh*> meshes_persos;
+    std::vector<is::IAnimatedMeshSceneNode*> nodes_persos;
+    load_persos(smgr,meshes_persos,nodes_persos,driver);
+
+    // Load Arches
+    std::vector<is::IAnimatedMesh*> meshes_arches;
+    std::vector<is::IMeshSceneNode*> nodes_arches;
+    load_arches(smgr,meshes_arches,nodes_arches,driver);
 
 
-    smgr->addCameraSceneNodeMaya();
+    scene::ICameraSceneNode* camera =
+        smgr->addCameraSceneNodeFPS(nullptr,
+                                    100,         // Vitesse de rotation
+                                    .3,          // Vitesse de déplacement
+                                    -1,          // Identifiant
+                                    nullptr, 0,  // Table de changement de touches
+                                    true,        // Pas de possibilité de voler
+                                    3);          // Vitesse saut
+
+
+    // Création du triangle selector
+      scene::ITriangleSelector *selector;
+      selector = smgr->createOctreeTriangleSelector(nodes_decors[0]->getMesh(), nodes_decors[0]);
+      nodes_decors[0]->setTriangleSelector(selector);
+
+      // Et l'animateur/collisionneur
+       scene::ISceneNodeAnimator *anim;
+       anim = smgr->createCollisionResponseAnimator(selector,
+                                                    camera,  // Le noeud que l'on veut gérer
+                                                    ic::vector3df(8,20,8), // "rayons" de la caméra
+                                                    ic::vector3df(0, -10, 0),  // gravité
+                                                    ic::vector3df(0,0,0));  // décalage du centre
+       camera->addAnimator(anim);
+
     while(device->run())
     {
         driver->beginScene(true, true, iv::SColor(0,50,100,255));
@@ -148,6 +222,7 @@ int main()
 
         //When we change decors
         update_decors(nodes_decors,visible_node_decor);
+        update_perso_1(camera,nodes_persos[0]);
         driver->endScene();
     }
     device->drop();
