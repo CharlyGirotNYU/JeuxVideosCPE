@@ -6,6 +6,8 @@
 #include "events.h"
 #include "gui_ids.h"
 #include <cmath>
+#include "CMyLightManager.h"
+
 
 using namespace irr;
 
@@ -105,16 +107,18 @@ static void load_decors(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
     meshes.push_back(smgr->getMesh("data/ISLAND/island.obj"));
     nodes.push_back(smgr->addOctreeSceneNode(meshes[1]->getMesh(0), nullptr, -1, 1024));
     nodes[1]->setMaterialFlag(iv::EMF_LIGHTING, false);
-    nodes[1]->setPosition(ic::vector3df(0.0f,-20.0f,0.0f));
+    nodes[1]->setMaterialFlag(iv::EMF_GOURAUD_SHADING , false);
+    nodes[1]->setPosition(ic::vector3df(0.0f,100.0f,0.0f));
     nodes[1]->setScale(ic::vector3df(50.0f));
     //nodes[1]->setRotation(ic::vector3df(90,0,0));
 
     meshes.push_back(smgr->getMesh("data/room2/Club.3DS"));
     nodes.push_back(smgr->addOctreeSceneNode(meshes[2]->getMesh(0), nullptr, -1, 1024));
     nodes[2]->setMaterialFlag(iv::EMF_LIGHTING, false);
+    nodes[2]->setMaterialFlag(iv::EMF_GOURAUD_SHADING , true);
     nodes[2]->setPosition(ic::vector3df(0.0f,-50.0f,0.0f));
     nodes[2]->setScale(ic::vector3df(1.0f));
-//    nodes[2]->setMaterialTexture(0, driver->getTexture("data/bathroom/obj/BathroomOBJ.mtl"));
+    //    nodes[2]->setMaterialTexture(0, driver->getTexture("data/bathroom/obj/BathroomOBJ.mtl"));
 }
 
 static void load_persos(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*> &meshes,
@@ -136,7 +140,7 @@ static void load_arches(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
 {
     meshes.push_back(smgr->getMesh("data/arbre1/Dwarf_2_Low.obj"));
     nodes.push_back(smgr->addOctreeSceneNode(meshes[0]->getMesh(0), nullptr, -1, 1024));
-    nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, false);
+    nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, true);
     nodes[0]->setScale(ic::vector3df(30.0f));
     nodes[0]->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
     //nodes[0]->setScale(ic::vector3df(1.0f)); //Not working
@@ -150,6 +154,36 @@ static void load_arches(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
     nodes[1]->setPosition(ic::vector3df(-80.0f,-40.0f,0));
 
 
+}
+
+void create_lights(is::ISceneManager* &smgr,std::vector<is::IMeshSceneNode*> &nodes, f32 const lightRadius, iv::IVideoDriver* &driver)
+{
+    // And each cube has three lights attached to it.  The lights are attached to billboards so
+    // that we can see where they are.  The billboards are attached to the cube, so that the
+    // lights are indirect descendents of the same empty scene node as the cube.
+    for( auto &node: nodes)
+    {
+        scene::IBillboardSceneNode * billboard = smgr->addBillboardSceneNode(node);
+        billboard->setPosition(vector3df(0, -14, 30));
+        billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
+        billboard->setMaterialTexture(0, driver->getTexture("data/lights/particle.bmp"));
+        billboard->setMaterialFlag(video::EMF_LIGHTING, false);
+        smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(1, 0, 0), lightRadius);
+
+        billboard = smgr->addBillboardSceneNode(node);
+        billboard->setPosition(vector3df(-21, -14, -21));
+        billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
+        billboard->setMaterialTexture(0, driver->getTexture("data/lights/particlegreen.jpg"));
+        billboard->setMaterialFlag(video::EMF_LIGHTING, false);
+        smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(0, 1, 0), lightRadius);
+
+        billboard = smgr->addBillboardSceneNode(node);
+        billboard->setPosition(vector3df(21, -14, -21));
+        billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
+        billboard->setMaterialTexture(0, driver->getTexture("data/lights/particlewhite.bmp"));
+        billboard->setMaterialFlag(video::EMF_LIGHTING, false);
+        smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(0, 0, 1), lightRadius);
+    }
 }
 
 void update_selector(is::ISceneManager* &smgr, std::vector<is::IMeshSceneNode*> &nodes_decors,scene::ITriangleSelector* &selector, const int visible_node_decor )
@@ -166,9 +200,10 @@ void update_decors(std::vector<is::IMeshSceneNode*> &nodes_decors,
                    scene::ITriangleSelector* &selector,
                    scene::ISceneNodeAnimator* &anim)
 {
+    //TODO : Desactivate arche if were already in this decor
     for(int i=0; i< nodes_decors.size(); i++)
     {
-        if(i == visible_node_decor)
+        if(i == visible_node_decor )
             nodes_decors[i]->setVisible(true);
         else
             nodes_decors[i]->setVisible(false);
@@ -177,26 +212,19 @@ void update_decors(std::vector<is::IMeshSceneNode*> &nodes_decors,
     for(int i=0; i<nodes_arches.size(); i++)
     {
         //Changement couleur fonciton de la distance a l'arche
-//        is::IMesh* mesh1 = nodes_arches[i]->getMesh();
 
-//        std::vector<ic::vector3df> v = mesh1->getMeshBuffer( 0 )->getVertices();
-
-//        for ( int i = 0; i < v.length; i++ )
-//        {
-//           v[ i ].setColor( new SColor( 120, 100, 200, 150 ) );
-//           v[ i ].setPos( new vector3df( 100, 100, 100 ) );
-//        }
         //Entrée dans une salle si on passe dans l'arche
         ic::vector3df position = camera->getPosition();
-        //std::cout << position.getDistanceFrom(nodes_arches[i]->getPosition()) << std::endl;
-        if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 30.0f)
+
+        //Si on est sur l'arche et que ce décor n'est pas encore activé (on désactive l'arche une fois qu'on est dedans)
+        if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 30.0f && !nodes_decors[i+1]->isVisible() )
         {
             visible_node_decor = i+1;
             update_selector(smgr, nodes_decors,selector,visible_node_decor);
             camera->removeAnimator(anim);
             anim = smgr->createCollisionResponseAnimator(selector,
                                                          camera,  // Le noeud que l'on veut gérer
-                                                         ic::vector3df(3,15,3), // "rayons" de la caméra
+                                                         ic::vector3df(10,10,10), // "rayons" de la caméra
                                                          ic::vector3df(0, -9, 0),  // gravité
                                                          ic::vector3df(0,10,0));  // décalage du centre
             camera->addAnimator(anim);
@@ -232,7 +260,6 @@ int main()
     is::ISceneManager   *smgr = device->getSceneManager();
     ig::IGUIEnvironment *gui = device->getGUIEnvironment();
 
-
     // Load Decors
     std::vector<is::IAnimatedMesh*> meshes_decors;
     std::vector<is::IMeshSceneNode*> nodes_decors;
@@ -246,33 +273,118 @@ int main()
     // Load Arches
     std::vector<is::IAnimatedMesh*> meshes_arches;
     std::vector<is::IMeshSceneNode*> nodes_arches;
-    load_arches(smgr,meshes_arches,nodes_arches,driver);
+    //    load_arches(smgr,meshes_arches,nodes_arches,driver);
 
 
     scene::ICameraSceneNode* camera =
-        smgr->addCameraSceneNodeFPS(nullptr,
-                                    100,         // Vitesse de rotation
-                                    .2,          // Vitesse de déplacement
-                                    -1,          // Identifiant
-                                    nullptr, 0,  // Table de changement de touches
-                                    true,        // Pas de possibilité de voler
-                                    10);          // Vitesse saut
+            smgr->addCameraSceneNodeFPS(nullptr,
+                                        100,         // Vitesse de rotation
+                                        .2,          // Vitesse de déplacement
+                                        -1,          // Identifiant
+                                        nullptr, 0,  // Table de changement de touches
+                                        true,        // Pas de possibilité de voler
+                                        10);          // Vitesse saut
 
 
     // Création du triangle selector
-      scene::ITriangleSelector *selector;
-      selector = smgr->createOctreeTriangleSelector(nodes_decors[0]->getMesh(), nodes_decors[0]);
-      nodes_decors[0]->setTriangleSelector(selector);
+    scene::ITriangleSelector *selector;
+    selector = smgr->createOctreeTriangleSelector(nodes_decors[0]->getMesh(), nodes_decors[0]);
+    nodes_decors[0]->setTriangleSelector(selector);
 
 
-      // Création animateur collisionneur initiale avec le décor de départ
-       scene::ISceneNodeAnimator *anim;
-       anim = smgr->createCollisionResponseAnimator(selector,
-                                                    camera,  // Le noeud que l'on veut gérer
-                                                    ic::vector3df(3,15,3), // "rayons" de la caméra
-                                                    ic::vector3df(0, -9, 0),  // gravité
-                                                    ic::vector3df(0,10,0));  // décalage du centre
-       camera->addAnimator(anim);
+    // Création animateur collisionneur initiale avec le décor de départ
+    scene::ISceneNodeAnimator *anim;
+    anim = smgr->createCollisionResponseAnimator(selector,
+                                                 camera,  // Le noeud que l'on veut gérer
+                                                 ic::vector3df(1,15,10), // "rayons" de la caméra
+                                                 ic::vector3df(0, -9, 0),  // gravité
+                                                 ic::vector3df(0,10,0));  // décalage du centre
+    camera->addAnimator(anim);
+
+    //Création Lumière
+    f32 const lightRadius = 60.f; // Enough to reach the far side of each 'zone'
+
+    //create_lights(smgr,nodes_arches,lightRadius,driver);
+
+
+
+
+
+
+
+    for(f32 zoneX = -100.f; zoneX <= 100.f; zoneX += 50.f)
+        for(f32 zoneY = -60.f; zoneY <= 60.f; zoneY += 60.f)
+        {
+            //               // Start with an empty scene node, which we will use to represent a zone.
+            scene::ISceneNode * zoneRoot = smgr->addEmptySceneNode();
+            zoneRoot->setPosition(vector3df(zoneX, zoneY, 0));
+
+
+            is::IAnimatedMesh* mesh;
+            mesh = smgr->getMesh("data/arbre1/Dwarf_2_Low.obj");
+            is::IMeshSceneNode* node;
+            node = smgr->addMeshSceneNode(mesh->getMesh(0),zoneRoot);
+            node->setMaterialFlag(iv::EMF_LIGHTING, true);
+            node->setScale(ic::vector3df(30.0f));
+            node->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
+            //nodes[0]->setScale(ic::vector3df(1.0f)); //Not working
+            node->setPosition(ic::vector3df(80.0f,-40.0f,0));
+
+            //               // Each zone contains a rotating cube
+            //               scene::IMeshSceneNode * node = smgr->addCubeSceneNode(15, zoneRoot);
+            //               scene::ISceneNodeAnimator * rotation = smgr->createRotationAnimator(vector3df(0.25f, 0.5f, 0.75f));
+            //               node->addAnimator(rotation);
+            //               rotation->drop();
+
+            // And each cube has three lights attached to it.  The lights are attached to billboards so
+            // that we can see where they are.  The billboards are attached to the cube, so that the
+            // lights are indirect descendents of the same empty scene node as the cube.
+            scene::IBillboardSceneNode * billboard = smgr->addBillboardSceneNode(node);
+            billboard->setPosition(vector3df(0, -14, 30));
+            billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
+            billboard->setMaterialTexture(0, driver->getTexture("data/lights/particle.bmp"));
+            billboard->setMaterialFlag(video::EMF_LIGHTING, false);
+            smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(1, 0, 0), lightRadius);
+
+            billboard = smgr->addBillboardSceneNode(node);
+            billboard->setPosition(vector3df(-21, -14, -21));
+            billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
+            billboard->setMaterialTexture(0, driver->getTexture("data/lights/particle.bmp"));
+            billboard->setMaterialFlag(video::EMF_LIGHTING, false);
+            smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(0, 1, 0), lightRadius);
+
+            billboard = smgr->addBillboardSceneNode(node);
+            billboard->setPosition(vector3df(21, -14, -21));
+            billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
+            billboard->setMaterialTexture(0, driver->getTexture("data/lights/particle.bmp"));
+            billboard->setMaterialFlag(video::EMF_LIGHTING, false);
+            smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(0, 0, 1), lightRadius);
+
+            //               // Each cube also has a smaller cube rotating around it, to show that the cubes are being
+            //               // lit by the lights in their 'zone', not just lights that are their direct children.
+            //               node = smgr->addCubeSceneNode(5, node_arches[0]);
+            //               node->setPosition(vector3df(0, 21, 0));
+        }
+
+
+    //std::cout<<nodes_arches[0]->getChildren().getSize()<<std::endl;
+    CMyLightManager * myLightManager = new CMyLightManager(smgr);
+    smgr->setLightManager(myLightManager); // This is the default: we won't do light management until told to do it.
+    device->setEventReceiver(myLightManager);
+
+    // add a nice skybox
+
+    driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, false);
+
+    smgr->addSkyBoxSceneNode(
+                driver->getTexture("data/irrlicht2_up.jpg"),
+                driver->getTexture("data/irrlicht2_dn.jpg"),
+                driver->getTexture("data/irrlicht2_lf.jpg"),
+                driver->getTexture("data/media/irrlicht2_rt.jpg"),
+                driver->getTexture("data/media/irrlicht2_ft.jpg"),
+                driver->getTexture("data/media/irrlicht2_bk.jpg"));
+
+    driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, true);
 
     while(device->run())
     {
