@@ -101,16 +101,19 @@ static void load_decors(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
     nodes[0]->setScale(ic::vector3df(30.0f));
     nodes[0]->setPosition(ic::vector3df(0.0f,-50.0f,0.0f));
 
-    //Room interior 1
-    meshes.push_back(smgr->getMesh("data/room1/house_interior.obj"));
+    //Island
+    meshes.push_back(smgr->getMesh("data/ISLAND/island.obj"));
     nodes.push_back(smgr->addOctreeSceneNode(meshes[1]->getMesh(0), nullptr, -1, 1024));
     nodes[1]->setMaterialFlag(iv::EMF_LIGHTING, false);
-
+    nodes[1]->setPosition(ic::vector3df(0.0f,-20.0f,0.0f));
+    nodes[1]->setScale(ic::vector3df(50.0f));
+    //nodes[1]->setRotation(ic::vector3df(90,0,0));
 
     meshes.push_back(smgr->getMesh("data/room2/Club.3DS"));
     nodes.push_back(smgr->addOctreeSceneNode(meshes[2]->getMesh(0), nullptr, -1, 1024));
     nodes[2]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[2]->setPosition(ic::vector3df(0.0f,-50.0f,0.0f));
+    nodes[2]->setScale(ic::vector3df(1.0f));
 //    nodes[2]->setMaterialTexture(0, driver->getTexture("data/bathroom/obj/BathroomOBJ.mtl"));
 }
 
@@ -186,15 +189,16 @@ void update_decors(std::vector<is::IMeshSceneNode*> &nodes_decors,
         //Entrée dans une salle si on passe dans l'arche
         ic::vector3df position = camera->getPosition();
         //std::cout << position.getDistanceFrom(nodes_arches[i]->getPosition()) << std::endl;
-        if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 20.0f)
+        if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 30.0f)
         {
             visible_node_decor = i+1;
             update_selector(smgr, nodes_decors,selector,visible_node_decor);
+            camera->removeAnimator(anim);
             anim = smgr->createCollisionResponseAnimator(selector,
                                                          camera,  // Le noeud que l'on veut gérer
-                                                         ic::vector3df(8,20,8), // "rayons" de la caméra
-                                                         ic::vector3df(0, -10, 0),  // gravité
-                                                         ic::vector3df(0,0,0));  // décalage du centre
+                                                         ic::vector3df(3,15,3), // "rayons" de la caméra
+                                                         ic::vector3df(0, -9, 0),  // gravité
+                                                         ic::vector3df(0,10,0));  // décalage du centre
             camera->addAnimator(anim);
         }
     }
@@ -206,7 +210,7 @@ void update_perso_1(scene::ICameraSceneNode* camera,is::IAnimatedMeshSceneNode* 
     ic::vector3df cam_rot = camera->getRotation();
     ic::vector3df decalage = ic::vector3df(0.0f,+100.0f,-50.0f);
     node_perso->setRotation(ic::vector3df(.0f,
-                                          cam_rot.Y,
+                                          cam_rot.Y+90,
                                           0.0f));
     node_perso->setPosition(cam_pos-decalage);
 }
@@ -248,11 +252,11 @@ int main()
     scene::ICameraSceneNode* camera =
         smgr->addCameraSceneNodeFPS(nullptr,
                                     100,         // Vitesse de rotation
-                                    .3,          // Vitesse de déplacement
+                                    .2,          // Vitesse de déplacement
                                     -1,          // Identifiant
                                     nullptr, 0,  // Table de changement de touches
                                     true,        // Pas de possibilité de voler
-                                    3);          // Vitesse saut
+                                    10);          // Vitesse saut
 
 
     // Création du triangle selector
@@ -265,9 +269,9 @@ int main()
        scene::ISceneNodeAnimator *anim;
        anim = smgr->createCollisionResponseAnimator(selector,
                                                     camera,  // Le noeud que l'on veut gérer
-                                                    ic::vector3df(8,20,8), // "rayons" de la caméra
-                                                    ic::vector3df(0, -10, 0),  // gravité
-                                                    ic::vector3df(0,0,0));  // décalage du centre
+                                                    ic::vector3df(3,15,3), // "rayons" de la caméra
+                                                    ic::vector3df(0, -9, 0),  // gravité
+                                                    ic::vector3df(0,10,0));  // décalage du centre
        camera->addAnimator(anim);
 
     while(device->run())
