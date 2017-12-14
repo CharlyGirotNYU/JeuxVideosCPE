@@ -164,21 +164,21 @@ void create_lights(is::ISceneManager* &smgr,std::vector<is::IMeshSceneNode*> &no
     for( auto &node: nodes)
     {
         scene::IBillboardSceneNode * billboard = smgr->addBillboardSceneNode(node);
-        billboard->setPosition(vector3df(0, -14, 30));
+        billboard->setPosition(vector3df(0, -0.14, 0.30));
         billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
         billboard->setMaterialTexture(0, driver->getTexture("data/lights/particle.bmp"));
         billboard->setMaterialFlag(video::EMF_LIGHTING, false);
         smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(1, 0, 0), lightRadius);
 
         billboard = smgr->addBillboardSceneNode(node);
-        billboard->setPosition(vector3df(-21, -14, -21));
+        billboard->setPosition(vector3df(-0.21, -0.14, -0.21));
         billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
         billboard->setMaterialTexture(0, driver->getTexture("data/lights/particlegreen.jpg"));
         billboard->setMaterialFlag(video::EMF_LIGHTING, false);
         smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(0, 1, 0), lightRadius);
 
         billboard = smgr->addBillboardSceneNode(node);
-        billboard->setPosition(vector3df(21, -14, -21));
+        billboard->setPosition(vector3df(0.21, -0.14, -0.21));
         billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
         billboard->setMaterialTexture(0, driver->getTexture("data/lights/particlewhite.bmp"));
         billboard->setMaterialFlag(video::EMF_LIGHTING, false);
@@ -200,7 +200,6 @@ void update_decors(std::vector<is::IMeshSceneNode*> &nodes_decors,
                    scene::ITriangleSelector* &selector,
                    scene::ISceneNodeAnimator* &anim)
 {
-    //TODO : Desactivate arche if were already in this decor
     for(int i=0; i< nodes_decors.size(); i++)
     {
         if(i == visible_node_decor )
@@ -273,7 +272,7 @@ int main()
     // Load Arches
     std::vector<is::IAnimatedMesh*> meshes_arches;
     std::vector<is::IMeshSceneNode*> nodes_arches;
-    //    load_arches(smgr,meshes_arches,nodes_arches,driver);
+    load_arches(smgr,meshes_arches,nodes_arches,driver);
 
 
     scene::ICameraSceneNode* camera =
@@ -302,69 +301,71 @@ int main()
     camera->addAnimator(anim);
 
     //Création Lumière
-    f32 const lightRadius = 60.f; // Enough to reach the far side of each 'zone'
+    f32 const lightRadius = 6000.f; // Enough to reach the far side of each 'zone'
 
-    //create_lights(smgr,nodes_arches,lightRadius,driver);
-
-
+    create_lights(smgr,nodes_arches,lightRadius,driver);
 
 
 
 
 
-    for(f32 zoneX = -100.f; zoneX <= 100.f; zoneX += 50.f)
-        for(f32 zoneY = -60.f; zoneY <= 60.f; zoneY += 60.f)
-        {
-            //               // Start with an empty scene node, which we will use to represent a zone.
-            scene::ISceneNode * zoneRoot = smgr->addEmptySceneNode();
-            zoneRoot->setPosition(vector3df(zoneX, zoneY, 0));
 
 
-            is::IAnimatedMesh* mesh;
-            mesh = smgr->getMesh("data/arbre1/Dwarf_2_Low.obj");
-            is::IMeshSceneNode* node;
-            node = smgr->addMeshSceneNode(mesh->getMesh(0),zoneRoot);
-            node->setMaterialFlag(iv::EMF_LIGHTING, true);
-            node->setScale(ic::vector3df(30.0f));
-            node->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
-            //nodes[0]->setScale(ic::vector3df(1.0f)); //Not working
-            node->setPosition(ic::vector3df(80.0f,-40.0f,0));
+//    for(f32 zoneX = -100.f; zoneX <= 100.f; zoneX += 50.f)
+//        for(f32 zoneY = -60.f; zoneY <= 60.f; zoneY += 60.f)
+//        {
+//            //               // Start with an empty scene node, which we will use to represent a zone.
+//            scene::ISceneNode * zoneRoot = smgr->addEmptySceneNode();
+//            zoneRoot->setPosition(vector3df(zoneX, zoneY, 0));
 
-            //               // Each zone contains a rotating cube
-            //               scene::IMeshSceneNode * node = smgr->addCubeSceneNode(15, zoneRoot);
-            //               scene::ISceneNodeAnimator * rotation = smgr->createRotationAnimator(vector3df(0.25f, 0.5f, 0.75f));
-            //               node->addAnimator(rotation);
-            //               rotation->drop();
+//            float a= -0.14f;
+//            float b= -0.30f;
+//            float c=-0.21f;
+//            is::IAnimatedMesh* mesh;
+//            mesh = smgr->getMesh("data/arbre1/Dwarf_2_Low.obj");
+//            is::IMeshSceneNode* node;
+//            node = smgr->addMeshSceneNode(mesh->getMesh(0),zoneRoot);
+//            node->setMaterialFlag(iv::EMF_LIGHTING, true);
+//            node->setScale(ic::vector3df(30.0f));
+//            node->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
+//            //nodes[0]->setScale(ic::vector3df(1.0f)); //Not working
+//            node->setPosition(ic::vector3df(80.0f,-40.0f,0));
 
-            // And each cube has three lights attached to it.  The lights are attached to billboards so
-            // that we can see where they are.  The billboards are attached to the cube, so that the
-            // lights are indirect descendents of the same empty scene node as the cube.
-            scene::IBillboardSceneNode * billboard = smgr->addBillboardSceneNode(node);
-            billboard->setPosition(vector3df(0, -14, 30));
-            billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
-            billboard->setMaterialTexture(0, driver->getTexture("data/lights/particle.bmp"));
-            billboard->setMaterialFlag(video::EMF_LIGHTING, false);
-            smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(1, 0, 0), lightRadius);
+//            //               // Each zone contains a rotating cube
+//            //               scene::IMeshSceneNode * node = smgr->addCubeSceneNode(15, zoneRoot);
+//            //               scene::ISceneNodeAnimator * rotation = smgr->createRotationAnimator(vector3df(0.25f, 0.5f, 0.75f));
+//            //               node->addAnimator(rotation);
+//            //               rotation->drop();
 
-            billboard = smgr->addBillboardSceneNode(node);
-            billboard->setPosition(vector3df(-21, -14, -21));
-            billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
-            billboard->setMaterialTexture(0, driver->getTexture("data/lights/particle.bmp"));
-            billboard->setMaterialFlag(video::EMF_LIGHTING, false);
-            smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(0, 1, 0), lightRadius);
+//            // And each cube has three lights attached to it.  The lights are attached to billboards so
+//            // that we can see where they are.  The billboards are attached to the cube, so that the
+//            // lights are indirect descendents of the same empty scene node as the cube.
+//            scene::IBillboardSceneNode * billboard = smgr->addBillboardSceneNode(node);
+//            billboard->setPosition(vector3df(0, -a, b));
+//            billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
+//            billboard->setMaterialTexture(0, driver->getTexture("data/lights/particle.bmp"));
+//            billboard->setMaterialFlag(video::EMF_LIGHTING, false);
+//            smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(1, 0, 0), lightRadius);
 
-            billboard = smgr->addBillboardSceneNode(node);
-            billboard->setPosition(vector3df(21, -14, -21));
-            billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
-            billboard->setMaterialTexture(0, driver->getTexture("data/lights/particle.bmp"));
-            billboard->setMaterialFlag(video::EMF_LIGHTING, false);
-            smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(0, 0, 1), lightRadius);
+//            billboard = smgr->addBillboardSceneNode(node);
+//            billboard->setPosition(vector3df(-c, -a, -c));
+//            billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
+//            billboard->setMaterialTexture(0, driver->getTexture("data/lights/particle.bmp"));
+//            billboard->setMaterialFlag(video::EMF_LIGHTING, false);
+//            smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(0, 1, 0), lightRadius);
 
-            //               // Each cube also has a smaller cube rotating around it, to show that the cubes are being
-            //               // lit by the lights in their 'zone', not just lights that are their direct children.
-            //               node = smgr->addCubeSceneNode(5, node_arches[0]);
-            //               node->setPosition(vector3df(0, 21, 0));
-        }
+//            billboard = smgr->addBillboardSceneNode(node);
+//            billboard->setPosition(vector3df(c, -a, -c));
+//            billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
+//            billboard->setMaterialTexture(0, driver->getTexture("data/lights/particle.bmp"));
+//            billboard->setMaterialFlag(video::EMF_LIGHTING, false);
+//            smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(0, 0, 1), lightRadius);
+
+//            //               // Each cube also has a smaller cube rotating around it, to show that the cubes are being
+//            //               // lit by the lights in their 'zone', not just lights that are their direct children.
+//            //               node = smgr->addCubeSceneNode(5, node_arches[0]);
+//            //               node->setPosition(vector3df(0, 21, 0));
+//        }
 
 
     //std::cout<<nodes_arches[0]->getChildren().getSize()<<std::endl;
