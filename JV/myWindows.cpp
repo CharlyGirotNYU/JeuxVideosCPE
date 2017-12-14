@@ -1,15 +1,25 @@
 
 #include "myWindows.hpp"
+#include<iostream> //debug
 
 using namespace irr;
 namespace ig = irr::gui;
 namespace ic = irr::core;
 //namespace is = irr::scene;
 //namespace iv = irr::video;
-myWindows::myWindows(ig::IGUIEnvironment *g):
-    gui(g){}
+myWindows::myWindows(ig::IGUIEnvironment *g, const irr::IrrlichtDevice *d):
+    gui(g), device(d){}
 myWindows::~myWindows()
 {}
+
+
+void myWindows::create_window_begin()
+{
+//    std::cout << device->dimension2D().Height; // How can we get the size of the window/device
+    ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(10,10, 620,460), false, L"Welcome To Our World");
+
+    gui->addStaticText(L"You are going to discover this worls, your goal is to ... ", ic::rect<s32>(150,20,350,200), true,window);
+}
 
 void myWindows::create_window()
 {

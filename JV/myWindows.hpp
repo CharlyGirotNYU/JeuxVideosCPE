@@ -14,13 +14,17 @@ class myWindows
 
 public:
 
-    myWindows(ig::IGUIEnvironment *g);
+    myWindows(ig::IGUIEnvironment *g, const irr::IrrlichtDevice *d);
     ~myWindows();
 
 
     void create_window();
 
     void create_menu();
+
+    void create_window_begin();
+
+
 
 
 //private slots:
@@ -35,6 +39,9 @@ private:
     //    Ui::MainWindow *ui;
     /** gui linked to the scene */
     ig::IGUIEnvironment *gui;
+
+    /** Irrlicht device */
+    const irr::IrrlichtDevice *device;
 
 
 
