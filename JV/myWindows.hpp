@@ -5,6 +5,7 @@
 
 #include <irrlicht.h>
 #include "gui_ids.h"
+#include <vector>
 
 namespace ig = irr::gui;
 
@@ -27,6 +28,8 @@ public:
 
 
 
+    /** Get Active Windows */
+    const std::vector<int> active_windows() const;
 //private slots:
 
     /** Quit the application */
@@ -42,6 +45,9 @@ private:
 
     /** Irrlicht device */
     const irr::IrrlichtDevice *device;
+
+    /** List of active windows */
+    std::vector<int> active_windows_data;
 
 
 

@@ -19,6 +19,7 @@ void myWindows::create_window_begin()
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(10,10, 620,460), false, L"Welcome To Our World");
 
     gui->addStaticText(L"You are going to discover this worls, your goal is to ... ", ic::rect<s32>(150,20,350,200), true,window);
+    active_windows_data.push_back(WINDOW_BEGIN);
 }
 
 void myWindows::create_window()
@@ -86,4 +87,10 @@ void myWindows::create_menu()
     // Le contenu du menu Help :
     submenu = menu->getSubMenu(2);
     submenu->addItem(L"About...", MENU_ABOUT);
+}
+
+
+const std::vector<int> myWindows::active_windows() const
+{
+    return active_windows_data;
 }
