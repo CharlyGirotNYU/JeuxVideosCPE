@@ -7,6 +7,9 @@ namespace ig = irr::gui;
 namespace ic = irr::core;
 //namespace is = irr::scene;
 //namespace iv = irr::video;
+
+myWindows::myWindows(){}
+
 myWindows::myWindows(ig::IGUIEnvironment *g, const irr::IrrlichtDevice *d):
     gui(g), device(d){}
 myWindows::~myWindows()
@@ -15,47 +18,71 @@ myWindows::~myWindows()
 
 void myWindows::create_window_begin()
 {
-//    std::cout << device->dimension2D().Height; // How can we get the size of the window/device
-    ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(10,10, 620,460), false, L"Welcome To Our World");
+    //    std::cout << device->dimension2D().Height; // How can we get the size of the window/device
+    ig::IGUIWindow *window_begin = gui->addWindow(ic::rect<s32>(10,10, 620,460), false, L"Welcome To Our World");
 
-    gui->addStaticText(L"You are going to discover this worls, your goal is to ... ", ic::rect<s32>(150,20,350,200), true,window);
-    active_windows_data.push_back(WINDOW_BEGIN);
+    gui->addStaticText(L"You are going to discover this worls, your goal is to ... ", ic::rect<s32>(150,20,350,200), false,false,window_begin);
+    gui->addButton(ic::rect<s32>(40,74, 140,92), window_begin, WINDOW_BUTTON, L"Click me!");
+    active_window = true;
 }
 
-void myWindows::create_window()
+void myWindows::create_escape_menu()
 {
-    // La fenêtre
-    ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(420,25, 620,460), false, L"Settings");
-
-    // Une zone d'édition de texte, précédée d'un label
-    gui->addStaticText(L"Value", ic::rect<s32>(22,48, 65,66), false, false, window);
-    gui->addEditBox(L"1.0", ic::rect<s32>(65,46, 160,66), true, window, WINDOW_VALUE);
-
-    // Un bouton à clicker
-    gui->addButton(ic::rect<s32>(40,74, 140,92), window, WINDOW_BUTTON, L"Click me!");
-
-    // Une case à cocher
-    gui->addCheckBox(true, ic::rect<s32>(40,100, 140,118), window, WINDOW_CHECK_BOX, L"Select me!");
-
-    // Une boite combo (une liste déroulante)
-    gui->addStaticText(L"Choose one: ", ic::rect<s32>(22,126, 100,142), false, false, window);
-    ig::IGUIComboBox *cbox = gui->addComboBox(ic::rect<s32>(100,126, 180,142), window, WINDOW_COMBO_BOX);
-    cbox->addItem(L"Choice 1", WINDOW_COMBO_CHOICE_1);
-    cbox->addItem(L"Choice 2", WINDOW_COMBO_CHOICE_2);
-    cbox->addItem(L"Choice 3", WINDOW_COMBO_CHOICE_3);
-
+    ig::IGUIWindow *window_escape = gui->addWindow(ic::rect<s32>(10,10, 620,460), false, L"MENU ESCAPE");
     // Une liste déroulée
-    gui->addStaticText(L"List:", ic::rect<s32>(22,150, 65,168), false, false, window);
-    ig::IGUIListBox *lbox = gui->addListBox(ic::rect<s32>(40,170, 160,242), window, WINDOW_LIST_BOX, true);
-    lbox->addItem(L"First Entry");
-    lbox->addItem(L"Second Entry");
-    lbox->addItem(L"Third Entry");
+   // gui->addStaticText(L"List:", ic::rect<s32>(22,150, 65,168), false, false, window_escape);
+    ig::IGUIListBox *lbox = gui->addListBox(ic::rect<s32>(40,170, 160,242), window_escape, WINDOW_LIST_BOX, true);
+    lbox->addItem(L"RESUME");
+    lbox->addItem(L"HELP ? NOTHING CAN HELP YOU RIGHT NOW");
+    lbox->addItem(L"EXIT");
 
-    // Une barre de défilement
-    gui->addScrollBar(true, ic::rect<s32>(22,250, 160,268), window, WINDOW_SCROLLBAR);
+}
 
-    // Une spin box
-    gui->addSpinBox(L"18.0", ic::rect<s32>(40,280, 160,298), true, window, WINDOW_SPIN_BOX);
+void myWindows::create_window(int win_num)
+{
+    std::cout << win_num << std::endl ;
+    switch(win_num)
+    {
+    case WINDOW_BEGIN:
+        create_window_begin();
+    case WINDOW_ESCAPE:
+        create_escape_menu();
+    }
+
+
+
+    //    // La fenêtre
+    //    ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(420,25, 620,460), false, L"Settings");
+
+    //    // Une zone d'édition de texte, précédée d'un label
+    //    gui->addStaticText(L"Value", ic::rect<s32>(22,48, 65,66), false, false, window);
+    //    gui->addEditBox(L"1.0", ic::rect<s32>(65,46, 160,66), true, window, WINDOW_VALUE);
+
+    //    // Un bouton à clicker
+    //    gui->addButton(ic::rect<s32>(40,74, 140,92), window, WINDOW_BUTTON, L"Click me!");
+
+    //    // Une case à cocher
+    //    gui->addCheckBox(true, ic::rect<s32>(40,100, 140,118), window, WINDOW_CHECK_BOX, L"Select me!");
+
+    //    // Une boite combo (une liste déroulante)
+    //    gui->addStaticText(L"Choose one: ", ic::rect<s32>(22,126, 100,142), false, false, window);
+    //    ig::IGUIComboBox *cbox = gui->addComboBox(ic::rect<s32>(100,126, 180,142), window, WINDOW_COMBO_BOX);
+    //    cbox->addItem(L"Choice 1", WINDOW_COMBO_CHOICE_1);
+    //    cbox->addItem(L"Choice 2", WINDOW_COMBO_CHOICE_2);
+    //    cbox->addItem(L"Choice 3", WINDOW_COMBO_CHOICE_3);
+
+    //    // Une liste déroulée
+    //    gui->addStaticText(L"List:", ic::rect<s32>(22,150, 65,168), false, false, window);
+    //    ig::IGUIListBox *lbox = gui->addListBox(ic::rect<s32>(40,170, 160,242), window, WINDOW_LIST_BOX, true);
+    //    lbox->addItem(L"First Entry");
+    //    lbox->addItem(L"Second Entry");
+    //    lbox->addItem(L"Third Entry");
+
+    //    // Une barre de défilement
+    //    gui->addScrollBar(true, ic::rect<s32>(22,250, 160,268), window, WINDOW_SCROLLBAR);
+
+    //    // Une spin box
+    //    gui->addSpinBox(L"18.0", ic::rect<s32>(40,280, 160,298), true, window, WINDOW_SPIN_BOX);
 }
 
 /*===========================================================================*\
@@ -90,7 +117,12 @@ void myWindows::create_menu()
 }
 
 
-const std::vector<int> myWindows::active_windows() const
+bool myWindows::active_windows() const
 {
-    return active_windows_data;
+    return active_window;
+}
+
+void myWindows::active_windows(bool b)
+{
+    active_window=b;
 }

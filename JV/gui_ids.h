@@ -25,6 +25,7 @@ enum
     MENU_ABOUT,
 
     WINDOW_BEGIN,
+    WINDOW_ESCAPE,
 };
 
 #endif

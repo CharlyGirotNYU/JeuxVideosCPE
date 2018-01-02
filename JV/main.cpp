@@ -154,7 +154,7 @@ void update_arches(std::vector<is::IMeshSceneNode*> &nodes_arches, int visible_n
     }
     nodes_arches[0]->setPosition(pos0);
     nodes_arches[1]->setPosition(pos1);
-//    nodes_arches[visible_node_decor-1]->setVisible(false);
+    //    nodes_arches[visible_node_decor-1]->setVisible(false);
     for(unsigned int i=0; i<nodes_arches.size(); i++)
     {
         nodes_arches[i]->setVisible(true);
@@ -189,13 +189,13 @@ void update_cam_position(scene::ICameraSceneNode* &camera)
  * update all elements of the scene
  * **********************/
 void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
-                   std::vector<is::IMeshSceneNode*> &nodes_arches,
+                  std::vector<is::IMeshSceneNode*> &nodes_arches,
                   std::vector<is::IAnimatedMeshSceneNode*> &nodes_persos,
-                   scene::ICameraSceneNode* &camera,
-                   int &visible_node_decor,
-                   is::ISceneManager* &smgr,
-                   scene::ITriangleSelector* &selector,
-                   scene::ISceneNodeAnimator* &anim)
+                  scene::ICameraSceneNode* &camera,
+                  int &visible_node_decor,
+                  is::ISceneManager* &smgr,
+                  scene::ITriangleSelector* &selector,
+                  scene::ISceneNodeAnimator* &anim)
 {
     for(unsigned int i=0; i< nodes_decors.size(); i++)
     {
@@ -237,7 +237,7 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
 
         }
     }
-   if(colli) update_arches(nodes_arches,visible_node_decor);
+    if(colli) update_arches(nodes_arches,visible_node_decor);
     update_perso_1(camera,nodes_persos[0]);
 }
 
@@ -275,8 +275,8 @@ int main()
     std::vector<is::IMeshSceneNode*> nodes_arches;
     load_arches(smgr,meshes_arches,nodes_arches,driver);
 
-    //Create Camera
-    scene::ICameraSceneNode* camera =
+    //Create FPS Camera
+    scene::ICameraSceneNode* camera_FPS =
             smgr->addCameraSceneNodeFPS(nullptr,
                                         100,         // Vitesse de rotation
                                         .2,          // Vitesse de déplacement
@@ -286,6 +286,14 @@ int main()
                                         10);          // Vitesse saut
 
 
+    //Création GUI Caméra
+    scene::ICameraSceneNode* camera_gui = smgr->addCameraSceneNode();
+    bool enabled = camera_gui->isInputReceiverEnabled();
+    camera_gui->setInputReceiverEnabled(!enabled);
+    device->getCursorControl()->setVisible(enabled);
+
+     device->getCursorControl()->setVisible(false);
+
     // Création du triangle selector
     scene::ITriangleSelector *selector;
     selector = smgr->createOctreeTriangleSelector(nodes_decors[0]->getMesh(), nodes_decors[0]);
@@ -294,11 +302,11 @@ int main()
     // Création animateur collisionneur initiale avec le décor de départ
     scene::ISceneNodeAnimator *anim;
     anim = smgr->createCollisionResponseAnimator(selector,
-                                                 camera,  // Le noeud que l'on veut gérer
+                                                 camera_FPS,  // Le noeud que l'on veut gérer
                                                  ic::vector3df(1,15,10), // "rayons" de la caméra
                                                  ic::vector3df(0, -9, 0),  // gravité
                                                  ic::vector3df(0,10,0));  // décalage du centre
-    camera->addAnimator(anim);
+    camera_FPS->addAnimator(anim);
 
     //Création Lumière
     f32 const lightRadius = 6000.f; // Enough to reach the far side of each 'zone'
@@ -322,19 +330,44 @@ int main()
     driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, true);
 
     receiver.set_node(nodes_persos[0]);
-    myWindows windows(gui,device);
-    //windows.create_window();
-    //windows.create_menu();
-    windows.create_window_begin();
+    receiver.set_gui(gui);
+    myWindows * windows = new myWindows(gui,device);
+    receiver.set_device(device);
+    receiver.set_windows(windows);
+    windows->create_window(WINDOW_BEGIN);
 
+
+
+    scene::ICameraSceneNode* camera;
+    camera = camera_FPS;
+    bool previous_gui_state = windows->active_windows();
+   // std::cout << "previous gui state " << previous_gui_state << std::endl;
     while(device->run())
     {
+
+
+
         driver->beginScene(true, true, iv::SColor(0,50,100,255));
 
         // Dessin de la scène :
         smgr->drawAll();
+
         // Dessin de l'interface utilisateur :
         gui->drawAll();
+
+
+
+        if(previous_gui_state == true && windows->active_windows() == false)
+        {
+
+            smgr->setActiveCamera(camera_FPS);
+            previous_gui_state = windows->active_windows();
+        }
+        else if (previous_gui_state == false && windows->active_windows() == true)
+        {
+           smgr->setActiveCamera(camera_gui);
+           previous_gui_state = windows->active_windows();
+        }
 
         //When we change decors
         update_scene(nodes_decors, nodes_arches, nodes_persos, camera, visible_node_decor,smgr,selector, anim);

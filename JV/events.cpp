@@ -27,14 +27,13 @@ EventReceiver::EventReceiver()
 \*------------------------------------------------------------------------*/
 bool EventReceiver::keyboard_handler(const SEvent &event)
 {
+    bool ESCAPE_PRESSED = false;
   if (event.KeyInput.PressedDown)
   {
     ic::vector3df position = node->getPosition();
     ic::vector3df rotation = node->getRotation();
     switch (event.KeyInput.Key)
     {
-      case KEY_ESCAPE:
-        exit(0);
       case KEY_KEY_Z: // Avance
         position.X += 1 * cos(rotation.Y * M_PI / 180.0);
         position.Z += -1 * sin(rotation.Y * M_PI / 180.0);
@@ -48,6 +47,19 @@ bool EventReceiver::keyboard_handler(const SEvent &event)
         break;
       case KEY_KEY_Q: // Tourne à gauche
         rotation.Y -= 10;
+        break;
+    case KEY_ESCAPE:
+        if(ESCAPE_PRESSED)
+        {
+            gui->clear();
+            std::cout<<"clear\n";
+            ESCAPE_PRESSED = false;
+        }
+        else
+        {
+            windows->create_window(WINDOW_ESCAPE);
+            ESCAPE_PRESSED = true;
+        }
         break;
       default:;
     }
@@ -225,6 +237,14 @@ bool EventReceiver::gui_handler(const SEvent &event)
         }
       }
       break;
+      //gestion des close button
+  case ig::EGET_ELEMENT_CLOSED:
+  {
+      std::cout << "Close button clicked\n";
+      windows->active_windows(false);
+  }
+      break;
+
     default:;
   }
   return false;
@@ -264,4 +284,21 @@ void EventReceiver::set_node(irr::scene::ISceneNode *n)
 void EventReceiver::set_gui(irr::gui::IGUIEnvironment *g)
 {
   gui = g;
+}
+
+
+/**************************************************************************\
+ * EventReceiver::set_device                                                 *
+\**************************************************************************/
+void EventReceiver::set_device(irr::IrrlichtDevice *d)
+{
+    device = d ;
+}
+
+/**************************************************************************\
+ * EventReceiver::set_window                                                 *
+\**************************************************************************/
+void EventReceiver::set_windows(myWindows *w)
+{
+    windows = w;
 }

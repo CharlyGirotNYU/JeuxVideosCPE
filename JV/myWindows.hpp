@@ -15,21 +15,26 @@ class myWindows
 
 public:
 
+    myWindows();
     myWindows(ig::IGUIEnvironment *g, const irr::IrrlichtDevice *d);
     ~myWindows();
 
 
-    void create_window();
+    void create_window(int win_num);
 
     void create_menu();
 
     void create_window_begin();
 
+    void create_escape_menu();
+
 
 
 
     /** Get Active Windows */
-    const std::vector<int> active_windows() const;
+    bool active_windows() const;
+    /** Set Active_window */
+    void active_windows(bool b);
 //private slots:
 
     /** Quit the application */
@@ -47,7 +52,7 @@ private:
     const irr::IrrlichtDevice *device;
 
     /** List of active windows */
-    std::vector<int> active_windows_data;
+    bool active_window;
 
 
 
