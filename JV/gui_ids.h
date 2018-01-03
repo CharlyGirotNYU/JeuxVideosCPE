@@ -5,6 +5,7 @@
 
 enum
 {
+    WINDOW_ESCAPE_LIST_BOX, //Escape Liste déroulée "Menu"
     WINDOW_VALUE,
     WINDOW_BUTTON,
     WINDOW_CHECK_BOX,

@@ -16,7 +16,7 @@ class myWindows
 public:
 
     myWindows();
-    myWindows(ig::IGUIEnvironment *g, const irr::IrrlichtDevice *d);
+    myWindows(ig::IGUIEnvironment *g, irr::IrrlichtDevice *d);
     ~myWindows();
 
 
@@ -49,7 +49,7 @@ private:
     ig::IGUIEnvironment *gui;
 
     /** Irrlicht device */
-    const irr::IrrlichtDevice *device;
+     irr::IrrlichtDevice *device;
 
     /** List of active windows */
     bool active_window;

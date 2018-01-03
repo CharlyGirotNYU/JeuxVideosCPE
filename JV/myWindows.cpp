@@ -10,7 +10,7 @@ namespace ic = irr::core;
 
 myWindows::myWindows(){}
 
-myWindows::myWindows(ig::IGUIEnvironment *g, const irr::IrrlichtDevice *d):
+myWindows::myWindows(ig::IGUIEnvironment *g,  irr::IrrlichtDevice *d):
     gui(g), device(d){}
 myWindows::~myWindows()
 {}
@@ -28,10 +28,17 @@ void myWindows::create_window_begin()
 
 void myWindows::create_escape_menu()
 {
-    ig::IGUIWindow *window_escape = gui->addWindow(ic::rect<s32>(10,10, 620,460), false, L"MENU ESCAPE");
+    irr::video::IVideoDriver    *driver = device->getVideoDriver();
+    const irr::core::dimension2du& screenSize = driver->getScreenSize();
+    int w = screenSize.Width;
+    int h = screenSize.Height;
+
+    ig::IGUIWindow *window_escape = gui->addWindow(ic::rect<s32>(0,0, w, h), false, L"MENU ESCAPE");
+
     // Une liste déroulée
-   // gui->addStaticText(L"List:", ic::rect<s32>(22,150, 65,168), false, false, window_escape);
-    ig::IGUIListBox *lbox = gui->addListBox(ic::rect<s32>(40,170, 160,242), window_escape, WINDOW_LIST_BOX, true);
+    ig::IGUIListBox *lbox = gui->addListBox(ic::rect<s32>(w/2-w/3, h/2-h/3, w/2+w/3, h/2+h/3), window_escape, WINDOW_ESCAPE_LIST_BOX, true);
+    lbox->setItemHeight(h/5);
+    lbox->setDrawBackground(true);
     lbox->addItem(L"RESUME");
     lbox->addItem(L"HELP ? NOTHING CAN HELP YOU RIGHT NOW");
     lbox->addItem(L"EXIT");
@@ -45,8 +52,12 @@ void myWindows::create_window(int win_num)
     {
     case WINDOW_BEGIN:
         create_window_begin();
+        break;
     case WINDOW_ESCAPE:
         create_escape_menu();
+        break;
+    default:
+        break;
     }
 
 

@@ -292,7 +292,7 @@ int main()
     camera_gui->setInputReceiverEnabled(!enabled);
     device->getCursorControl()->setVisible(enabled);
 
-     device->getCursorControl()->setVisible(false);
+     device->getCursorControl()->setVisible(true);
 
     // Création du triangle selector
     scene::ITriangleSelector *selector;

@@ -14,6 +14,10 @@ namespace is = irr::scene;
 namespace iv = irr::video;
 namespace ig = irr::gui;
 
+
+bool ESCAPE_PRESSED = false;
+
+
 /**************************************************************************\
  * EventReceiver::EventReceiver                                           *
 \**************************************************************************/
@@ -27,7 +31,7 @@ EventReceiver::EventReceiver()
 \*------------------------------------------------------------------------*/
 bool EventReceiver::keyboard_handler(const SEvent &event)
 {
-    bool ESCAPE_PRESSED = false;
+
   if (event.KeyInput.PressedDown)
   {
     ic::vector3df position = node->getPosition();
@@ -49,6 +53,7 @@ bool EventReceiver::keyboard_handler(const SEvent &event)
         rotation.Y -= 10;
         break;
     case KEY_ESCAPE:
+        std::cout<< "ESCAPE PRESSED" << ESCAPE_PRESSED << std::endl;
         if(ESCAPE_PRESSED)
         {
             gui->clear();
@@ -210,6 +215,27 @@ bool EventReceiver::gui_handler(const SEvent &event)
           ig::IGUIListBox *lbox = (ig::IGUIListBox*)event.GUIEvent.Caller;
           s32 item = lbox->getSelected();
           std::cout << "List box changed: item " << item << std::endl;
+        }
+        if(id == WINDOW_ESCAPE_LIST_BOX)
+        {
+            ig::IGUIListBox *lbox = (ig::IGUIListBox*)event.GUIEvent.Caller;
+            s32 item = lbox->getSelected();
+            std::cout << item << std::endl;
+            switch(item)
+            {
+            case 0:
+                gui->clear();
+                ESCAPE_PRESSED = false;
+                break;
+            case 1:
+                std::cout << "No Help at this point of Development" << std::endl;
+                break;
+            case 2:
+                std::cout << "Partie quitté en cours de Jeu" << std::endl;
+                exit(0);
+            default:
+                break;
+            }
         }
       }
       break;
