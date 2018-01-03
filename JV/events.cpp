@@ -59,6 +59,8 @@ bool EventReceiver::keyboard_handler(const SEvent &event)
             gui->clear();
             std::cout<<"clear\n";
             ESCAPE_PRESSED = false;
+            windows->active_windows(false);
+            //TO DO : RESET cursor at center
         }
         else
         {
@@ -226,6 +228,8 @@ bool EventReceiver::gui_handler(const SEvent &event)
             case 0:
                 gui->clear();
                 ESCAPE_PRESSED = false;
+                windows->active_windows(false);
+                // TODO reset cursor position
                 break;
             case 1:
                 std::cout << "No Help at this point of Development" << std::endl;

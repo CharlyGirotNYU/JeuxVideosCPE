@@ -43,6 +43,7 @@ void myWindows::create_escape_menu()
     lbox->addItem(L"HELP ? NOTHING CAN HELP YOU RIGHT NOW");
     lbox->addItem(L"EXIT");
 
+    active_window = true;
 }
 
 void myWindows::create_window(int win_num)

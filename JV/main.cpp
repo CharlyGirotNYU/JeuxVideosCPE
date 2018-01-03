@@ -356,6 +356,7 @@ int main()
         gui->drawAll();
 
 
+        std::cout << previous_gui_state << " " <<  windows->active_windows() <<std::endl;
 
         if(previous_gui_state == true && windows->active_windows() == false)
         {
