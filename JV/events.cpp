@@ -180,6 +180,13 @@ bool EventReceiver::gui_handler(const SEvent &event)
         s32 id = event.GUIEvent.Caller->getID();
         if (id == WINDOW_BUTTON)
           std::cout << "Button clicked\n";
+        if(id == UNDERSTOOD_BUTTON)
+        {
+            gui->clear();
+            windows->active_windows(false);
+            // TODO reset cursor position
+            break;
+        }
       }
       break;
       // gestion des cases à cocher

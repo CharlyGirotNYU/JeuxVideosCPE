@@ -195,7 +195,8 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
                   int &visible_node_decor,
                   is::ISceneManager* &smgr,
                   scene::ITriangleSelector* &selector,
-                  scene::ISceneNodeAnimator* &anim)
+                  scene::ISceneNodeAnimator* &anim,
+                  myWindows* &windows)
 {
     for(unsigned int i=0; i< nodes_decors.size(); i++)
     {
@@ -224,7 +225,7 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
             anim = smgr->createCollisionResponseAnimator(selector,
                                                          camera,  // Le noeud que l'on veut gérer
                                                          ic::vector3df(10,10,10), // "rayons" de la caméra
-                                                         ic::vector3df(0, -9, 0),  // gravité
+                                                         ic::vector3df(0, -100, 0),  // gravité
                                                          ic::vector3df(0,10,0));  // décalage du centre
             camera->addAnimator(anim);
             update_cam_position(camera);
@@ -234,6 +235,17 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
             //TO DO : Change arches position funciton of the decor
             //Une arche d'un décor dans lequel on veut pas retourner -> en dehors de la map (c'est pas beau mais ca marche)
             //On place l'arche souhaité au bonne endroit
+            //EST CE QUE C'est toujours utile depuis l'utilisation de setVisible et de la désasctivation de l'animateur : THINK NO (Charly)
+
+            //TODO : Display GUI to inform player about what to do in this map.
+            //switch case for each map
+            switch(i)
+            {
+            case 0:
+                windows->create_window_room_1();
+                break;
+            default:;
+            }
 
         }
     }
@@ -304,7 +316,7 @@ int main()
     anim = smgr->createCollisionResponseAnimator(selector,
                                                  camera_FPS,  // Le noeud que l'on veut gérer
                                                  ic::vector3df(1,15,10), // "rayons" de la caméra
-                                                 ic::vector3df(0, -9, 0),  // gravité
+                                                 ic::vector3df(0, -100, 0),  // gravité
                                                  ic::vector3df(0,10,0));  // décalage du centre
     camera_FPS->addAnimator(anim);
 
@@ -355,9 +367,6 @@ int main()
         // Dessin de l'interface utilisateur :
         gui->drawAll();
 
-
-        std::cout << previous_gui_state << " " <<  windows->active_windows() <<std::endl;
-
         if(previous_gui_state == true && windows->active_windows() == false)
         {
 
@@ -371,7 +380,7 @@ int main()
         }
 
         //When we change decors
-        update_scene(nodes_decors, nodes_arches, nodes_persos, camera, visible_node_decor,smgr,selector, anim);
+        update_scene(nodes_decors, nodes_arches, nodes_persos, camera, visible_node_decor,smgr,selector, anim, windows);
 
         driver->endScene();
     }

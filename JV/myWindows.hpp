@@ -28,6 +28,10 @@ public:
 
     void create_escape_menu();
 
+    void create_window_room_1();
+
+    void create_window_room_2();
+
 
 
 

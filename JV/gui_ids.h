@@ -6,6 +6,8 @@
 enum
 {
     WINDOW_ESCAPE_LIST_BOX, //Escape Liste déroulée "Menu"
+    UNDERSTOOD_BUTTON, //Allow also to close an information window
+
     WINDOW_VALUE,
     WINDOW_BUTTON,
     WINDOW_CHECK_BOX,
@@ -27,6 +29,7 @@ enum
 
     WINDOW_BEGIN,
     WINDOW_ESCAPE,
+    WINDOW_ROOM_1,
 };
 
 #endif

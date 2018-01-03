@@ -22,7 +22,7 @@ void myWindows::create_window_begin()
     ig::IGUIWindow *window_begin = gui->addWindow(ic::rect<s32>(10,10, 620,460), false, L"Welcome To Our World");
 
     gui->addStaticText(L"You are going to discover this worls, your goal is to ... ", ic::rect<s32>(150,20,350,200), false,false,window_begin);
-    gui->addButton(ic::rect<s32>(40,74, 140,92), window_begin, WINDOW_BUTTON, L"Click me!");
+    gui->addButton(ic::rect<s32>(40,74, 140,92), window_begin, UNDERSTOOD_BUTTON, L"Close Informations");
     active_window = true;
 }
 
@@ -46,6 +46,24 @@ void myWindows::create_escape_menu()
     active_window = true;
 }
 
+void myWindows::create_window_room_1()
+{
+    ig::IGUIWindow *window_begin = gui->addWindow(ic::rect<s32>(10,10, 620,460), false, L"Welcome To The Jungle . ");
+
+    gui->addStaticText(L" .. BLABLABLA you have to find THIS ... ", ic::rect<s32>(150,20,350,200), false,false,window_begin);
+    gui->addButton(ic::rect<s32>(40,74, 140,92), window_begin, UNDERSTOOD_BUTTON, L"UNDERSTOOD!");
+    active_window = true;
+}
+
+void myWindows::create_window_room_2()
+{
+    ig::IGUIWindow *window_begin = gui->addWindow(ic::rect<s32>(10,10, 620,460), false, L"Welcome To The Club . ");
+
+    gui->addStaticText(L" .. BLABLABLA you have to find THIS ... ", ic::rect<s32>(150,20,350,200), false,false,window_begin);
+    gui->addButton(ic::rect<s32>(40,74, 140,92), window_begin, UNDERSTOOD_BUTTON, L"UNDERSTOOD!");
+    active_window = true;
+}
+
 void myWindows::create_window(int win_num)
 {
     std::cout << win_num << std::endl ;
@@ -57,6 +75,8 @@ void myWindows::create_window(int win_num)
     case WINDOW_ESCAPE:
         create_escape_menu();
         break;
+    case WINDOW_ROOM_1:
+        create_window_room_1();
     default:
         break;
     }
