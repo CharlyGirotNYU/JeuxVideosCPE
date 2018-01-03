@@ -50,6 +50,8 @@ static void load_decors(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
     nodes[2]->setPosition(ic::vector3df(0.0f,-50.0f,0.0f));
     nodes[2]->setScale(ic::vector3df(1.0f));
     //    nodes[2]->setMaterialTexture(0, driver->getTexture("data/bathroom/obj/BathroomOBJ.mtl"));
+
+    //TODO : add objects relative to history
 }
 
 /************************\
