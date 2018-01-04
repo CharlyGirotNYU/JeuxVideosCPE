@@ -18,6 +18,8 @@ class EventReceiver : public irr::IEventReceiver
   std::vector<irr::video::ITexture*> textures;
   int current_texture;
   myWindows *windows;
+  irr::scene::ICameraSceneNode *camera;
+
 
   bool keyboard_handler(const irr::SEvent &event);
   bool mouse_handler(const irr::SEvent &event);
@@ -31,6 +33,7 @@ public:
   void set_device(irr::IrrlichtDevice *d);
   void set_textures(const std::vector<irr::video::ITexture *> &tex){textures=tex;}
   void set_windows(myWindows *w);
+  void set_camera(irr::scene::ICameraSceneNode* c);
 };
 
 #endif

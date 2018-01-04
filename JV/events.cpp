@@ -17,6 +17,10 @@ namespace ig = irr::gui;
 
 bool ESCAPE_PRESSED = false;
 
+int day=0;
+int month=0;
+int year=0;
+
 
 /**************************************************************************\
  * EventReceiver::EventReceiver                                           *
@@ -38,20 +42,21 @@ bool EventReceiver::keyboard_handler(const SEvent &event)
     ic::vector3df rotation = node->getRotation();
     switch (event.KeyInput.Key)
     {
-      case KEY_KEY_Z: // Avance
-        position.X += 1 * cos(rotation.Y * M_PI / 180.0);
-        position.Z += -1 * sin(rotation.Y * M_PI / 180.0);
-        break;
-      case KEY_KEY_S: // Recule
-        position.X += -1 * cos(rotation.Y * M_PI / 180.0);
-        position.Z += 1 * sin(rotation.Y * M_PI / 180.0);
-        break;
-      case KEY_KEY_D: // Tourne à droite
-        rotation.Y += 10;
-        break;
-      case KEY_KEY_Q: // Tourne à gauche
-        rotation.Y -= 10;
-        break;
+//      case KEY_KEY_Z: // Avance
+//        position.X += 1 * cos(rotation.Y * M_PI / 180.0);
+//        position.Z += -1 * sin(rotation.Y * M_PI / 180.0);
+//        break;
+//      case KEY_KEY_S: // Recule
+//        position.X += -1 * cos(rotation.Y * M_PI / 180.0);
+//        position.Z += 1 * sin(rotation.Y * M_PI / 180.0);
+//        break;
+//      case KEY_KEY_D: // Tourne à droite
+//        rotation.Y += 10;
+//        break;
+//      case KEY_KEY_Q: // Tourne à gauche
+//        rotation.Y -= 10;
+//        break;
+
     case KEY_ESCAPE:
         std::cout<< "ESCAPE PRESSED" << ESCAPE_PRESSED << std::endl;
         if(ESCAPE_PRESSED)
@@ -112,6 +117,8 @@ bool EventReceiver::mouse_handler(const SEvent &event)
 
   return false;
 }
+
+
 
 /*------------------------------------------------------------------------*\
  * EventReceiver::gui_handler                                             *
@@ -186,6 +193,28 @@ bool EventReceiver::gui_handler(const SEvent &event)
             windows->active_windows(false);
             // TODO reset cursor position
             break;
+        }
+        if(id == ClOSE_BUTTON_ENIGM_1)
+        {
+            gui->clear();
+            windows->active_windows(false);
+            camera->setPosition(camera->getPosition() + ic::vector3df(-50.0,0.0f,-50.0f));
+            // TODO reset cursor position
+            break;
+        }
+        if(id==TRY_BUTTON_1)
+        {
+            if(day == 11 && month == 6 && year == 1995 )
+            {
+                std::cout << "answered 1 OK" << std::endl;
+                gui->clear();
+                windows->active_windows(false);
+                windows->create_window(WINDOW_ANSWER_ENIGM_1);
+                windows->setAnswer_1(true);
+                camera->setPosition(camera->getPosition() + ic::vector3df(-50.0,0.0f,-50.0f));
+                std::cout << "answer 1 :" << windows->getAnswer_1() << std::endl;
+
+            }
         }
       }
       break;
@@ -272,6 +301,24 @@ bool EventReceiver::gui_handler(const SEvent &event)
           f32 value = spin->getValue();
           std::cout << "Spin Box changed: " << value << std::endl;
         }
+        if (id == DAY_SPIN)
+        {
+            ig::IGUISpinBox *spin = (ig::IGUISpinBox*)event.GUIEvent.Caller;
+            day = spin->getValue();
+            std::cout<< "day" << day << std::endl;
+        }
+        if (id == MONTH_SPIN)
+        {
+            ig::IGUISpinBox *spin = (ig::IGUISpinBox*)event.GUIEvent.Caller;
+            month = spin->getValue();
+            std::cout<< "month" << month << std::endl;
+        }
+        if (id == YEAR_SPIN)
+        {
+            ig::IGUISpinBox *spin = (ig::IGUISpinBox*)event.GUIEvent.Caller;
+            year = spin->getValue();
+            std::cout<< "year" << year << std::endl;
+        }
       }
       break;
       //gestion des close button
@@ -338,4 +385,12 @@ void EventReceiver::set_device(irr::IrrlichtDevice *d)
 void EventReceiver::set_windows(myWindows *w)
 {
     windows = w;
+}
+
+/**************************************************************************\
+ * EventReceiver::set_camera                                                 *
+\**************************************************************************/
+void EventReceiver::set_camera(irr::scene::ICameraSceneNode* c)
+{
+    camera = c;
 }

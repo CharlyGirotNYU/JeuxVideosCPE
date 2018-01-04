@@ -18,12 +18,18 @@ myWindows::~myWindows()
 
 void myWindows::create_window_begin()
 {
+    irr::video::IVideoDriver    *driver = device->getVideoDriver();
+    const irr::core::dimension2du& screenSize = driver->getScreenSize();
+    int w = screenSize.Width;
+    int h = screenSize.Height;
+
     //    std::cout << device->dimension2D().Height; // How can we get the size of the window/device
-    ig::IGUIWindow *window_begin = gui->addWindow(ic::rect<s32>(10,10, 620,460), false, L"Welcome To Our World");
+    ig::IGUIWindow *window_begin = gui->addWindow(ic::rect<s32>(10,20, w-10,h-20), false, L"Welcome To Our World");
 
     gui->addStaticText(L"You are going to discover this worls, your goal is to ... ", ic::rect<s32>(150,20,350,200), false,false,window_begin);
     gui->addButton(ic::rect<s32>(40,74, 140,92), window_begin, UNDERSTOOD_BUTTON, L"Close Informations");
     active_window = true;
+    gui->addSpinBox(L"18.0", ic::rect<s32>(40,280, 160,298), true, window_begin, WINDOW_SPIN_BOX);
 }
 
 void myWindows::create_escape_menu()
@@ -38,30 +44,74 @@ void myWindows::create_escape_menu()
     // Une liste déroulée
     ig::IGUIListBox *lbox = gui->addListBox(ic::rect<s32>(w/2-w/3, h/2-h/3, w/2+w/3, h/2+h/3), window_escape, WINDOW_ESCAPE_LIST_BOX, true);
     lbox->setItemHeight(h/5);
-    lbox->setDrawBackground(true);
+    //lbox->setDrawBackground(true);
     lbox->addItem(L"RESUME");
     lbox->addItem(L"HELP ? NOTHING CAN HELP YOU RIGHT NOW");
     lbox->addItem(L"EXIT");
 
     active_window = true;
+    lbox->setSelected(0);
 }
 
 void myWindows::create_window_room_1()
 {
-    ig::IGUIWindow *window_begin = gui->addWindow(ic::rect<s32>(10,10, 620,460), false, L"Welcome To The Jungle . ");
+    ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(10,10, 620,460), false, L"Welcome To The Jungle . ");
 
-    gui->addStaticText(L" .. BLABLABLA you have to find THIS ... ", ic::rect<s32>(150,20,350,200), false,false,window_begin);
-    gui->addButton(ic::rect<s32>(40,74, 140,92), window_begin, UNDERSTOOD_BUTTON, L"UNDERSTOOD!");
+    gui->addStaticText(L" .. BLABLABLA you have to find THIS ... ", ic::rect<s32>(150,20,350,200), false,false,window);
+    gui->addButton(ic::rect<s32>(40,74, 140,92), window, UNDERSTOOD_BUTTON, L"UNDERSTOOD!");
     active_window = true;
 }
 
 void myWindows::create_window_room_2()
 {
-    ig::IGUIWindow *window_begin = gui->addWindow(ic::rect<s32>(10,10, 620,460), false, L"Welcome To The Club . ");
+    ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(10,10, 620,460), false, L"Welcome To The Club . ");
 
-    gui->addStaticText(L" .. BLABLABLA you have to find THIS ... ", ic::rect<s32>(150,20,350,200), false,false,window_begin);
-    gui->addButton(ic::rect<s32>(40,74, 140,92), window_begin, UNDERSTOOD_BUTTON, L"UNDERSTOOD!");
+    gui->addStaticText(L" .. BLABLABLA you have to find THIS ... ", ic::rect<s32>(150,20,350,200), false,false,window);
+    gui->addButton(ic::rect<s32>(40,74, 140,92), window, UNDERSTOOD_BUTTON, L"UNDERSTOOD!");
     active_window = true;
+}
+
+
+void myWindows::create_window_enigm_1()
+{
+    active_window = true;
+
+    irr::video::IVideoDriver    *driver = device->getVideoDriver();
+    const irr::core::dimension2du& screenSize = driver->getScreenSize();
+    int w = screenSize.Width;
+    int h = screenSize.Height;
+
+    ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(w/2-w/3, h/2-h/3, w/2+w/3, h/2+h/3), false, L"Welcome To Our World");
+
+    gui->addStaticText(L"This Box contains your next destination to find your friend back in the city. You must unlock it. To do so, please type the birth date of Maxime Di Folco", ic::rect<s32>(180,20,250,200), false,false,window);
+
+    gui->addSpinBox(L"14", ic::rect<s32>(40,200, 160,220), true, window, DAY_SPIN);
+    gui->addSpinBox(L"12", ic::rect<s32>(40,240, 160,260), true, window, MONTH_SPIN);
+    gui->addSpinBox(L"1994", ic::rect<s32>(40,280, 160,300), true, window, YEAR_SPIN);
+
+    gui->addButton(ic::rect<s32>(40,74, 140,92), window, TRY_BUTTON_1, L"TRY DATE");
+    gui->addButton(ic::rect<s32>(150,74, 250,92), window, ClOSE_BUTTON_ENIGM_1, L"Close Informations");
+}
+
+void myWindows::create_window_answer_enigm_1()
+{
+    active_window = true;
+
+    irr::video::IVideoDriver    *driver = device->getVideoDriver();
+    const irr::core::dimension2du& screenSize = driver->getScreenSize();
+    int w = screenSize.Width;
+    int h = screenSize.Height;
+
+    ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(w/2-w/3, h/2-h/3, w/2+w/3, h/2+h/3), false, L"Answer");
+
+    gui->addStaticText(L"This Box contains your next destination to find your friend back in the city. You must unlock it. To do so, please type the birth date of Maxime Di Folco", ic::rect<s32>(180,20,250,200), false,false,window);
+
+    gui->addButton(ic::rect<s32>(150,74, 250,92), window, ClOSE_BUTTON_ENIGM_1, L"Close Informations");
+}
+
+void myWindows::create_window_enigm_2()
+{
+
 }
 
 void myWindows::create_window(int win_num)
@@ -77,6 +127,18 @@ void myWindows::create_window(int win_num)
         break;
     case WINDOW_ROOM_1:
         create_window_room_1();
+        break;
+    case WINDOW_ROOM_2:
+        create_window_room_2();
+        break;
+    case WINDOW_ENIGM_1:
+        create_window_enigm_1();
+        break;
+       case WINDOW_ANSWER_ENIGM_1:
+        create_window_answer_enigm_1();
+        break;
+    case WINDOW_ENIGM_2:
+        create_window_enigm_2();
     default:
         break;
     }
@@ -158,3 +220,16 @@ void myWindows::active_windows(bool b)
 {
     active_window=b;
 }
+/** Get Answer_1 */
+bool myWindows::getAnswer_1() const
+{
+    return answer_1;
+}
+/** Set Answer_1 */
+void myWindows::setAnswer_1(bool b)
+{
+    answer_1=b;
+}
+
+
+
