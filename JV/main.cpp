@@ -136,6 +136,29 @@ static void load_cubes(is::ISceneManager* &smgr, std::vector<is::IMeshSceneNode*
 
 }
 
+static void load_paintings(is::ISceneManager* &smgr, std::vector<is::IMeshSceneNode*> &nodes, iv::ITexture *paintings[3] ,iv::IVideoDriver* &driver)
+{
+    std::vector<ic::vector3df> paintings_positions;
+    paintings_positions.push_back(ic::vector3df(-97,14,-208));
+    paintings_positions.push_back(ic::vector3df(-70,20,-236));
+    paintings_positions.push_back(ic::vector3df(28,20,-236)); //AJuster le X
+
+    for (int i =0 ; i <3 ; ++i)
+    {
+        nodes.push_back(smgr->addCubeSceneNode(3.0f,0,-1,paintings_positions[i],ic::vector3df(0,0,0),ic::vector3df(5.0,7.0,0.01)));
+        nodes[i]->setVisible(true);
+
+        nodes[i]->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+        nodes[i]->setMaterialType(irr::video::EMT_TRANSPARENT_ALPHA_CHANNEL);
+        nodes[i]->setMaterialTexture(0, paintings[i]);
+        nodes[i]->setVisible(false);
+
+    }
+
+
+
+}
+
 
 /************************\
  * Create lights for arches
@@ -238,6 +261,7 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
                   std::vector<is::IAnimatedMeshSceneNode*> &nodes_persos,
                   std::vector<is::IMeshSceneNode*> &nodes_enigmes,
                   std::vector<is::IMeshSceneNode*> &nodes_cube,
+                  std::vector<is::IMeshSceneNode*> &nodes_paintings,
                   scene::ICameraSceneNode* &camera,
                   int &visible_node_decor,
                   is::ISceneManager* &smgr,
@@ -282,6 +306,8 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
         break;
     case 2: //Decor Club
         for(auto& node : nodes_cube)
+            node->setVisible(true);
+        for(auto& node : nodes_paintings)
             node->setVisible(true);
         break;
     default:;
@@ -422,6 +448,18 @@ int main()
     load_cubes(smgr,nodes_cube, digits,driver);
 
 
+    //Load paintings for digits for enigm 2
+    std::vector<is::IMeshSceneNode*> nodes_painting;
+    iv::ITexture *paintings[3];
+    paintings[0] = driver->getTexture("data/room2/enigme_9.jpg");
+    paintings[1] = driver->getTexture("data/room2/enigme_0.png");
+    paintings[2] = driver->getTexture("data/room2/enigme_7.jpg");
+
+    load_paintings(smgr,nodes_painting, paintings,driver);
+
+
+
+
     //Create FPS Camera
     scene::ICameraSceneNode* camera_FPS =
             smgr->addCameraSceneNodeFPS(nullptr,
@@ -526,7 +564,7 @@ int main()
         }
 
         //When we change decors
-        update_scene(nodes_decors, nodes_arches, nodes_persos, nodes_enigmes, nodes_cube,
+        update_scene(nodes_decors, nodes_arches, nodes_persos, nodes_enigmes, nodes_cube, nodes_painting,
                      camera, visible_node_decor,smgr,selector, anim, windows);
 
 
