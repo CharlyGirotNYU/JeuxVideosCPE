@@ -139,23 +139,25 @@ static void load_cubes(is::ISceneManager* &smgr, std::vector<is::IMeshSceneNode*
 static void load_paintings(is::ISceneManager* &smgr, std::vector<is::IMeshSceneNode*> &nodes, iv::ITexture *paintings[3] ,iv::IVideoDriver* &driver)
 {
     std::vector<ic::vector3df> paintings_positions;
-    paintings_positions.push_back(ic::vector3df(-97,14,-208));
-    paintings_positions.push_back(ic::vector3df(-70,20,-236));
-    paintings_positions.push_back(ic::vector3df(28,20,-236)); //AJuster le X
+    paintings_positions.push_back(ic::vector3df(-106.5,20,-210));
+    paintings_positions.push_back(ic::vector3df(-70,20,-236.2));
+    paintings_positions.push_back(ic::vector3df(24.5,20,-236.5));
+    //La premiere paintings a besoin d"une rotation
+    ic::vector3df rotation = ic ::vector3df(0,90,0);
 
     for (int i =0 ; i <3 ; ++i)
     {
-        nodes.push_back(smgr->addCubeSceneNode(3.0f,0,-1,paintings_positions[i],ic::vector3df(0,0,0),ic::vector3df(5.0,7.0,0.01)));
+        nodes.push_back(smgr->addCubeSceneNode(3.0f,0,-1,paintings_positions[i],rotation,ic::vector3df(5.0,7.0,0.01)));
         nodes[i]->setVisible(true);
 
         nodes[i]->setMaterialFlag(irr::video::EMF_LIGHTING, false);
         nodes[i]->setMaterialType(irr::video::EMT_TRANSPARENT_ALPHA_CHANNEL);
         nodes[i]->setMaterialTexture(0, paintings[i]);
         nodes[i]->setVisible(false);
+        //On met la rotation pour les 2 autres paintings
+        rotation = ic::vector3df(0,0,0);
 
     }
-
-
 
 }
 
