@@ -146,6 +146,31 @@ static void load_cubes(is::ISceneManager* &smgr, std::vector<is::IMeshSceneNode*
     }
 }
 
+static void load_paintings(is::ISceneManager* &smgr, std::vector<is::IMeshSceneNode*> &nodes, iv::ITexture *paintings[3] ,iv::IVideoDriver* &driver)
+{
+    std::vector<ic::vector3df> paintings_positions;
+    paintings_positions.push_back(ic::vector3df(-106.5,20,-210));
+    paintings_positions.push_back(ic::vector3df(-70,20,-236.2));
+    paintings_positions.push_back(ic::vector3df(24.5,20,-236.5));
+    //La premiere paintings a besoin d"une rotation
+    ic::vector3df rotation = ic ::vector3df(0,90,0);
+
+    for (int i =0 ; i <3 ; ++i)
+    {
+        nodes.push_back(smgr->addCubeSceneNode(3.0f,0,-1,paintings_positions[i],rotation,ic::vector3df(5.0,7.0,0.01)));
+        nodes[i]->setVisible(true);
+
+        nodes[i]->setMaterialFlag(irr::video::EMF_LIGHTING, false);
+        nodes[i]->setMaterialType(irr::video::EMT_TRANSPARENT_ALPHA_CHANNEL);
+        nodes[i]->setMaterialTexture(0, paintings[i]);
+        nodes[i]->setVisible(false);
+        //On met la rotation pour les 2 autres paintings
+        rotation = ic::vector3df(0,0,0);
+
+    }
+
+}
+
 
 /************************\
  * Create lights for arches
@@ -248,6 +273,7 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
                   std::vector<is::IAnimatedMeshSceneNode*> &nodes_persos,
                   std::vector<is::IMeshSceneNode*> &nodes_enigmes,
                   std::vector<is::IMeshSceneNode*> &nodes_cube,
+                  std::vector<is::IMeshSceneNode*> &nodes_paintings,
                   scene::ICameraSceneNode* &camera,
                   int &visible_node_decor,
                   is::ISceneManager* &smgr,
@@ -312,6 +338,10 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
         if(!windows->getAnswer_2()) nodes_arches[2]->setVisible(false);
         for(auto& node : nodes_cube)
             node->setVisible(true);
+
+        for(auto& node : nodes_paintings)
+            node->setVisible(true);
+
         if(receiver.get_active_digit()[0] == solution[0] &&
                 receiver.get_active_digit()[1] == solution[1] &&
                 receiver.get_active_digit()[2] == solution[2] &&
@@ -321,6 +351,7 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
             nodes_arches[2]->setVisible(true);
             windows->create_window(WINDOW_ANSWER_ENIGM_2);// On ne doit le faire qu'une fois ...
         }
+
         break;
     }
 
@@ -430,6 +461,18 @@ int main()
     digits.push_back (driver->getTexture("data/digits/8.png"));
     digits.push_back (driver->getTexture("data/digits/9.png"));
     load_cubes(smgr,nodes_cube, digits,driver);
+
+
+    //Load paintings for digits for enigm 2
+    std::vector<is::IMeshSceneNode*> nodes_painting;
+    iv::ITexture *paintings[3];
+    paintings[0] = driver->getTexture("data/room2/enigme_9.jpg");
+    paintings[1] = driver->getTexture("data/room2/enigme_0.png");
+    paintings[2] = driver->getTexture("data/room2/enigme_7.jpg");
+
+    load_paintings(smgr,nodes_painting, paintings,driver);
+
+
 
 
     //Create FPS Camera
@@ -565,8 +608,10 @@ int main()
         }
 
         //When we change decors
-        update_scene(nodes_decors, nodes_arches, nodes_persos, nodes_enigmes, nodes_cube,
+
+        update_scene(nodes_decors, nodes_arches, nodes_persos, nodes_enigmes, nodes_cube,  nodes_painting,
                      camera, visible_node_decor,smgr,selector, anim, windows,receiver);
+
 
 
         //std::cout << "Camera position : " << camera->getPosition().X << " " << camera->getPosition().Y << " " << camera->getPosition().Z << std::endl;
