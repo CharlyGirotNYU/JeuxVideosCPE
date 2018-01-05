@@ -8,6 +8,7 @@ enum
     WINDOW_ESCAPE_LIST_BOX, //Escape Liste déroulée "Menu"
     UNDERSTOOD_BUTTON, //Allow also to close an information window
     ClOSE_BUTTON_ENIGM_1,
+    ClOSE_BUTTON_ENIGM_2,
 
     WINDOW_VALUE,
     WINDOW_BUTTON,
@@ -35,6 +36,7 @@ enum
     WINDOW_ENIGM_1,
     WINDOW_ANSWER_ENIGM_1,
     WINDOW_ENIGM_2,
+    WINDOW_ANSWER_ENIGM_2,
 
     //ENIGM 1 : BIRTH DATE
     TRY_BUTTON_1,

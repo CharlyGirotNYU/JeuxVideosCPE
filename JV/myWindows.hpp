@@ -35,6 +35,10 @@ public:
     bool getAnswer_1() const;
     /** Set Answer_1 */
     void setAnswer_1(bool b);
+    /** Get Answer 2 */
+    bool getAnswer_2() const;
+    /** Set Answer 2*/
+    void setAnswer_2(bool b);
 //private slots:
 
     /** Quit the application */
@@ -53,6 +57,8 @@ private:
 
      /** Answer 1 is OK ? */
      bool answer_1=false;
+
+     bool answer_2=false;
 
 
 
@@ -73,6 +79,8 @@ private:
     void create_window_answer_enigm_1();
     /** Engim window 2 : Club */
     void create_window_enigm_2();
+    /** ANswer enigm window 2 : Jungle */
+    void create_window_answer_enigm_2();
 
 
 

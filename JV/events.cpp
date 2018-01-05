@@ -97,19 +97,40 @@ bool EventReceiver::mouse_handler(const SEvent &event)
     case EMIE_LMOUSE_LEFT_UP:
       button_pressed = false;
       break;
-    case EMIE_MOUSE_MOVED:
-      if (button_pressed)
-      {
-        ic::vector3df rotation = node->getRotation();
-        rotation.Y -= (event.MouseInput.X - old_x);
-        old_x = event.MouseInput.X;
-        old_y = event.MouseInput.Y;
-        node->setRotation(rotation);
-      }
-      break;
+//    case EMIE_MOUSE_MOVED:
+//      if (button_pressed)
+//      {
+//        ic::vector3df rotation = node->getRotation();
+//        rotation.Y -= (event.MouseInput.X - old_x);
+//        old_x = event.MouseInput.X;
+//        old_y = event.MouseInput.Y;
+//        node->setRotation(rotation);
+//      }
+//      break;
     case EMIE_MOUSE_WHEEL:
-      current_texture = (current_texture + 1) % textures.size();
-      node->setMaterialTexture(0, textures[current_texture]);
+
+      switch(active_digit)
+      {
+      case 0:
+          digit_0 = (digit_0 + 1) % textures_digits.size();
+          node_digits[0]->setMaterialTexture(0, textures_digits[digit_0]);
+          break;
+      case 1:
+          digit_1 = (digit_1 + 1) % textures_digits.size();
+          node_digits[1]->setMaterialTexture(0, textures_digits[digit_1]);
+          break;
+      case 2:
+          digit_2 = (digit_2 + 1) % textures_digits.size();
+          node_digits[2]->setMaterialTexture(0, textures_digits[digit_2]);
+          break;
+      default:;
+
+      }
+
+      //current_texture = (current_texture + 1) % textures_digits.size();
+      //node->setMaterialTexture(0, textures[current_texture]);
+      //node_digits->setMaterialTexture(0, textures_digits[current_texture]);
+      //std::cout << "current texture " << current_texture << std::endl;
       break;
     default:
       ;
@@ -202,6 +223,7 @@ bool EventReceiver::gui_handler(const SEvent &event)
             // TODO reset cursor position
             break;
         }
+
         if(id==TRY_BUTTON_1)
         {
             if(day == 11 && month == 6 && year == 1995 )
@@ -393,4 +415,38 @@ void EventReceiver::set_windows(myWindows *w)
 void EventReceiver::set_camera(irr::scene::ICameraSceneNode* c)
 {
     camera = c;
+}
+
+
+void EventReceiver::set_node_digits(std::vector<irr::scene::IMeshSceneNode*> n)
+{
+    node_digits = n;
+}
+
+/**************************************************************************\
+ * EventReceiver::is_mouse_pressed                                        *
+\**************************************************************************/
+bool EventReceiver::is_mouse_pressed(int &x, int &y)
+{
+  if (button_pressed)
+  {
+    x = old_x;
+    y = old_y;
+    return true;
+  }
+  return false;
+}
+
+void EventReceiver::set_active_digit(int i)
+{
+    active_digit = i;
+}
+
+const std::vector<int> EventReceiver::get_active_digit() const
+{
+    std::vector<int> v;
+    v.push_back(digit_0);
+    v.push_back(digit_1);
+    v.push_back(digit_2);
+    return v;
 }
