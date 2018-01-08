@@ -81,6 +81,8 @@ private:
     void create_window_enigm_2();
     /** ANswer enigm window 2 : Jungle */
     void create_window_answer_enigm_2();
+    /** Enigm final city */
+    void create_window_enigm_final();
 
 
 

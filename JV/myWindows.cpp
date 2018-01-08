@@ -236,6 +236,37 @@ void myWindows::create_window_answer_enigm_2()
     active_window = true;
 }
 
+void myWindows::create_window_enigm_final()
+{
+    irr::video::IVideoDriver    *driver = device->getVideoDriver();
+    const irr::core::dimension2du& screenSize = driver->getScreenSize();
+    int w = screenSize.Width;
+    int h = screenSize.Height;
+    int x1 = 10;
+    int x2 = w-10;
+    int y1 = 10;
+    int y2 = h-10;
+
+
+    ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Enigme Finale");
+
+    irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Tu as réussi à atteindre la dernière enigme ! Mais pour échapper de ce monde magique tu vas de voir utiliser toutes tes méninges.",
+                                                         ic::rect<s32>(10,50,x2-50,y2-200), false,false,window);
+
+    //TODO : passer la font en variable globale (on utilise tout le temps la même)
+    irr::gui::IGUIFont *font = gui->getFont("data/font_a/myfont.xml");  // chargement de la police
+    texte->setOverrideFont(font);
+
+    gui->addSpinBox(L"1994", ic::rect<s32>(40,280, 160,300), true, window, YEAR_SPIN);
+
+    gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, TRY_BUTTON_FINAL, L"Essai");
+    gui->addButton(ic::rect<s32>(x1+160,y2-60, x1+160+150,y2-20), window, CLOSE_BUTTON_ENIGM_FINAL, L"Retournez dans la ville");
+
+    active_window = true;
+}
+
+
+
 void myWindows::create_window(int win_num)
 {
     std::cout << win_num << std::endl ;

@@ -71,6 +71,8 @@ static void load_persos(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
     nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[0]->setMD2Animation(is::EMAT_STAND);
     nodes[0]->setMaterialTexture(0, driver->getTexture("data/base/blue_texture.pcx"));
+    nodes[0]->setRotation(ic::vector3df(0.0,-90.0,0.0));
+
 
 }
 
@@ -104,6 +106,14 @@ static void load_arches(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
     //nodeS[0]->setScale(ic::vector3df(1.0f)); //Not working
     nodes[2]->setPosition(ic::vector3df(170.0f,30.0f,20));
     nodes[2]->setVisible(false);
+
+    nodes.push_back(smgr->addMeshSceneNode(meshes[0]->getMesh(0), nullptr, -1));
+    nodes[3]->setMaterialFlag(iv::EMF_LIGHTING, false);
+    nodes[3]->setScale(ic::vector3df(30.0f));
+    nodes[3]->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
+    //nodeS[0]->setScale(ic::vector3df(1.0f)); //Not working
+    nodes[3]->setPosition(ic::vector3df(1166.7,-24.9925,958.817));
+    nodes[3]->setVisible(false);
 }
 
 
@@ -205,6 +215,8 @@ void create_lights(is::ISceneManager* &smgr,std::vector<is::IMeshSceneNode*> &no
     }
 }
 
+
+
 /************************\
  * Update the triangle selector for collision
  * *************************/
@@ -246,15 +258,75 @@ void update_arches(std::vector<is::IMeshSceneNode*> &nodes_arches, int visible_n
 /************************\
  * update position of perso relative to camera
  * ***********************/
-void update_perso_1(scene::ICameraSceneNode* camera,is::IAnimatedMeshSceneNode* node_perso)
+void update_perso_1(scene::ICameraSceneNode* camera,is::IAnimatedMeshSceneNode* node_perso,EventReceiver &receiver)
 {
-    ic::vector3df cam_pos = camera->getPosition();
+    /* ic::vector3df cam_pos = camera->getPosition();
     ic::vector3df cam_rot = camera->getRotation();
-    ic::vector3df decalage = ic::vector3df(0.0f,0.0f,-50.0f);
+    ic::vector3df decalage = ic::vector3df(0.0f,0.0f,-40.0f);
     node_perso->setRotation(ic::vector3df(.0f,
                                           cam_rot.Y-90,
                                           0.0f));
-    node_perso->setPosition(cam_pos-decalage);
+    node_perso->setPosition(cam_pos-decalage);*/
+
+
+    ic::vector3df position; ic::vector3df rotation;
+
+
+    position = node_perso->getPosition();
+    rotation = node_perso->getRotation();
+
+
+
+    //Avance
+    if(receiver.IsKeyDown(KEY_UP))
+    {
+        position.X += 4 * cos(rotation.Y * M_PI / 180.0) ;
+        position.Z += -4 * sin(rotation.Y * M_PI / 180.0);
+        receiver.set_isMoving(true);
+    }
+    //Recule
+    if(receiver.IsKeyDown(KEY_DOWN))
+    {
+        position.X += -4 * cos(rotation.Y * M_PI / 180.0) ;
+        position.Z += 4 * sin(rotation.Y * M_PI / 180.0) ;
+
+        receiver.set_isMoving(true);
+    }
+    //Droite
+    if(receiver.IsKeyDown(KEY_RIGHT))
+        rotation.Y += 5 ;
+    receiver.set_isMoving(true);
+    //Gauche
+    if(receiver.IsKeyDown(KEY_LEFT))
+        rotation.Y -= 5 ;
+    receiver.set_isMoving(true);
+
+
+
+    if(camera != nullptr)
+        camera->setTarget(node_perso->getPosition());
+    node_perso->setPosition(position);
+    node_perso->setRotation(rotation);
+
+
+    if(receiver.IsKeyDown(KEY_UP) == false && receiver.IsKeyDown(KEY_DOWN)==false && receiver.IsKeyDown(KEY_RIGHT)==false && receiver.IsKeyDown(KEY_LEFT)==false)
+    {
+        receiver.set_isMoving(false);
+    }
+
+
+    if(receiver.get_isMoving() == true  && receiver.get_animrun() == false)    //Si le pointeur vers le mesh est ok , si l'on bouge et si l'on n'a pas encore mis à jour l'animation ...
+    {
+        node_perso->setMD2Animation(is::EMAT_RUN);//on passe à l'animation "courir"
+        receiver.set_animrun(true);//on declare que l'animation courir est bien en trainde se derouler
+    }
+    if( receiver.get_isMoving() == false && receiver.get_animrun() ==true)    //Si le pointeur vers le mesh est ok , si l'on ne bouge plus et si l'on n'a pas encore mis à jour l'animation ...
+    {
+        node_perso->setMD2Animation(is::EMAT_STAND);//on passe à l'animation "rester en place"
+        receiver.set_animrun(false);//et on declare que l'animation courir ne se deroule plus , du coup
+    }
+
+
 }
 
 /************************\
@@ -280,7 +352,7 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
                   scene::ITriangleSelector* &selector,
                   scene::ISceneNodeAnimator* &anim,
                   myWindows* &windows,
-                  const EventReceiver receiver)
+                  EventReceiver &receiver)
 {
 
     ic::vector3df position = camera->getPosition();
@@ -301,7 +373,9 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     switch(visible_node_decor)
     {
     case 0: // Decor ville
+       // std::cout << position.X << " " <<position.Y<<" "<< position.Z <<  std::endl;
         if(!windows->getAnswer_2()) nodes_arches[0]->setVisible(true);
+        else nodes_arches[3]->setVisible(true);
         nodes_arches[1]->setVisible(false);
         nodes_arches[2]->setVisible(false);
         nodes_enigmes[0]->setVisible(false);
@@ -404,7 +478,8 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
         }
     }
     if(colli) update_arches(nodes_arches,visible_node_decor);
-    update_perso_1(camera,nodes_persos[0]);
+    update_perso_1(camera,nodes_persos[0],receiver);
+
 }
 
 
@@ -473,17 +548,26 @@ int main()
     load_paintings(smgr,nodes_painting, paintings,driver);
 
 
+    // caméras
+    scene::ICameraSceneNode *camera_FPS;
+    nodes_persos[0]->setPosition(ic::vector3df(0,-10,0));
+    ic::vector3df position_perso = nodes_persos[0]->getPosition();
+    position_perso.X -=70;
+    position_perso.Y +=30;
 
+
+    camera_FPS = smgr->addCameraSceneNode(nodes_persos[0],position_perso);
+    receiver.set_camera(camera_FPS);
 
     //Create FPS Camera
-    scene::ICameraSceneNode* camera_FPS =
-            smgr->addCameraSceneNodeFPS(nullptr,
-                                        100,         // Vitesse de rotation
-                                        .2,          // Vitesse de déplacement
-                                        -1,          // Identifiant
-                                        nullptr, 0,  // Table de changement de touches
-                                        true,        // Pas de possibilité de voler
-                                        10);          // Vitesse saut
+    //    scene::ICameraSceneNode* camera_FPS =
+    //            smgr->addCameraSceneNodeFPS(nullptr,
+    //                                        100,         // Vitesse de rotation
+    //                                        .2,          // Vitesse de déplacement
+    //                                        -1,          // Identifiant
+    //                                        nullptr, 0,  // Table de changement de touches
+    //                                        true,        // Pas de possibilité de voler
+    //                                        10);          // Vitesse saut
 
 
     //Création GUI Caméra
@@ -540,6 +624,7 @@ int main()
     receiver.set_windows(windows);
     receiver.set_node_digits(nodes_cube); //default
     receiver.set_textures_digits(digits);
+    receiver.init_boolean_animation();
 
     windows->create_window(WINDOW_BEGIN);
 
@@ -611,7 +696,6 @@ int main()
 
         update_scene(nodes_decors, nodes_arches, nodes_persos, nodes_enigmes, nodes_cube,  nodes_painting,
                      camera, visible_node_decor,smgr,selector, anim, windows,receiver);
-
 
 
         //std::cout << "Camera position : " << camera->getPosition().X << " " << camera->getPosition().Y << " " << camera->getPosition().Z << std::endl;
