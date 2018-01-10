@@ -43,6 +43,10 @@ enum
     DAY_SPIN,
     MONTH_SPIN,
     YEAR_SPIN,
+
+    //ENIGM FINAL
+    TRY_BUTTON_FINAL,
+    CLOSE_BUTTON_ENIGM_FINAL,
 };
 
 #endif
