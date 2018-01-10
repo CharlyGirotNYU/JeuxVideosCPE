@@ -71,6 +71,8 @@ static void load_persos(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
     nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[0]->setMD2Animation(is::EMAT_STAND);
     nodes[0]->setMaterialTexture(0, driver->getTexture("data/base/blue_texture.pcx"));
+
+    nodes[0]->setPosition(ic::vector3df(nodes[0]->getPosition().X,-40.0f,nodes[0]->getPosition().Z));
     nodes[0]->setRotation(ic::vector3df(0.0,-90.0,0.0));
 
 
@@ -304,7 +306,11 @@ void update_perso_1(scene::ICameraSceneNode* camera,is::IAnimatedMeshSceneNode* 
 
 
     if(camera != nullptr)
+    {
+//        camera->setPosition(ic::vector3df(node_perso->getPosition().X,50.0f,camera->getPosition().Z));
+        //camera->setPosition(node_perso->getPosition()+ic::vector3df(-70.0f,50.0f,0.0f));
         camera->setTarget(node_perso->getPosition());
+    }
     node_perso->setPosition(position);
     node_perso->setRotation(rotation);
 
@@ -330,14 +336,6 @@ void update_perso_1(scene::ICameraSceneNode* camera,is::IAnimatedMeshSceneNode* 
 }
 
 /************************\
- * Update cam position quand décor change
- * *********************/
-void update_cam_position(scene::ICameraSceneNode* &camera)
-{
-    camera->setPosition(ic::vector3df(0,0,0));
-}
-
-/************************\
  * update all elements of the scene
  * **********************/
 void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
@@ -355,7 +353,7 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
                   EventReceiver &receiver)
 {
 
-    ic::vector3df position = camera->getPosition();
+    ic::vector3df position = nodes_persos[0]->getPosition();
 
 
     //Afficher le décor dans lequel on se trouve
@@ -409,6 +407,7 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     case 2: //Decor Club
         nodes_arches[0]->setVisible(false);
         nodes_arches[1]->setVisible(false);
+        nodes_persos[0]->setScale(ic::vector3df(0.5f,0.5f,0.5f));
         if(!windows->getAnswer_2()) nodes_arches[2]->setVisible(false);
         for(auto& node : nodes_cube)
             node->setVisible(true);
@@ -435,33 +434,24 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     {
         //Changement couleur fonciton de la distance a l'arche
 
-        //Entrée dans une salle si on passe dans l'arche
-
-        //Si on est sur l'arche et que ce décor n'est pas encore activé (on désactive l'arche une fois qu'on est dedans)
-        //        int idx_decor_suivant;
-        //        if(i!=2)
-        //            idx_decor_suivant = i+1;
-        //        else
-        //            idx_decor_suivant=0;
         if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 30.0f && !nodes_decors[(i+1)%3]->isVisible() && nodes_arches[i]->isVisible())
         {
 
             colli = true;
-            //            std::cout << position.X << " " <<position.Y<<" "<< position.Z <<  std::endl;
             if(i != 2)
                 visible_node_decor = i+1;
             else
                 visible_node_decor = 0;
 
             update_selector(smgr, nodes_decors,selector,visible_node_decor);
-            camera->removeAnimator(anim);
+            nodes_persos[0]->removeAnimator(anim);
             anim = smgr->createCollisionResponseAnimator(selector,
-                                                         camera,  // Le noeud que l'on veut gérer
+                                                         nodes_persos[0],  // Le noeud que l'on veut gérer
                                                          ic::vector3df(10,10,10), // "rayons" de la caméra
                                                          ic::vector3df(0, -100, 0),  // gravité
                                                          ic::vector3df(0,10,0));  // décalage du centre
-            camera->addAnimator(anim);
-            update_cam_position(camera);
+            nodes_persos[0]->addAnimator(anim);
+            nodes_persos[0]->setPosition(ic::vector3df(0.0f,0.0f,0.0f));
 
             switch(i)
             {
@@ -550,13 +540,14 @@ int main()
 
     // caméras
     scene::ICameraSceneNode *camera_FPS;
-    nodes_persos[0]->setPosition(ic::vector3df(0,-10,0));
+    nodes_persos[0]->setPosition(ic::vector3df(0,-30,0));
     ic::vector3df position_perso = nodes_persos[0]->getPosition();
     position_perso.X -=70;
-    position_perso.Y +=30;
+    position_perso.Y +=100;
 
 
-    camera_FPS = smgr->addCameraSceneNode(nodes_persos[0],position_perso);
+    camera_FPS = smgr->addCameraSceneNode(nodes_persos[0],position_perso-ic::vector3df(0.0f,20.0f,0.0f));
+    camera_FPS->setTarget(position_perso);
     receiver.set_camera(camera_FPS);
 
     //Create FPS Camera
@@ -586,11 +577,12 @@ int main()
     // Création animateur collisionneur initiale avec le décor de départ
     scene::ISceneNodeAnimator *anim;
     anim = smgr->createCollisionResponseAnimator(selector,
-                                                 camera_FPS,  // Le noeud que l'on veut gérer
-                                                 ic::vector3df(1,15,10), // "rayons" de la caméra
-                                                 ic::vector3df(0, -100, 0),  // gravité
-                                                 ic::vector3df(0,10,0));  // décalage du centre
-    camera_FPS->addAnimator(anim);
+                                                 nodes_persos[0],  // Le noeud que l'on veut gérer
+                                                 ic::vector3df(15,15,15), // "rayons" de la caméra
+                                                 ic::vector3df(0, -10, 0),  // gravité
+                                                 ic::vector3df(0,0,0));  // décalage du centre
+
+    nodes_persos[0]->addAnimator(anim);
 
     //Création Lumière
     f32 const lightRadius = 6000.f; // Enough to reach the far side of each 'zone'

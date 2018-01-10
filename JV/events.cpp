@@ -221,15 +221,13 @@ bool EventReceiver::gui_handler(const SEvent &event)
         {
             gui->clear();
             windows->active_windows(false);
-            // TODO reset cursor position
             break;
         }
         if(id == ClOSE_BUTTON_ENIGM_1)
         {
             gui->clear();
             windows->active_windows(false);
-            camera->setPosition(camera->getPosition() + ic::vector3df(-50.0,0.0f,-50.0f));
-            // TODO reset cursor position
+            node->setPosition(node->getPosition() + ic::vector3df(-50.0,0.0f,-50.0f));
             break;
         }
 
@@ -237,14 +235,11 @@ bool EventReceiver::gui_handler(const SEvent &event)
         {
             if(day == 11 && month == 6 && year == 1995 )
             {
-                std::cout << "answered 1 OK" << std::endl;
                 gui->clear();
                 windows->active_windows(false);
                 windows->create_window(WINDOW_ANSWER_ENIGM_1);
                 windows->setAnswer_1(true);
-                camera->setPosition(camera->getPosition() + ic::vector3df(-50.0,0.0f,-50.0f));
-                std::cout << "answer 1 :" << windows->getAnswer_1() << std::endl;
-
+                node->setPosition(node->getPosition() + ic::vector3df(-50.0,0.0f,-50.0f));
             }
         }
     }
