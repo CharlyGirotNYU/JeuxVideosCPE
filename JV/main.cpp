@@ -21,7 +21,7 @@ const int DIGITS_ID = 42;
 
 
 /************************\
- * Load scenes
+  Load scenes
 /************************/
 static void load_scenes(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*> &meshes,
                         std::vector<is::IMeshSceneNode*> &nodes, iv::IVideoDriver* &driver)
@@ -113,7 +113,6 @@ static void load_arches(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
     nodes[3]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[3]->setScale(ic::vector3df(30.0f));
     nodes[3]->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
-    //nodeS[0]->setScale(ic::vector3df(1.0f)); //Not working
     nodes[3]->setPosition(ic::vector3df(1166.7,-24.9925,958.817));
     nodes[3]->setVisible(false);
 }
@@ -307,7 +306,7 @@ void update_perso_1(scene::ICameraSceneNode* camera,is::IAnimatedMeshSceneNode* 
 
     if(camera != nullptr)
     {
-//        camera->setPosition(ic::vector3df(node_perso->getPosition().X,50.0f,camera->getPosition().Z));
+        //        camera->setPosition(ic::vector3df(node_perso->getPosition().X,50.0f,camera->getPosition().Z));
         //camera->setPosition(node_perso->getPosition()+ic::vector3df(-70.0f,50.0f,0.0f));
         camera->setTarget(node_perso->getPosition());
     }
@@ -372,16 +371,31 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     {
     case 0: // Decor ville
 
-        if(!windows->getAnswer_2()) nodes_arches[0]->setVisible(true);
-       // else nodes_arches[3]->setVisible(true);
-        nodes_arches[3]->setVisible(true);
+        if(!windows->getAnswer_2())
+            nodes_arches[0]->setVisible(true);
+        else
+            nodes_arches[3]->setVisible(true);
+        if(windows->getAnswer_2() && windows->getBack_0_show())
+        {
+            windows->create_window(WINDOW_BACK_ROOM_0);
+            windows->setBack_0(false);
+        }
+
+
         nodes_arches[1]->setVisible(false);
         nodes_arches[2]->setVisible(false);
         nodes_enigmes[0]->setVisible(false);
+
         for(auto& node : nodes_cube)
             node->setVisible(false);
+        for(auto& node : nodes_paintings)
+            node->setVisible(false);
 
-
+        if(windows->getAnswer_Final())
+        {
+            std::cout << "Final " << windows->getAnswer_Final()<<std::endl;
+            windows->create_window(END_GAME);
+        }
         break;
 
     case 1: //Decor island
@@ -437,9 +451,9 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     {
         //Changement couleur fonciton de la distance a l'arche
 
-        if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 30.0f && !nodes_decors[(i+1)%3]->isVisible() && nodes_arches[i]->isVisible())
+        if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 25.0f && !nodes_decors[(i+1)%3]->isVisible() && nodes_arches[i]->isVisible())
         {
-
+            std::cout<<"Distance"<<position.getDistanceFrom(nodes_arches[i]->getPosition());
             colli = true;
             if(i < 2)
                 visible_node_decor = i+1;
@@ -450,9 +464,9 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
             nodes_persos[0]->removeAnimator(anim);
             anim = smgr->createCollisionResponseAnimator(selector,
                                                          nodes_persos[0],  // Le noeud que l'on veut gérer
-                                                         ic::vector3df(10,10,10), // "rayons" de la caméra
-                                                         ic::vector3df(0, -100, 0),  // gravité
-                                                         ic::vector3df(0,10,0));  // décalage du centre
+                    ic::vector3df(10,10,10), // "rayons" de la caméra
+                    ic::vector3df(0, -100, 0),  // gravité
+                    ic::vector3df(0,10,0));  // décalage du centre
             nodes_persos[0]->addAnimator(anim);
             nodes_persos[0]->setPosition(ic::vector3df(0.0f,0.0f,0.0f));
 
@@ -467,6 +481,7 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
             case 2:
                 windows->create_window(WINDOW_BACK_ROOM_0);
             case 3:
+                    std::cout << " position : " <<position.X << " " << position.Y << " " << position.Z << std::endl;
                 windows->create_window(WINDOW_ENIGM_FINAL);
             default:
                 break;
@@ -585,9 +600,9 @@ int main()
     scene::ISceneNodeAnimator *anim;
     anim = smgr->createCollisionResponseAnimator(selector,
                                                  nodes_persos[0],  // Le noeud que l'on veut gérer
-                                                 ic::vector3df(15,15,15), // "rayons" de la caméra
-                                                 ic::vector3df(0, -10, 0),  // gravité
-                                                 ic::vector3df(0,0,0));  // décalage du centre
+            ic::vector3df(15,15,15), // "rayons" de la caméra
+            ic::vector3df(0, -10, 0),  // gravité
+            ic::vector3df(0,0,0));  // décalage du centre
 
     nodes_persos[0]->addAnimator(anim);
 
@@ -613,9 +628,6 @@ int main()
     driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, true);
 
 
-
-
-
     receiver.set_node(nodes_persos[0]);
     receiver.set_gui(gui);
     myWindows * windows = new myWindows(gui,device);
@@ -626,7 +638,6 @@ int main()
     receiver.init_boolean_animation();
 
     windows->create_window(WINDOW_BEGIN);
-
 
 
     scene::ICameraSceneNode* camera;

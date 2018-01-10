@@ -49,6 +49,9 @@ enum
     //ENIGM FINAL
     TRY_BUTTON_FINAL,
     CLOSE_BUTTON_ENIGM_FINAL,
+    FINAL_SPIN,
+    CLOSE_GAME,
+    END_GAME,
 };
 
 #endif

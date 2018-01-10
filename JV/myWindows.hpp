@@ -1,4 +1,4 @@
-#pragma once
+    #pragma once
 
 #ifndef MY_WINDOWS_HPP
 #define MY_WINDOWS_HPP
@@ -35,10 +35,29 @@ public:
     bool getAnswer_1() const;
     /** Set Answer_1 */
     void setAnswer_1(bool b);
+
+    /** Set Answer_2 */
+    void setAnswer_2(bool b);
     /** Get Answer 2 */
     bool getAnswer_2() const;
-    /** Set Answer 2*/
-    void setAnswer_2(bool b);
+
+    /** Get Answer_Final */
+    bool getAnswer_Final() const;
+
+    /** Set Answer_Final */
+    void  setAnswer_Final(bool b);
+
+    /** Get the bool which show or not the window WINDOW_BACK_ROOM_0 */
+    bool getBack_0_show() const;
+    /** Set the bool which show or not the window WINDOW_BACK_ROOM_0 */
+    void setBack_0(bool b);
+
+    /** Initailisation of x1,x2, y1 et y2*/
+    void init_window_parameters();
+
+
+
+
 //private slots:
 
     /** Quit the application */
@@ -55,10 +74,23 @@ private:
     /** Irrlicht device */
      irr::IrrlichtDevice *device;
 
+     /** Font for the windows */
+     irr::gui::IGUIFont *font;
+
+     /** Parameters for the windows */
+     int x1 = 0;
+     int x2 = 0;
+     int y1 = 0;
+     int y2 = 0;
+
      /** Answer 1 is OK ? */
      bool answer_1=false;
 
      bool answer_2=false;
+     /** End of the game */
+     bool win_game=false;
+     /** SHow or not the window WINDOW_BACK_ROOM_0 */
+     bool back_0=true;
 
 
 
@@ -85,6 +117,8 @@ private:
     void create_window_enigm_final();
     /** Window when you return to the city */
     void create_windows_back_room_0();
+    /** Last window before the end of the game */
+    void create_window_enigm_final_solution();
 
 
 

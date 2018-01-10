@@ -20,7 +20,7 @@ bool ESCAPE_PRESSED = false;
 int day=0;
 int month=0;
 int year=0;
-
+int final_solution =0;
 
 /**************************************************************************\
  * EventReceiver::EventReceiver                                           *
@@ -242,6 +242,24 @@ bool EventReceiver::gui_handler(const SEvent &event)
                 node->setPosition(node->getPosition() + ic::vector3df(-50.0,0.0f,-50.0f));
             }
         }
+        if(id == CLOSE_BUTTON_ENIGM_FINAL)
+        {
+            gui->clear();
+            windows->active_windows(false);
+            break;
+        }
+        if(id == TRY_BUTTON_FINAL)
+        {
+            if( final_solution == 200)
+            {
+                gui->clear();
+                windows->active_windows(false);
+                windows->create_window(END_GAME);
+                windows->setAnswer_Final(true);
+            }
+        }
+        if(id == CLOSE_GAME)
+            exit(0);
     }
         break;
         // gestion des cases à cocher
@@ -345,6 +363,12 @@ bool EventReceiver::gui_handler(const SEvent &event)
             year = spin->getValue();
             std::cout<< "year" << year << std::endl;
         }
+        if(id == FINAL_SPIN)
+        {
+            ig::IGUISpinBox *spin = (ig::IGUISpinBox*)event.GUIEvent.Caller;
+            final_solution = spin->getValue();
+        }
+
     }
         break;
         //gestion des close button

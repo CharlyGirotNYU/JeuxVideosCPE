@@ -1,0 +1,23 @@
+
+
+Position de départ CITY	
+
+Jungle changez la position de départ 
+
+DIre au début de faire gaffe de pas tomber
+
+Apres reoslution enigme 1 replacer le bonhomme
+
+WInodws.cpp mettre le font en parametre general
+
+
+Position apres derneire enigme au milieu alors que pas bouger 
+Et cliquant sur Get back city
+
+Affichage de 2 fenetres quand on revient au decor 0
+
+
+Idee simple 
+Temps à mettre pour gagner
+
+
