@@ -1,4 +1,4 @@
-    #pragma once
+#pragma once
 
 #ifndef MY_WINDOWS_HPP
 #define MY_WINDOWS_HPP
@@ -59,25 +59,20 @@ private:
 
     /** gui linked to the scene */
     ig::IGUIEnvironment *gui;
-
     /** Irrlicht device */
-
-     /** Answer 1 is OK ? */
-     bool answer_1=false;
-
-     bool answer_2=false;
-     /** End of the game */
-     bool win_game=false;
-     /** SHow or not the window WINDOW_BACK_ROOM_0 */
-     bool back_0=true;
-
     irr::IrrlichtDevice *device;
 
     /** Answer 1 is OK ? */
     bool answer_1=false;
 
-    /** Answer 2 is OK ? */
     bool answer_2=false;
+    /** End of the game */
+    bool win_game=false;
+    /** SHow or not the window WINDOW_BACK_ROOM_0 */
+    bool back_0=true;
+
+
+
 
     /** Store a pointer to the driver (to get screen size and be able to adapt windows size */
     irr::video::IVideoDriver    *driver;

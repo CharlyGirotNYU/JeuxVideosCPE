@@ -434,7 +434,7 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
             case 2:
                 windows->create_window(WINDOW_BACK_ROOM_0);
             case 3:
-                    std::cout << " position : " <<position.X << " " << position.Y << " " << position.Z << std::endl;
+                    //std::cout << " position : " <<position.X << " " << position.Y << " " << position.Z << std::endl;
                 windows->create_window(WINDOW_ENIGM_FINAL);
             default:
                 break;
@@ -568,8 +568,7 @@ int main()
     receiver.set_node(nodes_persos[0]);
     receiver.set_gui(gui);
     receiver.set_device(device);
-    receiver.set_
-      (windows);
+    receiver.set_windows(windows);
     receiver.set_node_digits(nodes_cube); //default
     receiver.set_textures_digits(digits);
     receiver.init_boolean_animation();
