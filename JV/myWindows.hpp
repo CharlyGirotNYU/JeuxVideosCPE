@@ -39,28 +39,41 @@ public:
     bool getAnswer_2() const;
     /** Set Answer 2*/
     void setAnswer_2(bool b);
-//private slots:
+    //private slots:
 
     /** Quit the application */
-//    void action_quit();
+    //    void action_quit();
 
 
 private:
 
-    /** Layout for the Window */
-    //    Ui::MainWindow *ui;
     /** gui linked to the scene */
     ig::IGUIEnvironment *gui;
 
     /** Irrlicht device */
-     irr::IrrlichtDevice *device;
+    irr::IrrlichtDevice *device;
 
-     /** Answer 1 is OK ? */
-     bool answer_1=false;
+    /** Answer 1 is OK ? */
+    bool answer_1=false;
 
-     bool answer_2=false;
+    /** Answer 2 is OK ? */
+    bool answer_2=false;
 
-
+    /** Store a pointer to the driver (to get screen size and be able to adapt windows size */
+    irr::video::IVideoDriver    *driver;
+    /** Size of the main Windows */
+    irr::core::dimension2du screenSize;
+    /** Width of gui window */
+    int w;
+    /** Height of gui window */
+    int h;
+    /** Corners of the created windows */
+    int x1;
+    int x2;
+    int y1;
+    int y2;
+    /** Font used for static Text in GUI windows */
+    irr::gui::IGUIFont *font;
 
     /** List of active windows */
     bool active_window;

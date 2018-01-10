@@ -11,36 +11,28 @@ namespace ic = irr::core;
 myWindows::myWindows(){}
 
 myWindows::myWindows(ig::IGUIEnvironment *g,  irr::IrrlichtDevice *d):
-    gui(g), device(d){}
+    gui(g), device(d),driver(device->getVideoDriver()),screenSize(driver->getScreenSize()),
+    w(screenSize.Width),h(screenSize.Height),x1(10),x2(w-10),y1(10),y2(h-10),font(gui->getFont("data/font_a/myfont.xml"))
+{
+
+}
 myWindows::~myWindows()
-{}
+{
+
+}
 
 
 void myWindows::create_window_begin()
 {
-    //TO DO : set ces parametres dans le .h
-    irr::video::IVideoDriver    *driver = device->getVideoDriver();
-    const irr::core::dimension2du& screenSize = driver->getScreenSize();
-    int w = screenSize.Width;
-    int h = screenSize.Height;
-    int x1 = 10;
-    int x2 = w-10;
-    int y1 = 10;
-    int y2 = h-10;
-
-
-    //    std::cout << device->dimension2D().Height; // How can we get the size of the window/device
     ig::IGUIWindow *window_begin = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Welcome To Our World");
 
     irr::gui::IGUIStaticText *texte =  gui->addStaticText(L"Vous n'auriez jamais du pénétrer notre monde. Vous en êtes maintenant le prisonnier. Laissez moi vous expliquer. Il y a bien longtemps, dans le temps du CPE antique"
-                       "une momie se retrouva prise au piège de cette ville qui de plus n'était pas très jolie, ayant perdu beaucoup de décorations sur les facades de ces batiments. "
-                       "Vous avez été appelé à l'aide pour aider MOMIE (et non pas MAMIE bien au chaud dans son canapé sous son plaid) à s'échapper. "
-                       "Pour cela il vous faudra résoudre les énigmes qui vous seront proposées par la suite. Chaque énigme vous ménéra à la salle suivante par le biais des nains téléporteurs. "
-                       "Des informations spécifiques vous seront données ultérieurement. "
-                       "Pour démarrer, veuillez trouver le nain de jardin vous permettant de vous rendre à la salle de la première énigme ", ic::rect<s32>(10,50,x2-50,y2-200), false,true,window_begin);
+                                                          "une momie se retrouva prise au piège de cette ville qui de plus n'était pas très jolie, ayant perdu beaucoup de décorations sur les facades de ces batiments. "
+                                                          "Vous avez été appelé à l'aide pour aider MOMIE (et non pas MAMIE bien au chaud dans son canapé sous son plaid) à s'échapper. "
+                                                          "Pour cela il vous faudra résoudre les énigmes qui vous seront proposées par la suite. Chaque énigme vous ménéra à la salle suivante par le biais des nains téléporteurs. "
+                                                          "Des informations spécifiques vous seront données ultérieurement. "
+                                                          "Pour démarrer, veuillez trouver le nain de jardin vous permettant de vous rendre à la salle de la première énigme ", ic::rect<s32>(10,50,x2-50,y2-200), false,true,window_begin);
 
-    //TODO : passer la font en variable globale (on utilise tout le temps la même)
-    irr::gui::IGUIFont *font = gui->getFont("data/font_a/myfont.xml");  // chargement de la police
     texte->setOverrideFont(font);                               // utilisation de la police
 
     irr::video::ITexture* command = driver->getTexture("data/info/commandes.png") ;
@@ -52,22 +44,12 @@ void myWindows::create_window_begin()
 
 void myWindows::create_escape_menu()
 {
-    //TO DO : set ces parametres dans le .h
-    irr::video::IVideoDriver    *driver = device->getVideoDriver();
-    const irr::core::dimension2du& screenSize = driver->getScreenSize();
-    int w = screenSize.Width;
-    int h = screenSize.Height;
-    int x1 = 10;
-    int x2 = w-10;
-    int y1 = 10;
-    int y2 = h-10;
 
     ig::IGUIWindow *window_escape = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"MENU ESCAPE");
 
     // Une liste déroulée
     ig::IGUIListBox *lbox = gui->addListBox(ic::rect<s32>(w/2-w/3, h/2-h/3, w/2+w/3, h/2+h/3), window_escape, WINDOW_ESCAPE_LIST_BOX, true);
     lbox->setItemHeight(h/5);
-    //lbox->setDrawBackground(true);
     lbox->addItem(L"RESUME");
     lbox->addItem(L"HELP ? NOTHING CAN HELP YOU RIGHT NOW");
     lbox->addItem(L"EXIT");
@@ -78,16 +60,6 @@ void myWindows::create_escape_menu()
 
 void myWindows::create_window_room_1()
 {
-    //TO DO : set ces parametres dans le .h
-    irr::video::IVideoDriver    *driver = device->getVideoDriver();
-    const irr::core::dimension2du& screenSize = driver->getScreenSize();
-    int w = screenSize.Width;
-    int h = screenSize.Height;
-    int x1 = 10;
-    int x2 = w-10;
-    int y1 = 10;
-    int y2 = h-10;
-
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Welcome To The Jungle . ");
 
     irr::gui::IGUIStaticText *texte = gui->addStaticText(L" Bien Joué ! Vous avez réussi à accéder à la Jungle."
@@ -99,9 +71,6 @@ void myWindows::create_window_room_1()
                                                          "Vous disposez d'un indice pour le localiser : "
                                                          , ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
 
-
-//TODO : passer la font en variable globale (on utilise tout le temps la même)
-    irr::gui::IGUIFont *font = gui->getFont("data/font_a/myfont.xml");  // chargement de la police
     texte->setOverrideFont(font);                               // utilisation de la police
 
     irr::video::ITexture* command = driver->getTexture("data/info/indice.png") ;
@@ -113,27 +82,16 @@ void myWindows::create_window_room_1()
 
 void myWindows::create_window_room_2()
 {
-    //TO DO : set ces parametres dans le .h
-    irr::video::IVideoDriver    *driver = device->getVideoDriver();
-    const irr::core::dimension2du& screenSize = driver->getScreenSize();
-    int w = screenSize.Width;
-    int h = screenSize.Height;
-    int x1 = 10;
-    int x2 = w-10;
-    int y1 = 10;
-    int y2 = h-10;
-
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Welcome To The Club . ");
 
     irr::gui::IGUIStaticText *texte = gui->addStaticText(L" Bienvenue dans le Club CPE Baila Baila Baila \n"
-                       "Vous trouverez sur les murs de ce club, une combinaison de chiffres. Assurez vous de trouver "
-                       "la bonne combinaison pour pouvoir dévérouiller votre nain de jardin de téléportation suivant \n"
-                       "Fonctionnement des Digits sur les murs : \n"
-                       "    -Sélectionnez le digit souhaité à l'aide d'un clic gauche de la souris en pointant bien précisemment le digit voulu. \n "
-                       "    -Modifiez sa valeur en utilisant la molette de votre souris.  ",
-                       ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
-    //TODO : passer la font en variable globale (on utilise tout le temps la même)
-    irr::gui::IGUIFont *font = gui->getFont("data/font_a/myfont.xml");  // chargement de la police
+                                                         "Vous trouverez sur les murs de ce club, une combinaison de chiffres. Assurez vous de trouver "
+                                                         "la bonne combinaison pour pouvoir dévérouiller votre nain de jardin de téléportation suivant \n"
+                                                         "Fonctionnement des Digits sur les murs : \n"
+                                                         "    -Sélectionnez le digit souhaité à l'aide d'un clic gauche de la souris en pointant bien précisemment le digit voulu. \n "
+                                                         "    -Modifiez sa valeur en utilisant la molette de votre souris.  ",
+                                                         ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
+
     texte->setOverrideFont(font);                               // utilisation de la police
 
     irr::video::ITexture* command = driver->getTexture("data/info/commandes_2.png") ;
@@ -146,26 +104,14 @@ void myWindows::create_window_room_2()
 
 void myWindows::create_window_enigm_1()
 {
-    //TO DO : set ces parametres dans le .h
-    irr::video::IVideoDriver    *driver = device->getVideoDriver();
-    const irr::core::dimension2du& screenSize = driver->getScreenSize();
-    int w = screenSize.Width;
-    int h = screenSize.Height;
-    int x1 = 10;
-    int x2 = w-10;
-    int y1 = 10;
-    int y2 = h-10;
-
 
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Welcome To Our World");
 
-     irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Pour ouvrir ce coffre vous devez trouver la date de naissance de ... Maxime Di Folco le Terrible (célèbre pour ses shots à 3 poissons)"
-                       "Vous pouvez retourner sur l'ile ou faire des essais (illimités) de date ",
-                      ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
+    irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Pour ouvrir ce coffre vous devez trouver la date de naissance de ... Maxime Di Folco le Terrible (célèbre pour ses shots à 3 poissons)"
+                                                         "Vous pouvez retourner sur l'ile ou faire des essais (illimités) de date ",
+                                                         ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
 
-     //TODO : passer la font en variable globale (on utilise tout le temps la même)
-     irr::gui::IGUIFont *font = gui->getFont("data/font_a/myfont.xml");  // chargement de la police
-     texte->setOverrideFont(font);                               // utilisation de la police
+    texte->setOverrideFont(font);                               // utilisation de la police
 
     gui->addSpinBox(L"14", ic::rect<s32>(40,200, 160,220), true, window, DAY_SPIN);
     gui->addSpinBox(L"12", ic::rect<s32>(40,240, 160,260), true, window, MONTH_SPIN);
@@ -179,23 +125,13 @@ void myWindows::create_window_enigm_1()
 
 void myWindows::create_window_answer_enigm_1()
 {
-    irr::video::IVideoDriver    *driver = device->getVideoDriver();
-    const irr::core::dimension2du& screenSize = driver->getScreenSize();
-    int w = screenSize.Width;
-    int h = screenSize.Height;
-    int x1 = 10;
-    int x2 = w-10;
-    int y1 = 10;
-    int y2 = h-10;
-
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Answer");
 
     irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Félicitation, vous avez déverouiller le coffre et ainsi dévérouillez l'accès à la prochaine salle qui vous proposera l'énigme suivante."
                                                          " Le Nain de jardin qui vous y emmenera se trouve non loin de vous, proche de votre lieu d'arrivée,\n"
                                                          "Bon Courage et à très vite",
-                       ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
-    //TODO : passer la font en variable globale (on utilise tout le temps la même)
-    irr::gui::IGUIFont *font = gui->getFont("data/font_a/myfont.xml");  // chargement de la police
+                                                         ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
+
     texte->setOverrideFont(font);                               // utilisation de la police
 
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, ClOSE_BUTTON_ENIGM_1, L"Close Informations");
@@ -211,23 +147,12 @@ void myWindows::create_window_enigm_2()
 /** ANswer enigm window 2 : Club */
 void myWindows::create_window_answer_enigm_2()
 {
-    irr::video::IVideoDriver    *driver = device->getVideoDriver();
-    const irr::core::dimension2du& screenSize = driver->getScreenSize();
-    int w = screenSize.Width;
-    int h = screenSize.Height;
-    int x1 = 10;
-    int x2 = w-10;
-    int y1 = 10;
-    int y2 = h-10;
-
 
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"SUCCESS ROOM 2");
 
     irr::gui::IGUIStaticText *texte = gui->addStaticText(L"You won the right to go back to the city : find the next dwarf that will bring you back",
                                                          ic::rect<s32>(10,50,x2-50,y2-200), false,false,window);
 
-    //TODO : passer la font en variable globale (on utilise tout le temps la même)
-    irr::gui::IGUIFont *font = gui->getFont("data/font_a/myfont.xml");  // chargement de la police
     texte->setOverrideFont(font);
 
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, UNDERSTOOD_BUTTON, L"Close Informations");
@@ -238,23 +163,12 @@ void myWindows::create_window_answer_enigm_2()
 
 void myWindows::create_window_enigm_final()
 {
-    irr::video::IVideoDriver    *driver = device->getVideoDriver();
-    const irr::core::dimension2du& screenSize = driver->getScreenSize();
-    int w = screenSize.Width;
-    int h = screenSize.Height;
-    int x1 = 10;
-    int x2 = w-10;
-    int y1 = 10;
-    int y2 = h-10;
-
 
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Enigme Finale");
 
     irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Tu as réussi à atteindre la dernière enigme ! Mais pour échapper de ce monde magique tu vas de voir utiliser toutes tes méninges.",
                                                          ic::rect<s32>(10,50,x2-50,y2-200), false,false,window);
 
-    //TODO : passer la font en variable globale (on utilise tout le temps la même)
-    irr::gui::IGUIFont *font = gui->getFont("data/font_a/myfont.xml");  // chargement de la police
     texte->setOverrideFont(font);
 
     gui->addSpinBox(L"1994", ic::rect<s32>(40,280, 160,300), true, window, YEAR_SPIN);
@@ -285,9 +199,10 @@ void myWindows::create_window(int win_num)
         create_window_room_2();
         break;
     case WINDOW_ENIGM_1:
+        if(!active_windows()) //TODO : Should be replaced by a boolean proper to this windows or could create conflict or bug in windows display
         create_window_enigm_1();
         break;
-       case WINDOW_ANSWER_ENIGM_1:
+    case WINDOW_ANSWER_ENIGM_1:
         create_window_answer_enigm_1();
         break;
     case WINDOW_ENIGM_2:
@@ -295,45 +210,10 @@ void myWindows::create_window(int win_num)
             create_window_enigm_2();
     default:
     case WINDOW_ANSWER_ENIGM_2:
-     create_window_answer_enigm_2();
-     break;
+        create_window_answer_enigm_2();
+        break;
         break;
     }
-
-
-
-    //    // La fenêtre
-    //    ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(420,25, 620,460), false, L"Settings");
-
-    //    // Une zone d'édition de texte, précédée d'un label
-    //    gui->addStaticText(L"Value", ic::rect<s32>(22,48, 65,66), false, false, window);
-    //    gui->addEditBox(L"1.0", ic::rect<s32>(65,46, 160,66), true, window, WINDOW_VALUE);
-
-    //    // Un bouton à clicker
-    //    gui->addButton(ic::rect<s32>(40,74, 140,92), window, WINDOW_BUTTON, L"Click me!");
-
-    //    // Une case à cocher
-    //    gui->addCheckBox(true, ic::rect<s32>(40,100, 140,118), window, WINDOW_CHECK_BOX, L"Select me!");
-
-    //    // Une boite combo (une liste déroulante)
-    //    gui->addStaticText(L"Choose one: ", ic::rect<s32>(22,126, 100,142), false, false, window);
-    //    ig::IGUIComboBox *cbox = gui->addComboBox(ic::rect<s32>(100,126, 180,142), window, WINDOW_COMBO_BOX);
-    //    cbox->addItem(L"Choice 1", WINDOW_COMBO_CHOICE_1);
-    //    cbox->addItem(L"Choice 2", WINDOW_COMBO_CHOICE_2);
-    //    cbox->addItem(L"Choice 3", WINDOW_COMBO_CHOICE_3);
-
-    //    // Une liste déroulée
-    //    gui->addStaticText(L"List:", ic::rect<s32>(22,150, 65,168), false, false, window);
-    //    ig::IGUIListBox *lbox = gui->addListBox(ic::rect<s32>(40,170, 160,242), window, WINDOW_LIST_BOX, true);
-    //    lbox->addItem(L"First Entry");
-    //    lbox->addItem(L"Second Entry");
-    //    lbox->addItem(L"Third Entry");
-
-    //    // Une barre de défilement
-    //    gui->addScrollBar(true, ic::rect<s32>(22,250, 160,268), window, WINDOW_SCROLLBAR);
-
-    //    // Une spin box
-    //    gui->addSpinBox(L"18.0", ic::rect<s32>(40,280, 160,298), true, window, WINDOW_SPIN_BOX);
 }
 
 /*===========================================================================*\
