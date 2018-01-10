@@ -371,14 +371,17 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     switch(visible_node_decor)
     {
     case 0: // Decor ville
-       // std::cout << position.X << " " <<position.Y<<" "<< position.Z <<  std::endl;
+
         if(!windows->getAnswer_2()) nodes_arches[0]->setVisible(true);
-        else nodes_arches[3]->setVisible(true);
+       // else nodes_arches[3]->setVisible(true);
+        nodes_arches[3]->setVisible(true);
         nodes_arches[1]->setVisible(false);
         nodes_arches[2]->setVisible(false);
         nodes_enigmes[0]->setVisible(false);
         for(auto& node : nodes_cube)
             node->setVisible(false);
+
+
         break;
 
     case 1: //Decor island
@@ -438,7 +441,7 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
         {
 
             colli = true;
-            if(i != 2)
+            if(i < 2)
                 visible_node_decor = i+1;
             else
                 visible_node_decor = 0;
@@ -461,6 +464,10 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
             case 1:
                 windows->create_window(WINDOW_ROOM_2);
                 break;
+            case 2:
+                windows->create_window(WINDOW_BACK_ROOM_0);
+            case 3:
+                windows->create_window(WINDOW_ENIGM_FINAL);
             default:
                 break;
             }

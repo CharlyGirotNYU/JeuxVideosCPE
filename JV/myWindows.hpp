@@ -83,6 +83,9 @@ private:
     void create_window_answer_enigm_2();
     /** Enigm final city */
     void create_window_enigm_final();
+    /** Window when you return to the city */
+    void create_windows_back_room_0();
+
 
 
 

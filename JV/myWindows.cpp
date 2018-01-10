@@ -235,6 +235,37 @@ void myWindows::create_window_answer_enigm_2()
     answer_2=true;
     active_window = true;
 }
+void myWindows::create_windows_back_room_0()
+{
+    //TO DO : set ces parametres dans le .h
+    irr::video::IVideoDriver    *driver = device->getVideoDriver();
+    const irr::core::dimension2du& screenSize = driver->getScreenSize();
+    int w = screenSize.Width;
+    int h = screenSize.Height;
+    int x1 = 10;
+    int x2 = w-10;
+    int y1 = 10;
+    int y2 = h-10;
+
+    ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Welcome To The Club . ");
+
+    irr::gui::IGUIStaticText *texte = gui->addStaticText(L" Bienvenue dans le Club CPE Baila Baila Baila \n"
+                       "Vous trouverez sur les murs de ce club, une combinaison de chiffres. Assurez vous de trouver "
+                       "la bonne combinaison pour pouvoir dévérouiller votre nain de jardin de téléportation suivant \n"
+                       "Fonctionnement des Digits sur les murs : \n"
+                       "    -Sélectionnez le digit souhaité à l'aide d'un clic gauche de la souris en pointant bien précisemment le digit voulu. \n "
+                       "    -Modifiez sa valeur en utilisant la molette de votre souris.  ",
+                       ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
+    //TODO : passer la font en variable globale (on utilise tout le temps la même)
+    irr::gui::IGUIFont *font = gui->getFont("data/font_a/myfont.xml");  // chargement de la police
+    texte->setOverrideFont(font);                               // utilisation de la police
+
+    irr::video::ITexture* command = driver->getTexture("data/info/commandes_2.png") ;
+    gui->addImage(command,ic::position2d< s32 >(x1+50,y1+200),true,window);
+
+    gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, UNDERSTOOD_BUTTON, L"UNDERSTOOD!");
+    active_window = true;
+}
 
 void myWindows::create_window_enigm_final()
 {
@@ -293,10 +324,15 @@ void myWindows::create_window(int win_num)
     case WINDOW_ENIGM_2:
         if(!answer_2)
             create_window_enigm_2();
-    default:
     case WINDOW_ANSWER_ENIGM_2:
      create_window_answer_enigm_2();
      break;
+    case WINDOW_ENIGM_FINAL:
+        create_window_enigm_final();
+     break;
+    case WINDOW_BACK_ROOM_0:
+        create_windows_back_room_0();
+     default:
         break;
     }
 
