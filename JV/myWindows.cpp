@@ -14,11 +14,9 @@ myWindows::myWindows(ig::IGUIEnvironment *g,  irr::IrrlichtDevice *d):
     gui(g), device(d),driver(device->getVideoDriver()),screenSize(driver->getScreenSize()),
     w(screenSize.Width),h(screenSize.Height),x1(10),x2(w-10),y1(10),y2(h-10),font(gui->getFont("data/font_a/myfont.xml"))
 {
-
 }
 myWindows::~myWindows()
 {
-
 }
 
 
@@ -104,17 +102,27 @@ void myWindows::create_window_room_2()
 
 void myWindows::create_window_enigm_1()
 {
-
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Welcome To Our World");
 
     irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Pour ouvrir ce coffre vous devez trouver la date de naissance de ... Maxime Di Folco le Terrible (célèbre pour ses shots à 3 poissons)"
-                                                         "Vous pouvez retourner sur l'ile ou faire des essais (illimités) de date ",
+                                                         "Vous pouvez retourner sur l'ile ou faire des essais (illimités) de date. \n "
+                                                         "Voici quelques indices pour la trouver : \n "
+                                                         " - son jour de naissance est le premier nombre premier à 2 chiffres \n"
+                                                         " -  l'été commence pendant son mois de naissance \n"
+                                                         " - il va avoir 23 ans cette année.",
+
                                                          ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
 
     texte->setOverrideFont(font);                               // utilisation de la police
 
+    texte = gui->addStaticText(L"Jour : \n", ic::rect<s32>(40,190,160,200), false,true,window);
+//     texte->setOverrideFont(font);
     gui->addSpinBox(L"14", ic::rect<s32>(40,200, 160,220), true, window, DAY_SPIN);
+    texte = gui->addStaticText(L"Mois : \n",ic::rect<s32>(40,230, 160,240), false,true,window);
+//     texte->setOverrideFont(font);
     gui->addSpinBox(L"12", ic::rect<s32>(40,240, 160,260), true, window, MONTH_SPIN);
+    texte = gui->addStaticText(L"Année : \n",  ic::rect<s32>(40,270, 160,280), false,true,window);
+//     texte->setOverrideFont(font);
     gui->addSpinBox(L"1994", ic::rect<s32>(40,280, 160,300), true, window, YEAR_SPIN);
 
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, TRY_BUTTON_1, L"Essai");
@@ -150,7 +158,7 @@ void myWindows::create_window_answer_enigm_2()
 
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"SUCCESS ROOM 2");
 
-    irr::gui::IGUIStaticText *texte = gui->addStaticText(L"You won the right to go back to the city : find the next dwarf that will bring you back",
+    irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Bravo ! Tu as réussi la deuxième enigme. Trouve le prochain téléporteur maintenant.",
                                                          ic::rect<s32>(10,50,x2-50,y2-200), false,false,window);
 
     texte->setOverrideFont(font);
@@ -160,18 +168,33 @@ void myWindows::create_window_answer_enigm_2()
     answer_2=true;
     active_window = true;
 }
+void myWindows::create_windows_back_room_0()
+{
+
+    ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Retour dans la ville");
+
+    irr::gui::IGUIStaticText *texte = gui->addStaticText(L" De retour au point de départ ? Non, pas du tout ! Une nouvelle arche est apparu et tu as besoin de l'a trouver pour t'en sortir."
+                                                         "   Mais attention, elle est difficile à trouver !",
+                                                         ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
+    irr::gui::IGUIFont *font = gui->getFont("data/font_a/myfont.xml");  // chargement de la police
+    texte->setOverrideFont(font);                               // utilisation de la police
+
+    gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, ClOSE_BUTTON_ENIGM_1, L"UNDERSTOOD!");
+    active_window = true;
+}
 
 void myWindows::create_window_enigm_final()
 {
-
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Enigme Finale");
 
-    irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Tu as réussi à atteindre la dernière enigme ! Mais pour échapper de ce monde magique tu vas de voir utiliser toutes tes méninges.",
+    irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Tu as réussi à atteindre la dernière enigme ! \n Mais pour échapper de ce monde magique tu vas devoir "
+                                                         "utiliser toutes tes méninges.\n"
+                                                         "Quelle est le nombre suivant de cette suite logique  2, 10 ,12 ,17 ,18 ,19, ...? ",
                                                          ic::rect<s32>(10,50,x2-50,y2-200), false,false,window);
 
     texte->setOverrideFont(font);
 
-    gui->addSpinBox(L"1994", ic::rect<s32>(40,280, 160,300), true, window, YEAR_SPIN);
+    gui->addSpinBox(L"19", ic::rect<s32>(40,280, 160,300), true, window, FINAL_SPIN);
 
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, TRY_BUTTON_FINAL, L"Essai");
     gui->addButton(ic::rect<s32>(x1+160,y2-60, x1+160+150,y2-20), window, CLOSE_BUTTON_ENIGM_FINAL, L"Retournez dans la ville");
@@ -179,6 +202,20 @@ void myWindows::create_window_enigm_final()
     active_window = true;
 }
 
+void myWindows::create_window_enigm_final_solution()
+{
+    ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Enigme Finale");
+
+    irr::gui::IGUIStaticText *texte = gui->addStaticText(L"VICTOIRE !!!!!!! Clique sur Finish Game pour finir le jeu",
+                                                         ic::rect<s32>(10,50,x2-50,y2-200), false,false,window);
+
+
+    texte->setOverrideFont(font);
+
+    gui->addButton(ic::rect<s32>(x1+160,y2-60, x1+160+150,y2-20), window, CLOSE_GAME,L"Finish Game");
+
+    active_window = true;
+}
 
 
 void myWindows::create_window(int win_num)
@@ -207,10 +244,19 @@ void myWindows::create_window(int win_num)
     case WINDOW_ENIGM_2:
         if(!answer_2)
             create_window_enigm_2();
-    default:
     case WINDOW_ANSWER_ENIGM_2:
         create_window_answer_enigm_2();
         break;
+    case WINDOW_ENIGM_FINAL:
+        create_window_enigm_final();
+        break;
+    case WINDOW_BACK_ROOM_0:
+        create_windows_back_room_0();
+        break;
+    case END_GAME:
+        create_window_enigm_final_solution();
+        break;
+    default:
         break;
     }
 }
@@ -235,18 +281,36 @@ void myWindows::setAnswer_1(bool b)
 {
     answer_1=b;
 }
-
-/** Get Answer_1 */
-bool myWindows::getAnswer_2() const
-{
-    return answer_2;
-}
 /** Set Answer_2 */
 void myWindows::setAnswer_2(bool b)
 {
     answer_2=b;
 }
 
-
+/** Get Answer_2 */
+bool myWindows::getAnswer_2() const
+{
+    return answer_2;
+}
+/** Get Answer_Final */
+bool myWindows::getAnswer_Final() const
+{
+    return win_game;
+}
+/** Set Answer_Final */
+void myWindows::setAnswer_Final(bool b)
+{
+    win_game=b;
+}
+/** Get the bool which show or not the window WINDOW_BACK_ROOM_0 */
+bool myWindows::getBack_0_show() const
+{
+    return back_0;
+}
+/** Set the bool which show or not the window WINDOW_BACK_ROOM_0 */
+void myWindows::setBack_0(bool b)
+{
+    back_0=b;
+}
 
 

@@ -21,7 +21,7 @@ const int DIGITS_ID = 42;
 
 
 /************************\
- * Load scenes
+  Load scenes
 /************************/
 static void load_scenes(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*> &meshes,
                         std::vector<is::IMeshSceneNode*> &nodes, iv::IVideoDriver* &driver)
@@ -325,13 +325,30 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     switch(visible_node_decor)
     {
     case 0: // Decor ville
-        if(!windows->getAnswer_2()) nodes_arches[0]->setVisible(true);
-        else nodes_arches[3]->setVisible(true);
+        if(!windows->getAnswer_2())
+            nodes_arches[0]->setVisible(true);
+        else
+            nodes_arches[3]->setVisible(true);
+        if(windows->getAnswer_2() && windows->getBack_0_show())
+        {
+            windows->create_window(WINDOW_BACK_ROOM_0);
+            windows->setBack_0(false);
+        }
+
         nodes_arches[1]->setVisible(false);
         nodes_arches[2]->setVisible(false);
         nodes_enigmes[0]->setVisible(false);
+
         for(auto& node : nodes_cube)
             node->setVisible(false);
+        for(auto& node : nodes_paintings)
+            node->setVisible(false);
+
+        if(windows->getAnswer_Final())
+        {
+            std::cout << "Final " << windows->getAnswer_Final()<<std::endl;
+            windows->create_window(END_GAME);
+        }
         break;
 
     case 1: //Decor island
@@ -383,11 +400,11 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     {
         //TODO : Changement couleur fonciton de la distance a l'arche
 
-        if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 30.0f && !nodes_decors[(i+1)%3]->isVisible() && nodes_arches[i]->isVisible())
+        if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 25.0f && !nodes_decors[(i+1)%3]->isVisible() && nodes_arches[i]->isVisible())
         {
+
             colli = true;
-            // Set le décor à afficher suivant
-            if(i != 2)
+            if(i < 2)
                 visible_node_decor = i+1;
             else
                 visible_node_decor = 0;
@@ -400,6 +417,7 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
                                                          ic::vector3df(10,8,10), // "rayons" de la caméra
                                                          ic::vector3df(0, -100, 0),  // gravité
                                                          ic::vector3df(-4,0,0));  // décalage du centre
+
             nodes_persos[0]->addAnimator(anim);
 
             //Reset le personnage au centre du nouveau décor
@@ -413,6 +431,11 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
             case 1:
                 windows->create_window(WINDOW_ROOM_2);
                 break;
+            case 2:
+                windows->create_window(WINDOW_BACK_ROOM_0);
+            case 3:
+                    std::cout << " position : " <<position.X << " " << position.Y << " " << position.Z << std::endl;
+                windows->create_window(WINDOW_ENIGM_FINAL);
             default:
                 break;
             }
@@ -538,13 +561,15 @@ int main()
 
     driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, true);
 
+
     myWindows * windows = new myWindows(gui,device);
     windows->create_window(WINDOW_BEGIN);
 
     receiver.set_node(nodes_persos[0]);
     receiver.set_gui(gui);
     receiver.set_device(device);
-    receiver.set_windows(windows);
+    receiver.set_
+      (windows);
     receiver.set_node_digits(nodes_cube); //default
     receiver.set_textures_digits(digits);
     receiver.init_boolean_animation();
