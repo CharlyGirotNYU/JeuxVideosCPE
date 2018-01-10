@@ -499,8 +499,6 @@ int main()
 
     camera_FPS = smgr->addCameraSceneNode(nodes_persos[0],position_perso-ic::vector3df(0.0f,20.0f,0.0f));
     camera_FPS->setTarget(position_perso);
-    receiver.set_camera(camera_FPS);
-
 
     //Création GUI Caméra
     scene::ICameraSceneNode* camera_gui = smgr->addCameraSceneNode();
@@ -553,16 +551,12 @@ int main()
 
     scene::ICameraSceneNode* camera;
     camera = camera_FPS;
-    receiver.set_camera(camera);
     bool previous_gui_state = windows->active_windows();
 
     is::ISceneCollisionManager *collision_manager = smgr->getSceneCollisionManager();
 
     while(device->run())
     {
-
-
-
         driver->beginScene(true, true, iv::SColor(0,50,100,255));
 
         // Dessin de la scène :

@@ -183,7 +183,6 @@ void myWindows::create_window_enigm_final()
 
 void myWindows::create_window(int win_num)
 {
-    std::cout << win_num << std::endl ;
     switch(win_num)
     {
     case WINDOW_BEGIN:
@@ -214,37 +213,6 @@ void myWindows::create_window(int win_num)
         break;
         break;
     }
-}
-
-/*===========================================================================*\
- * create_menu                                                               *
-\*===========================================================================*/
-void myWindows::create_menu()
-{
-    ig::IGUIContextMenu *submenu;
-
-    // Les trois entrées principales :
-    ig::IGUIContextMenu *menu = gui->addMenu();
-    menu->addItem(L"File", -1, true, true);
-    menu->addItem(L"Debug", -1, true, true);
-    menu->addItem(L"Help", -1, true, true);
-
-    // Le contenu du menu File :
-    submenu = menu->getSubMenu(0);
-    submenu->addItem(L"New game...", MENU_NEW_GAME);
-    submenu->addSeparator();
-    submenu->addItem(L"Quit", MENU_QUIT);
-
-    // Le contenu du menu Debug :
-    submenu = menu->getSubMenu(1);
-    submenu->addItem(L"Bounding Box",   MENU_BOUNDING_BOX);
-    submenu->addItem(L"Show Normals",   MENU_NORMALS);
-    submenu->addItem(L"Show Triangles", MENU_TRIANGLES);
-    submenu->addItem(L"Transparency",   MENU_TRANSPARENCY);
-
-    // Le contenu du menu Help :
-    submenu = menu->getSubMenu(2);
-    submenu->addItem(L"About...", MENU_ABOUT);
 }
 
 

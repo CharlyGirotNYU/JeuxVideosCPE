@@ -21,10 +21,6 @@ public:
 
     /** Method called to create a window */
     void create_window(int win_num);
-    /** menu Bar */
-    void create_menu();
-
-
 
     /** Get Active Windows */
     bool active_windows() const;
