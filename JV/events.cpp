@@ -44,7 +44,6 @@ bool EventReceiver::IsKeyDown(EKEY_CODE keyCode) const
 \*------------------------------------------------------------------------*/
 bool EventReceiver::keyboard_handler(const SEvent &event)
 {
-
     if (event.KeyInput.PressedDown)
     {
         ic::vector3df position = node->getPosition();
@@ -111,7 +110,6 @@ bool EventReceiver::mouse_handler(const SEvent &event)
     default:
         ;
     }
-
     return false;
 }
 
@@ -152,11 +150,13 @@ bool EventReceiver::gui_handler(const SEvent &event)
                 windows->setAnswer_1(true);
                 node->setPosition(node->getPosition() + ic::vector3df(-50.0,0.0f,-50.0f));
             }
+            break;
         }
         if(id == CLOSE_BUTTON_ENIGM_FINAL)
         {
             gui->clear();
             windows->active_windows(false);
+            node->setPosition(node->getPosition() + ic::vector3df(-50.0,0.0f,-50.0f));
             break;
         }
         if(id == TRY_BUTTON_FINAL)
@@ -168,6 +168,14 @@ bool EventReceiver::gui_handler(const SEvent &event)
                 windows->create_window(END_GAME);
                 windows->setAnswer_Final(true);
             }
+            break;
+        }
+        if(id == CLOSE_BUTTON_BACK_ROOM_0)
+        {
+            gui->clear();
+            windows->active_windows(false);
+            windows->setBack_0(false);
+            break;
         }
         if(id == CLOSE_GAME)
             exit(0);
@@ -190,7 +198,11 @@ bool EventReceiver::gui_handler(const SEvent &event)
                 windows->active_windows(false);
                 break;
             case 1:
-                std::cout << "No Help at this point of Development" << std::endl;
+                gui->clear();
+                ESCAPE_PRESSED = false; //Quit the menu so escape reseted
+                std::cout << "last displayed window : "  << windows->get_last_displayed_window() << std::endl;
+                windows->create_window(windows->get_last_displayed_window());
+                //windows->active_windows(false);
                 break;
             case 2:
                 std::cout << "Partie quitté en cours de Jeu" << std::endl;
@@ -206,11 +218,6 @@ bool EventReceiver::gui_handler(const SEvent &event)
     case ig::EGET_SPINBOX_CHANGED:
     {
         s32 id = event.GUIEvent.Caller->getID();
-        if (id == WINDOW_SPIN_BOX)
-        {
-            ig::IGUISpinBox *spin = (ig::IGUISpinBox*)event.GUIEvent.Caller;
-            f32 value = spin->getValue();
-        }
         if (id == DAY_SPIN)
         {
             ig::IGUISpinBox *spin = (ig::IGUISpinBox*)event.GUIEvent.Caller;
@@ -231,7 +238,6 @@ bool EventReceiver::gui_handler(const SEvent &event)
             ig::IGUISpinBox *spin = (ig::IGUISpinBox*)event.GUIEvent.Caller;
             final_solution = spin->getValue();
         }
-
     }
         break;
         //gestion des close button
@@ -263,7 +269,6 @@ bool EventReceiver::OnEvent(const SEvent &event)
         return gui_handler(event);
     default:;
     }
-
     return false;
 }
 
@@ -319,7 +324,6 @@ bool EventReceiver::is_mouse_pressed(int &x, int &y)
     return false;
 }
 
-
 /**************************************************************************\
  * EventReceiver::set_isMoving                                        *
 \**************************************************************************/
@@ -327,7 +331,6 @@ void EventReceiver::set_isMoving(bool b)
 {
     isMoving = b;
 }
-
 
 /**************************************************************************\
  * EventReceiver::set_animrun                                       *

@@ -21,8 +21,8 @@ const int DIGITS_ID = 42;
 
 
 /************************\
-  Load scenes
-/************************/
+*  Load scenes
+*  ***********************/
 static void load_scenes(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*> &meshes,
                         std::vector<is::IMeshSceneNode*> &nodes, iv::IVideoDriver* &driver)
 {
@@ -72,32 +72,32 @@ static void load_arches(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
                         std::vector<is::IMeshSceneNode*> &nodes,iv::IVideoDriver* &driver)
 {
     //Chargement du Nain
-    meshes.push_back(smgr->getMesh("data/arbre1/Dwarf_2_Low.obj"));
+    meshes.push_back(smgr->getMesh("data/dwarf/Dwarf_2_Low.obj"));
     nodes.push_back(smgr->addMeshSceneNode(meshes[0]->getMesh(0), nullptr, -1));
     nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, true);
     nodes[0]->setScale(ic::vector3df(30.0f));
-    nodes[0]->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
+    nodes[0]->setMaterialTexture(0, driver->getTexture("data/dwarf/dwarf_2_1K_color.jpg"));
     nodes[0]->setPosition(ic::vector3df(800.0f,-40.0f,-400));
     nodes[0]->setVisible(false);
 
     nodes.push_back(smgr->addMeshSceneNode(meshes[0]->getMesh(0), nullptr, -1));
     nodes[1]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[1]->setScale(ic::vector3df(30.0f));
-    nodes[1]->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
+    nodes[1]->setMaterialTexture(0, driver->getTexture("data/dwarf/dwarf_2_1K_color.jpg"));
     nodes[1]->setPosition(ic::vector3df(-800.0f,-40.0f,-400));
     nodes[1]->setVisible(false);
 
     nodes.push_back(smgr->addMeshSceneNode(meshes[0]->getMesh(0), nullptr, -1));
     nodes[2]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[2]->setScale(ic::vector3df(30.0f));
-    nodes[2]->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
+    nodes[2]->setMaterialTexture(0, driver->getTexture("data/dwarf/dwarf_2_1K_color.jpg"));
     nodes[2]->setPosition(ic::vector3df(170.0f,30.0f,20));
     nodes[2]->setVisible(false);
 
     nodes.push_back(smgr->addMeshSceneNode(meshes[0]->getMesh(0), nullptr, -1));
     nodes[3]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[3]->setScale(ic::vector3df(30.0f));
-    nodes[3]->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
+    nodes[3]->setMaterialTexture(0, driver->getTexture("data/dwarf/dwarf_2_1K_color.jpg"));
     nodes[3]->setPosition(ic::vector3df(1166.7,-24.9925,958.817));
     nodes[3]->setVisible(false);
 }
@@ -248,7 +248,6 @@ void update_perso_1(scene::ICameraSceneNode* camera,is::IAnimatedMeshSceneNode* 
     {
         position.X += -4 * cos(rotation.Y * M_PI / 180.0) ;
         position.Z += 4 * sin(rotation.Y * M_PI / 180.0) ;
-
         receiver.set_isMoving(true);
     }
 
@@ -302,10 +301,6 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
                   myWindows* &windows,
                   EventReceiver &receiver)
 {
-    //TODO : Mettre les arguments en const si on ne les change pas ...
-
-
-
     //Afficher le décor dans lequel on se trouve
     for(unsigned int i=0; i< nodes_decors.size(); i++)
     {
@@ -316,7 +311,6 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     }
 
     //Gestion de l'histoire
-
     ic::vector3df position = nodes_persos[0]->getPosition();
     // Solution enigme 2
     std::vector<int> solution;
@@ -325,19 +319,14 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     switch(visible_node_decor)
     {
     case 0: // Decor ville
+        nodes_arches[1]->setVisible(false);
+        nodes_arches[2]->setVisible(false);
+        nodes_enigmes[0]->setVisible(false);
+
         if(!windows->getAnswer_2())
             nodes_arches[0]->setVisible(true);
         else
             nodes_arches[3]->setVisible(true);
-        if(windows->getAnswer_2() && windows->getBack_0_show())
-        {
-            windows->create_window(WINDOW_BACK_ROOM_0);
-            windows->setBack_0(false);
-        }
-
-        nodes_arches[1]->setVisible(false);
-        nodes_arches[2]->setVisible(false);
-        nodes_enigmes[0]->setVisible(false);
 
         for(auto& node : nodes_cube)
             node->setVisible(false);
@@ -346,7 +335,6 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
 
         if(windows->getAnswer_Final())
         {
-            std::cout << "Final " << windows->getAnswer_Final()<<std::endl;
             windows->create_window(END_GAME);
         }
         break;
@@ -399,10 +387,8 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     for(unsigned int i=0; i<nodes_arches.size(); i++)
     {
         //TODO : Changement couleur fonciton de la distance a l'arche
-
-        if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 25.0f && !nodes_decors[(i+1)%3]->isVisible() && nodes_arches[i]->isVisible())
+        if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 25.0f && nodes_arches[i]->isVisible())
         {
-
             colli = true;
             if(i < 2)
                 visible_node_decor = i+1;
@@ -415,12 +401,14 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
             anim = smgr->createCollisionResponseAnimator(selector,
                                                          nodes_persos[0],  // Le noeud que l'on veut gérer
                                                          ic::vector3df(10,8,10), // "rayons" de la caméra
-                                                         ic::vector3df(0, -100, 0),  // gravité
+                                                         ic::vector3df(0, -10, 0),  // gravité
                                                          ic::vector3df(-4,0,0));  // décalage du centre
 
             nodes_persos[0]->addAnimator(anim);
 
             //Reset le personnage au centre du nouveau décor
+            //TO DO : sauf si collision avec arches de back 0 ??
+            //if(windows->get_last_displayed_window() != WINDOW_ENIGM_FINAL)
             nodes_persos[0]->setPosition(ic::vector3df(0.0f,0.0f,0.0f));
 
             switch(i)
@@ -433,9 +421,10 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
                 break;
             case 2:
                 windows->create_window(WINDOW_BACK_ROOM_0);
+                break;
             case 3:
-                    //std::cout << " position : " <<position.X << " " << position.Y << " " << position.Z << std::endl;
                 windows->create_window(WINDOW_ENIGM_FINAL);
+                break;
             default:
                 break;
             }
@@ -503,7 +492,6 @@ int main()
     digits.push_back (driver->getTexture("data/digits/9.png"));
     load_cubes(smgr,nodes_cube, digits,driver);
 
-
     //Load paintings for digits for enigm 2
     std::vector<is::IMeshSceneNode*> nodes_painting;
     iv::ITexture *paintings[3];
@@ -512,7 +500,6 @@ int main()
     paintings[2] = driver->getTexture("data/room2/enigme_7.jpg");
     load_paintings(smgr,nodes_painting, paintings,driver);
 
-
     //Create Gaming Camera
     scene::ICameraSceneNode *camera_FPS; //TODO : ce n'est plus une caméra FPS -> NOM à changer
     //nodes_persos[0]->setPosition(ic::vector3df(0,-30,0));
@@ -520,7 +507,7 @@ int main()
     position_perso.X -=70;
     position_perso.Y +=100;
 
-    camera_FPS = smgr->addCameraSceneNode(nodes_persos[0],position_perso-ic::vector3df(0.0f,20.0f,0.0f));
+    camera_FPS = smgr->addCameraSceneNode(nodes_persos[0],position_perso-ic::vector3df(0.0f,40.0f,0.0f));
     camera_FPS->setTarget(position_perso);
 
     //Création GUI Caméra
@@ -529,8 +516,8 @@ int main()
 
     // Création du triangle selector
     scene::ITriangleSelector *selector;
-    selector = smgr->createOctreeTriangleSelector(nodes_decors[0]->getMesh(), nodes_decors[0]);
-    nodes_decors[0]->setTriangleSelector(selector);
+    selector = smgr->createOctreeTriangleSelector(nodes_decors[visible_node_decor]->getMesh(), nodes_decors[visible_node_decor]);
+    nodes_decors[visible_node_decor]->setTriangleSelector(selector);
 
     // Création animateur collisionneur initiale avec le décor de départ
     scene::ISceneNodeAnimator *anim;
@@ -552,12 +539,12 @@ int main()
     // add a nice skybox
     driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, false);
     smgr->addSkyBoxSceneNode(
-                driver->getTexture("data/media/irrlicht2_up.jpg"),
-                driver->getTexture("data/media/irrlicht2_dn.jpg"),
-                driver->getTexture("data/media/irrlicht2_lf.jpg"),
-                driver->getTexture("data/media/irrlicht2_rt.jpg"),
-                driver->getTexture("data/media/irrlicht2_ft.jpg"),
-                driver->getTexture("data/media/irrlicht2_bk.jpg"));
+                driver->getTexture("data/Skybox/irrlicht2_up.jpg"),
+                driver->getTexture("data/Skybox/irrlicht2_dn.jpg"),
+                driver->getTexture("data/Skybox/irrlicht2_lf.jpg"),
+                driver->getTexture("data/Skybox/irrlicht2_rt.jpg"),
+                driver->getTexture("data/Skybox/irrlicht2_ft.jpg"),
+                driver->getTexture("data/Skybox/irrlicht2_bk.jpg"));
 
     driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, true);
 
@@ -577,10 +564,13 @@ int main()
     camera = camera_FPS;
     bool previous_gui_state = windows->active_windows();
 
+    windows->set_begin_time(device->getTimer()->getTime());
+
     is::ISceneCollisionManager *collision_manager = smgr->getSceneCollisionManager();
 
     while(device->run())
     {
+
         driver->beginScene(true, true, iv::SColor(0,50,100,255));
 
         // Dessin de la scène :
@@ -627,7 +617,6 @@ int main()
         //When we change decors
         update_scene(nodes_decors, nodes_arches, nodes_persos, nodes_enigmes, nodes_cube,  nodes_painting,
                      camera, visible_node_decor,smgr,selector, anim, windows,receiver);
-
         driver->endScene();
     }
     device->drop();

@@ -51,9 +51,13 @@ public:
     /** Initailisation of x1,x2, y1 et y2*/
     void init_window_parameters();
 
-    /** Quit the application */
-    //    void action_quit();
+    /** Get last dispayed window */
+    int get_last_displayed_window();
+    /** Set last displayed windows */
+    void set_last_displayed_window(int w);
 
+    /** Set begin time */
+    void set_begin_time(float t);
 
 private:
 
@@ -64,15 +68,12 @@ private:
 
     /** Answer 1 is OK ? */
     bool answer_1=false;
-
+    /** Answer 2 is OK ? */
     bool answer_2=false;
     /** End of the game */
     bool win_game=false;
     /** SHow or not the window WINDOW_BACK_ROOM_0 */
-    bool back_0=true;
-
-
-
+    bool back_0=false;
 
     /** Store a pointer to the driver (to get screen size and be able to adapt windows size */
     irr::video::IVideoDriver    *driver;
@@ -90,8 +91,14 @@ private:
     /** Font used for static Text in GUI windows */
     irr::gui::IGUIFont *font;
 
-    /** List of active windows */
+    /** is a window active */
     bool active_window;
+    /** last active_window */
+    int last_active_window;
+    /** Store begin time */
+    float time_begin;
+    /** Store end time */
+    float time_end;
 
     /** Create beginning information winddow */
     void create_window_begin();
@@ -105,8 +112,6 @@ private:
     void create_window_enigm_1();
     /** ANswer enigm window 1 : Jungle */
     void create_window_answer_enigm_1();
-    /** Engim window 2 : Club */
-    void create_window_enigm_2();
     /** ANswer enigm window 2 : Jungle */
     void create_window_answer_enigm_2();
     /** Enigm final city */
@@ -115,10 +120,6 @@ private:
     void create_windows_back_room_0();
     /** Last window before the end of the game */
     void create_window_enigm_final_solution();
-
-
-
-
 
 
 };
