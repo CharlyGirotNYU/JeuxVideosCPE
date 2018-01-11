@@ -3,7 +3,7 @@ Projet Jeux-Vidéos CPE LYON - 5 ETI - Janvier 2018
 DI FOLCO Maxime
 GIROT Charly
 
-Peut etre listé sur le site Web et associée à nos noms
+Peut etre listé sur le site Web et associé à nos noms
 
 Contents : 
 - sources
