@@ -38,6 +38,7 @@ void myWindows::create_window_begin()
 
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window_begin, UNDERSTOOD_BUTTON, L"A la recherche du nain de jardin");
     active_window = true;
+    last_active_window = WINDOW_BEGIN;
 }
 
 void myWindows::create_escape_menu()
@@ -49,11 +50,11 @@ void myWindows::create_escape_menu()
     ig::IGUIListBox *lbox = gui->addListBox(ic::rect<s32>(w/2-w/3, h/2-h/3, w/2+w/3, h/2+h/3), window_escape, WINDOW_ESCAPE_LIST_BOX, true);
     lbox->setItemHeight(h/5);
     lbox->addItem(L"RESUME");
-    lbox->addItem(L"HELP ? NOTHING CAN HELP YOU RIGHT NOW");
+    lbox->addItem(L"HELP");
     lbox->addItem(L"EXIT");
 
-    active_window = true;
     lbox->setSelected(0);
+    active_window = true;
 }
 
 void myWindows::create_window_room_1()
@@ -76,6 +77,7 @@ void myWindows::create_window_room_1()
 
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, UNDERSTOOD_BUTTON, L"UNDERSTOOD!");
     active_window = true;
+    last_active_window = WINDOW_ROOM_1;
 }
 
 void myWindows::create_window_room_2()
@@ -97,6 +99,7 @@ void myWindows::create_window_room_2()
 
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, UNDERSTOOD_BUTTON, L"UNDERSTOOD!");
     active_window = true;
+    last_active_window = WINDOW_ROOM_2;
 }
 
 
@@ -129,6 +132,7 @@ void myWindows::create_window_enigm_1()
     gui->addButton(ic::rect<s32>(x1+160,y2-60, x1+160+150,y2-20), window, ClOSE_BUTTON_ENIGM_1, L"Retourner sur l'ile");
 
     active_window = true;
+    //last_active_window = WINDOW_ENIGM_1;
 }
 
 void myWindows::create_window_answer_enigm_1()
@@ -145,6 +149,7 @@ void myWindows::create_window_answer_enigm_1()
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, ClOSE_BUTTON_ENIGM_1, L"Close Informations");
 
     active_window = true;
+    last_active_window = WINDOW_ANSWER_ENIGM_1;
 }
 
 void myWindows::create_window_enigm_2()
@@ -167,6 +172,7 @@ void myWindows::create_window_answer_enigm_2()
 
     answer_2=true;
     active_window = true;
+    last_active_window = WINDOW_ANSWER_ENIGM_2;
 }
 void myWindows::create_windows_back_room_0()
 {
@@ -179,9 +185,10 @@ void myWindows::create_windows_back_room_0()
     irr::gui::IGUIFont *font = gui->getFont("data/font_a/myfont.xml");  // chargement de la police
     texte->setOverrideFont(font);                               // utilisation de la police
 
-    gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, ClOSE_BUTTON_ENIGM_1, L"UNDERSTOOD!");
+    gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, CLOSE_BUTTON_BACK_ROOM_0, L"UNDERSTOOD!");
     back_0=true;
     active_window = true;
+    last_active_window = WINDOW_BACK_ROOM_0;
 }
 
 void myWindows::create_window_enigm_final()
@@ -201,6 +208,7 @@ void myWindows::create_window_enigm_final()
     gui->addButton(ic::rect<s32>(x1+160,y2-60, x1+160+150,y2-20), window, CLOSE_BUTTON_ENIGM_FINAL, L"Retournez dans la ville");
 
     active_window = true;
+    last_active_window = WINDOW_ENIGM_FINAL;
 }
 
 void myWindows::create_window_enigm_final_solution()
@@ -216,6 +224,7 @@ void myWindows::create_window_enigm_final_solution()
     gui->addButton(ic::rect<s32>(x1+160,y2-60, x1+160+150,y2-20), window, CLOSE_GAME,L"Finish Game");
 
     active_window = true;
+    last_active_window = END_GAME;
 }
 
 
@@ -252,6 +261,7 @@ void myWindows::create_window(int win_num)
         create_window_enigm_final();
         break;
     case WINDOW_BACK_ROOM_0:
+//        std::cout << active_windows() << back_0 << std::endl;
         if(!back_0)
             create_windows_back_room_0();
         break;
@@ -316,4 +326,14 @@ void myWindows::setBack_0(bool b)
     back_0=b;
 }
 
+/** Get last displayed window */
+int myWindows::get_last_displayed_window()
+{
+    return last_active_window;
+}
+/** Set last displayed_window */
+void myWindows::set_last_displayed_window(int w)
+{
+    last_active_window = w;
+}
 

@@ -152,6 +152,7 @@ bool EventReceiver::gui_handler(const SEvent &event)
                 windows->setAnswer_1(true);
                 node->setPosition(node->getPosition() + ic::vector3df(-50.0,0.0f,-50.0f));
             }
+            break;
         }
         if(id == CLOSE_BUTTON_ENIGM_FINAL)
         {
@@ -168,6 +169,14 @@ bool EventReceiver::gui_handler(const SEvent &event)
                 windows->create_window(END_GAME);
                 windows->setAnswer_Final(true);
             }
+            break;
+        }
+        if(id == CLOSE_BUTTON_BACK_ROOM_0)
+        {
+            gui->clear();
+            windows->active_windows(false);
+            windows->setBack_0(false);
+            break;
         }
         if(id == CLOSE_GAME)
             exit(0);
@@ -190,7 +199,11 @@ bool EventReceiver::gui_handler(const SEvent &event)
                 windows->active_windows(false);
                 break;
             case 1:
-                std::cout << "No Help at this point of Development" << std::endl;
+                gui->clear();
+                ESCAPE_PRESSED = false; //Quit the menu so escape reseted
+                std::cout << "last displayed window : "  << windows->get_last_displayed_window() << std::endl;
+                windows->create_window(windows->get_last_displayed_window());
+                //windows->active_windows(false);
                 break;
             case 2:
                 std::cout << "Partie quitté en cours de Jeu" << std::endl;

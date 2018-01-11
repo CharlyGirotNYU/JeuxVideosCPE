@@ -1,6 +1,6 @@
 
 
-Position de départ CITY	
+Position de départ CITY	==> DONE
 
 Jungle changez la position de départ ==> DONE
 
@@ -12,12 +12,13 @@ WInodws.cpp mettre le font en parametre general ==> DONE
 
 
 Position apres derneire enigme au milieu alors que pas bouger 
-Et cliquant sur Get back city
+Et cliquant sur Get back city ==> pas un pb 
 
 Affichage de 2 fenetres quand on revient au decor 0
 WINDOW_BACK_ROOM0 s'affiche deux fois lors du retour
 et en même temps que 
 WINDOW_ENIGME_FINAL ==> un %4 (au lieu de %3) dans la condition de collision ? 
+==> DONE 
 
 Refaire les images des commandes à expliquer au début et pour l'énigme 2 
 

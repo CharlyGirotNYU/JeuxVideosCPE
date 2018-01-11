@@ -329,13 +329,13 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
         nodes_arches[2]->setVisible(false);
         nodes_enigmes[0]->setVisible(false);
 
-        std::cout << "answer_final  : " << windows ->getAnswer_Final() << std::endl;
+//        std::cout << "answer_final  : " << windows ->getAnswer_Final() << std::endl;
         if(!windows->getAnswer_2())
             nodes_arches[0]->setVisible(true);
         else
             nodes_arches[3]->setVisible(true);
-        if(windows->getAnswer_2() && windows->getBack_0_show())
-            windows->create_window(WINDOW_BACK_ROOM_0);
+//        if(windows->getAnswer_2() && windows->getBack_0_show())
+//            windows->create_window(WINDOW_BACK_ROOM_0);
 
 
 
@@ -400,7 +400,7 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     {
         //TODO : Changement couleur fonciton de la distance a l'arche
 
-        std::cout <<"Arche 2 Visible : " <<  nodes_arches[2]-> isVisible() << std::endl;
+//        std::cout <<"Arche 2 Visible : " <<  nodes_arches[2]-> isVisible() << std::endl;
         if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 25.0f && nodes_arches[i]->isVisible()) //IN CASE CA MARCHE PLUS && !nodes_decors[(i+1)%3]->isVisible()
         {
             colli = true;
@@ -435,8 +435,8 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
                 windows->create_window(WINDOW_BACK_ROOM_0);
                 break;
             case 3:
-                std::cout << " position : " <<position.X << " " << position.Y << " " << position.Z << std::endl;
-                std::cout << position.getDistanceFrom(nodes_arches[i]->getPosition()) << std::endl;
+//                std::cout << " position : " <<position.X << " " << position.Y << " " << position.Z << std::endl;
+//                std::cout << position.getDistanceFrom(nodes_arches[i]->getPosition()) << std::endl;
                 windows->create_window(WINDOW_ENIGM_FINAL);
                 break;
             default:
@@ -458,7 +458,7 @@ int main()
 {
     // Le gestionnaire d'événements
     EventReceiver receiver;
-    int visible_node_decor = 2;
+    int visible_node_decor = 0;
 
     // Création de la fenêtre et du système de rendu.
     IrrlichtDevice *device = createDevice(iv::EDT_OPENGL,
@@ -631,12 +631,6 @@ int main()
         update_scene(nodes_decors, nodes_arches, nodes_persos, nodes_enigmes, nodes_cube,  nodes_painting,
                      camera, visible_node_decor,smgr,selector, anim, windows,receiver);
 
-        if(visible_node_decor == 0)
-        {
-            ic::vector3df position = nodes_persos[0]->getPosition();
-            std::cout << " position : " <<position.X << " " << position.Y << " " << position.Z << std::endl;
-            std::cout << position.getDistanceFrom(nodes_arches[3]->getPosition()) << std::endl;
-        }
         driver->endScene();
     }
     device->drop();

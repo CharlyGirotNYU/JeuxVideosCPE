@@ -51,6 +51,11 @@ public:
     /** Initailisation of x1,x2, y1 et y2*/
     void init_window_parameters();
 
+    /** Get last dispayed window */
+    int get_last_displayed_window();
+    /** Set last displayed windows */
+    void set_last_displayed_window(int w);
+
     /** Quit the application */
     //    void action_quit();
 
@@ -90,8 +95,10 @@ private:
     /** Font used for static Text in GUI windows */
     irr::gui::IGUIFont *font;
 
-    /** List of active windows */
+    /** is a window active */
     bool active_window;
+    /** last active_window */
+    int last_active_window;
 
     /** Create beginning information winddow */
     void create_window_begin();
