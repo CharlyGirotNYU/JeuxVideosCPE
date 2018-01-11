@@ -33,3 +33,5 @@ DIre au début de faire gaffe de pas tomber
 
 -Temps à mettre pour gagner
 
+Nettoyer les datas inutiles au fonctionnement de ce jeu 
+
