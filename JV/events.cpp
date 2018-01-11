@@ -44,7 +44,6 @@ bool EventReceiver::IsKeyDown(EKEY_CODE keyCode) const
 \*------------------------------------------------------------------------*/
 bool EventReceiver::keyboard_handler(const SEvent &event)
 {
-
     if (event.KeyInput.PressedDown)
     {
         ic::vector3df position = node->getPosition();
@@ -111,7 +110,6 @@ bool EventReceiver::mouse_handler(const SEvent &event)
     default:
         ;
     }
-
     return false;
 }
 
@@ -220,11 +218,6 @@ bool EventReceiver::gui_handler(const SEvent &event)
     case ig::EGET_SPINBOX_CHANGED:
     {
         s32 id = event.GUIEvent.Caller->getID();
-        if (id == WINDOW_SPIN_BOX)
-        {
-            ig::IGUISpinBox *spin = (ig::IGUISpinBox*)event.GUIEvent.Caller;
-            f32 value = spin->getValue();
-        }
         if (id == DAY_SPIN)
         {
             ig::IGUISpinBox *spin = (ig::IGUISpinBox*)event.GUIEvent.Caller;
@@ -245,7 +238,6 @@ bool EventReceiver::gui_handler(const SEvent &event)
             ig::IGUISpinBox *spin = (ig::IGUISpinBox*)event.GUIEvent.Caller;
             final_solution = spin->getValue();
         }
-
     }
         break;
         //gestion des close button
@@ -277,7 +269,6 @@ bool EventReceiver::OnEvent(const SEvent &event)
         return gui_handler(event);
     default:;
     }
-
     return false;
 }
 
@@ -333,7 +324,6 @@ bool EventReceiver::is_mouse_pressed(int &x, int &y)
     return false;
 }
 
-
 /**************************************************************************\
  * EventReceiver::set_isMoving                                        *
 \**************************************************************************/
@@ -341,7 +331,6 @@ void EventReceiver::set_isMoving(bool b)
 {
     isMoving = b;
 }
-
 
 /**************************************************************************\
  * EventReceiver::set_animrun                                       *

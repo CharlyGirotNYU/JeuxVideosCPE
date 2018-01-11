@@ -59,10 +59,6 @@ public:
     /** Set begin time */
     void set_begin_time(float t);
 
-    /** Quit the application */
-    //    void action_quit();
-
-
 private:
 
     /** gui linked to the scene */
@@ -72,15 +68,12 @@ private:
 
     /** Answer 1 is OK ? */
     bool answer_1=false;
-
-    bool answer_2=true;
+    /** Answer 2 is OK ? */
+    bool answer_2=false;
     /** End of the game */
     bool win_game=false;
     /** SHow or not the window WINDOW_BACK_ROOM_0 */
     bool back_0=false;
-
-
-
 
     /** Store a pointer to the driver (to get screen size and be able to adapt windows size */
     irr::video::IVideoDriver    *driver;
@@ -119,8 +112,6 @@ private:
     void create_window_enigm_1();
     /** ANswer enigm window 1 : Jungle */
     void create_window_answer_enigm_1();
-    /** Engim window 2 : Club */
-    void create_window_enigm_2();
     /** ANswer enigm window 2 : Jungle */
     void create_window_answer_enigm_2();
     /** Enigm final city */
@@ -129,10 +120,6 @@ private:
     void create_windows_back_room_0();
     /** Last window before the end of the game */
     void create_window_enigm_final_solution();
-
-
-
-
 
 
 };

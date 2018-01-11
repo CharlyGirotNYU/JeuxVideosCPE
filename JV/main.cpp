@@ -21,8 +21,8 @@ const int DIGITS_ID = 42;
 
 
 /************************\
-  Load scenes
-/************************/
+*  Load scenes
+*  ***********************/
 static void load_scenes(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*> &meshes,
                         std::vector<is::IMeshSceneNode*> &nodes, iv::IVideoDriver* &driver)
 {
@@ -248,7 +248,6 @@ void update_perso_1(scene::ICameraSceneNode* camera,is::IAnimatedMeshSceneNode* 
     {
         position.X += -4 * cos(rotation.Y * M_PI / 180.0) ;
         position.Z += 4 * sin(rotation.Y * M_PI / 180.0) ;
-
         receiver.set_isMoving(true);
     }
 
@@ -302,10 +301,6 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
                   myWindows* &windows,
                   EventReceiver &receiver)
 {
-    //TODO : Mettre les arguments en const si on ne les change pas ...
-
-
-
     //Afficher le décor dans lequel on se trouve
     for(unsigned int i=0; i< nodes_decors.size(); i++)
     {
@@ -316,7 +311,6 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     }
 
     //Gestion de l'histoire
-
     ic::vector3df position = nodes_persos[0]->getPosition();
     // Solution enigme 2
     std::vector<int> solution;
@@ -329,16 +323,10 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
         nodes_arches[2]->setVisible(false);
         nodes_enigmes[0]->setVisible(false);
 
-//        std::cout << "answer_final  : " << windows ->getAnswer_Final() << std::endl;
         if(!windows->getAnswer_2())
             nodes_arches[0]->setVisible(true);
         else
             nodes_arches[3]->setVisible(true);
-//        if(windows->getAnswer_2() && windows->getBack_0_show())
-//            windows->create_window(WINDOW_BACK_ROOM_0);
-
-
-
 
         for(auto& node : nodes_cube)
             node->setVisible(false);
@@ -399,9 +387,7 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     for(unsigned int i=0; i<nodes_arches.size(); i++)
     {
         //TODO : Changement couleur fonciton de la distance a l'arche
-
-//        std::cout <<"Arche 2 Visible : " <<  nodes_arches[2]-> isVisible() << std::endl;
-        if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 25.0f && nodes_arches[i]->isVisible()) //IN CASE CA MARCHE PLUS && !nodes_decors[(i+1)%3]->isVisible()
+        if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 25.0f && nodes_arches[i]->isVisible())
         {
             colli = true;
             if(i < 2)
@@ -420,7 +406,8 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
 
             nodes_persos[0]->addAnimator(anim);
 
-            //Reset le personnage au centre du nouveau décor sauf si collision avec arches de back 0 ??
+            //Reset le personnage au centre du nouveau décor
+            //TO DO : sauf si collision avec arches de back 0 ??
             //if(windows->get_last_displayed_window() != WINDOW_ENIGM_FINAL)
             nodes_persos[0]->setPosition(ic::vector3df(0.0f,0.0f,0.0f));
 
@@ -436,8 +423,6 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
                 windows->create_window(WINDOW_BACK_ROOM_0);
                 break;
             case 3:
-//                std::cout << " position : " <<position.X << " " << position.Y << " " << position.Z << std::endl;
-//                std::cout << position.getDistanceFrom(nodes_arches[i]->getPosition()) << std::endl;
                 windows->create_window(WINDOW_ENIGM_FINAL);
                 break;
             default:
@@ -507,7 +492,6 @@ int main()
     digits.push_back (driver->getTexture("data/digits/9.png"));
     load_cubes(smgr,nodes_cube, digits,driver);
 
-
     //Load paintings for digits for enigm 2
     std::vector<is::IMeshSceneNode*> nodes_painting;
     iv::ITexture *paintings[3];
@@ -515,7 +499,6 @@ int main()
     paintings[1] = driver->getTexture("data/room2/enigme_0.png");
     paintings[2] = driver->getTexture("data/room2/enigme_7.jpg");
     load_paintings(smgr,nodes_painting, paintings,driver);
-
 
     //Create Gaming Camera
     scene::ICameraSceneNode *camera_FPS; //TODO : ce n'est plus une caméra FPS -> NOM à changer
@@ -581,7 +564,6 @@ int main()
     camera = camera_FPS;
     bool previous_gui_state = windows->active_windows();
 
-    //std::cout << "time device " << device->getTimer()->getTime() << std::endl;
     windows->set_begin_time(device->getTimer()->getTime());
 
     is::ISceneCollisionManager *collision_manager = smgr->getSceneCollisionManager();

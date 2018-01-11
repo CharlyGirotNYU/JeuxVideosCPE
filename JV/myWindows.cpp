@@ -16,6 +16,7 @@ myWindows::myWindows(ig::IGUIEnvironment *g,  irr::IrrlichtDevice *d):
     w(screenSize.Width),h(screenSize.Height),x1(10),x2(w-10),y1(10),y2(h-10),font(gui->getFont("data/font_a/myfont.xml"))
 {
 }
+
 myWindows::~myWindows()
 {
 }
@@ -122,20 +123,16 @@ void myWindows::create_window_enigm_1()
     texte->setOverrideFont(font);                               // utilisation de la police
 
     texte = gui->addStaticText(L"Jour : \n", ic::rect<s32>(40,190,160,200), false,true,window);
-    //     texte->setOverrideFont(font);
     gui->addSpinBox(L"14", ic::rect<s32>(40,200, 160,220), true, window, DAY_SPIN);
     texte = gui->addStaticText(L"Mois : \n",ic::rect<s32>(40,230, 160,240), false,true,window);
-    //     texte->setOverrideFont(font);
     gui->addSpinBox(L"12", ic::rect<s32>(40,240, 160,260), true, window, MONTH_SPIN);
     texte = gui->addStaticText(L"Année : \n",  ic::rect<s32>(40,270, 160,280), false,true,window);
-    //     texte->setOverrideFont(font);
     gui->addSpinBox(L"1994", ic::rect<s32>(40,280, 160,300), true, window, YEAR_SPIN);
 
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, TRY_BUTTON_1, L"Essai");
     gui->addButton(ic::rect<s32>(x1+160,y2-60, x1+160+150,y2-20), window, ClOSE_BUTTON_ENIGM_1, L"Retourner sur l'ile");
 
     active_window = true;
-    //last_active_window = WINDOW_ENIGM_1;
 }
 
 void myWindows::create_window_answer_enigm_1()
@@ -155,10 +152,6 @@ void myWindows::create_window_answer_enigm_1()
     last_active_window = WINDOW_ANSWER_ENIGM_1;
 }
 
-void myWindows::create_window_enigm_2()
-{
-
-}
 
 /** ANswer enigm window 2 : Club */
 void myWindows::create_window_answer_enigm_2()
@@ -219,27 +212,23 @@ void myWindows::create_window_enigm_final_solution()
     time_end = device->getTimer()->getTime();
     int time = (time_end - time_begin ) / 1000;
 
-    int heures = time/3600;
-    int minutes = (time-3600*heures)/60;
-    float secondes = (time - 3600*heures - 60*minutes);
+    int minutes = (time)/60;
+    int secondes = (time - 60*minutes);
 
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Enigme Finale");
 
     irr::gui::IGUIStaticText *texte = gui->addStaticText(L"VICTOIRE !!!!!!! Clique sur Finish Game pour finir le jeu: ",
                                                          ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
 
-//    irr::core::string s = irr::core::string("COucou");
     irr::core::stringw a = L"VICTOIRE !!!!!!! Tu as mis : " ;
-    irr::core::stringw b = irr::core::stringw(heures).c_str();
-     irr::core::stringw c = L" Heures ";
-              irr::core::stringw d = irr::core::stringw(minutes).c_str();
-              irr::core::stringw e = L" Minutes ";
-              irr::core::stringw f = irr::core::stringw(secondes).c_str();
-    irr::core::stringw g= L" secondes \nClique sur Finish Game pour finir le jeu: ";
+    irr::core::stringw d = irr::core::stringw(minutes).c_str();
+    irr::core::stringw e = L" Minutes ";
+    irr::core::stringw f = irr::core::stringw(secondes).c_str();
+    irr::core::stringw g= L" secondes (attention : facile de confondre Zéro 0 et Huit 8) \nClique sur Finish Game pour finir le jeu ";
 
-    irr::core::stringw str = a+b+c+d+e+g;
+    irr::core::stringw str = a+d+e+f+g;
     irr::gui::IGUIStaticText *texte2 = gui->addStaticText(str.c_str(),
-                                                         ic::rect<s32>(10,100,x2-50,y2-200), false,true,window);
+                                                          ic::rect<s32>(10,100,x2-50,y2-200), false,true,window);
 
     texte->setOverrideFont(font);
     texte2->setOverrideFont(font);
@@ -274,9 +263,10 @@ void myWindows::create_window(int win_num)
     case WINDOW_ANSWER_ENIGM_1:
         create_window_answer_enigm_1();
         break;
-    case WINDOW_ENIGM_2:
-        if(!answer_2)
-            create_window_enigm_2();
+//    case WINDOW_ENIGM_2:
+//        if(!answer_2)
+//            create_window_enigm_2();
+//        break;
     case WINDOW_ANSWER_ENIGM_2:
         create_window_answer_enigm_2();
         break;
@@ -284,7 +274,6 @@ void myWindows::create_window(int win_num)
         create_window_enigm_final();
         break;
     case WINDOW_BACK_ROOM_0:
-//        std::cout << active_windows() << back_0 << std::endl;
         if(!back_0)
             create_windows_back_room_0();
         break;
@@ -307,60 +296,57 @@ void myWindows::active_windows(bool b)
 {
     active_window=b;
 }
-/** Get Answer_1 */
+
 bool myWindows::getAnswer_1() const
 {
     return answer_1;
 }
-/** Set Answer_1 */
+
 void myWindows::setAnswer_1(bool b)
 {
     answer_1=b;
 }
-/** Set Answer_2 */
+
 void myWindows::setAnswer_2(bool b)
 {
     answer_2=b;
 }
 
-/** Get Answer_2 */
 bool myWindows::getAnswer_2() const
 {
     return answer_2;
 }
-/** Get Answer_Final */
+
 bool myWindows::getAnswer_Final() const
 {
     return win_game;
 }
-/** Set Answer_Final */
+
 void myWindows::setAnswer_Final(bool b)
 {
     win_game=b;
 }
-/** Get the bool which show or not the window WINDOW_BACK_ROOM_0 */
+
 bool myWindows::getBack_0_show() const
 {
     return back_0;
 }
-/** Set the bool which show or not the window WINDOW_BACK_ROOM_0 */
+
 void myWindows::setBack_0(bool b)
 {
     back_0=b;
 }
 
-/** Get last displayed window */
 int myWindows::get_last_displayed_window()
 {
     return last_active_window;
 }
-/** Set last displayed_window */
+
 void myWindows::set_last_displayed_window(int w)
 {
     last_active_window = w;
 }
 
-/** Set begin Time */
 void myWindows::set_begin_time(float t)
 {
     time_begin =t;
