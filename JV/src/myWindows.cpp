@@ -13,7 +13,7 @@ myWindows::myWindows(){}
 
 myWindows::myWindows(ig::IGUIEnvironment *g,  irr::IrrlichtDevice *d):
     gui(g), device(d),driver(device->getVideoDriver()),screenSize(driver->getScreenSize()),
-    w(screenSize.Width),h(screenSize.Height),x1(10),x2(w-10),y1(10),y2(h-10),font(gui->getFont("data/font_a/myfont.xml"))
+    w(screenSize.Width),h(screenSize.Height),x1(10),x2(w-10),y1(10),y2(h-10),font(gui->getFont("../data/font_a/myfont.xml"))
 {
 }
 
@@ -38,7 +38,7 @@ void myWindows::create_window_begin()
 
     texte->setOverrideFont(font);                               // utilisation de la police
 
-    irr::video::ITexture* command = driver->getTexture("data/info/commandes.png") ;
+    irr::video::ITexture* command = driver->getTexture("../data/info/commandes.png") ;
     gui->addImage(command,ic::position2d< s32 >(x1,y2-300),true,window_begin);
 
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window_begin, UNDERSTOOD_BUTTON, L"A la recherche du nain de jardin");
@@ -77,7 +77,7 @@ void myWindows::create_window_room_1()
 
     texte->setOverrideFont(font);                               // utilisation de la police
 
-    irr::video::ITexture* command = driver->getTexture("data/info/indice.png") ;
+    irr::video::ITexture* command = driver->getTexture("../data/info/indice.png") ;
     gui->addImage(command,ic::position2d< s32 >(x1+50,y1+200),true,window);
 
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, UNDERSTOOD_BUTTON, L"UNDERSTOOD!");
@@ -100,7 +100,7 @@ void myWindows::create_window_room_2()
 
     texte->setOverrideFont(font);                               // utilisation de la police
 
-    irr::video::ITexture* command = driver->getTexture("data/info/commandes_2.png") ;
+    irr::video::ITexture* command = driver->getTexture("../data/info/commandes_2.png") ;
     gui->addImage(command,ic::position2d< s32 >(x1+50,y1+200),true,window);
 
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, UNDERSTOOD_BUTTON, L"UNDERSTOOD!");
@@ -181,7 +181,6 @@ void myWindows::create_windows_back_room_0()
     irr::gui::IGUIStaticText *texte = gui->addStaticText(L" De retour au point de départ ? Non, pas du tout ! Un nouveau Nain Téléporteur est apparu et tu as besoin de la trouver pour t'en sortir."
                                                          "   Mais attention, elle est difficile à trouver !",
                                                          ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
-    irr::gui::IGUIFont *font = gui->getFont("data/font_a/myfont.xml");  // chargement de la police
     texte->setOverrideFont(font);                               // utilisation de la police
 
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, CLOSE_BUTTON_BACK_ROOM_0, L"UNDERSTOOD!");

@@ -27,21 +27,21 @@ static void load_scenes(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
                         std::vector<is::IMeshSceneNode*> &nodes, iv::IVideoDriver* &driver)
 {
     //Street
-    meshes.push_back(smgr->getMesh("data/Street/Street_environment_V01.obj"));
+    meshes.push_back(smgr->getMesh("../data/Street/Street_environment_V01.obj"));
     nodes.push_back(smgr->addOctreeSceneNode(meshes[0]->getMesh(0), nullptr, -1, 1024));
     nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[0]->setScale(ic::vector3df(30.0f));
     nodes[0]->setPosition(ic::vector3df(0.0f,-50.0f,0.0f));
 
     //Island
-    meshes.push_back(smgr->getMesh("data/ISLAND/island.obj"));
+    meshes.push_back(smgr->getMesh("../data/ISLAND/island.obj"));
     nodes.push_back(smgr->addOctreeSceneNode(meshes[1]->getMesh(0), nullptr, -1, 1024));
     nodes[1]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[1]->setMaterialFlag(iv::EMF_GOURAUD_SHADING , false);
     nodes[1]->setPosition(ic::vector3df(0.0f,100.0f,0.0f));
     nodes[1]->setScale(ic::vector3df(50.0f));
 
-    meshes.push_back(smgr->getMesh("data/room2/Club.3DS"));
+    meshes.push_back(smgr->getMesh("../data/room2/Club.3DS"));
     nodes.push_back(smgr->addOctreeSceneNode(meshes[2]->getMesh(0), nullptr, -1, 1024));
     nodes[2]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[2]->setMaterialFlag(iv::EMF_GOURAUD_SHADING , true);
@@ -56,11 +56,11 @@ static void load_persos(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
                         std::vector<is::IAnimatedMeshSceneNode*> &nodes,iv::IVideoDriver* &driver)
 {
     //Squellette
-    meshes.push_back(smgr->getMesh("data/base/tris.md2"));
+    meshes.push_back(smgr->getMesh("../data/base/tris.md2"));
     nodes.push_back(smgr->addAnimatedMeshSceneNode(meshes[0]));
     nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[0]->setMD2Animation(is::EMAT_STAND);
-    nodes[0]->setMaterialTexture(0, driver->getTexture("data/base/blue_texture.pcx"));
+    nodes[0]->setMaterialTexture(0, driver->getTexture("../data/base/blue_texture.pcx"));
     nodes[0]->setPosition(ic::vector3df(nodes[0]->getPosition().X,-30.0f,nodes[0]->getPosition().Z));
     nodes[0]->setRotation(ic::vector3df(0.0,-90.0,0.0));
 }
@@ -72,32 +72,32 @@ static void load_arches(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
                         std::vector<is::IMeshSceneNode*> &nodes,iv::IVideoDriver* &driver)
 {
     //Chargement du Nain
-    meshes.push_back(smgr->getMesh("data/dwarf/Dwarf_2_Low.obj"));
+    meshes.push_back(smgr->getMesh("../data/dwarf/Dwarf_2_Low.obj"));
     nodes.push_back(smgr->addMeshSceneNode(meshes[0]->getMesh(0), nullptr, -1));
     nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, true);
     nodes[0]->setScale(ic::vector3df(30.0f));
-    nodes[0]->setMaterialTexture(0, driver->getTexture("data/dwarf/dwarf_2_1K_color.jpg"));
+    nodes[0]->setMaterialTexture(0, driver->getTexture("../data/dwarf/dwarf_2_1K_color.jpg"));
     nodes[0]->setPosition(ic::vector3df(800.0f,-40.0f,-400));
     nodes[0]->setVisible(false);
 
     nodes.push_back(smgr->addMeshSceneNode(meshes[0]->getMesh(0), nullptr, -1));
     nodes[1]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[1]->setScale(ic::vector3df(30.0f));
-    nodes[1]->setMaterialTexture(0, driver->getTexture("data/dwarf/dwarf_2_1K_color.jpg"));
+    nodes[1]->setMaterialTexture(0, driver->getTexture("../data/dwarf/dwarf_2_1K_color.jpg"));
     nodes[1]->setPosition(ic::vector3df(-800.0f,-40.0f,-400));
     nodes[1]->setVisible(false);
 
     nodes.push_back(smgr->addMeshSceneNode(meshes[0]->getMesh(0), nullptr, -1));
     nodes[2]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[2]->setScale(ic::vector3df(30.0f));
-    nodes[2]->setMaterialTexture(0, driver->getTexture("data/dwarf/dwarf_2_1K_color.jpg"));
+    nodes[2]->setMaterialTexture(0, driver->getTexture("../data/dwarf/dwarf_2_1K_color.jpg"));
     nodes[2]->setPosition(ic::vector3df(170.0f,30.0f,20));
     nodes[2]->setVisible(false);
 
     nodes.push_back(smgr->addMeshSceneNode(meshes[0]->getMesh(0), nullptr, -1));
     nodes[3]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[3]->setScale(ic::vector3df(30.0f));
-    nodes[3]->setMaterialTexture(0, driver->getTexture("data/dwarf/dwarf_2_1K_color.jpg"));
+    nodes[3]->setMaterialTexture(0, driver->getTexture("../data/dwarf/dwarf_2_1K_color.jpg"));
     nodes[3]->setPosition(ic::vector3df(1166.7,-24.9925,958.817));
     nodes[3]->setVisible(false);
 }
@@ -106,7 +106,7 @@ static void load_arches(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
 static void load_decors(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*> &meshes,
                         std::vector<is::IMeshSceneNode*> &nodes,iv::IVideoDriver* &driver)
 {
-    meshes.push_back(smgr->getMesh("data/ISLAND/Chest.3DS"));
+    meshes.push_back(smgr->getMesh("../data/ISLAND/Chest.3DS"));
     nodes.push_back(smgr->addMeshSceneNode(meshes[0]->getMesh(0), nullptr, -1));
     nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[0]->setScale(ic::vector3df(2.0f));
@@ -171,21 +171,21 @@ void create_lights(is::ISceneManager* &smgr,std::vector<is::IMeshSceneNode*> &no
         scene::IBillboardSceneNode * billboard = smgr->addBillboardSceneNode(node);
         billboard->setPosition(vector3df(0, -0.14, 0.30));
         billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
-        billboard->setMaterialTexture(0, driver->getTexture("data/lights/particle.bmp"));
+        billboard->setMaterialTexture(0, driver->getTexture("../data/lights/particle.bmp"));
         billboard->setMaterialFlag(video::EMF_LIGHTING, false);
         smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(1, 0, 0), lightRadius);
 
         billboard = smgr->addBillboardSceneNode(node);
         billboard->setPosition(vector3df(-0.21, -0.14, -0.21));
         billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
-        billboard->setMaterialTexture(0, driver->getTexture("data/lights/particlegreen.jpg"));
+        billboard->setMaterialTexture(0, driver->getTexture("../data/lights/particlegreen.jpg"));
         billboard->setMaterialFlag(video::EMF_LIGHTING, false);
         smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(0, 1, 0), lightRadius);
 
         billboard = smgr->addBillboardSceneNode(node);
         billboard->setPosition(vector3df(0.21, -0.14, -0.21));
         billboard->setMaterialType(video::EMT_TRANSPARENT_ADD_COLOR );
-        billboard->setMaterialTexture(0, driver->getTexture("data/lights/particlewhite.bmp"));
+        billboard->setMaterialTexture(0, driver->getTexture("../data/lights/particlewhite.bmp"));
         billboard->setMaterialFlag(video::EMF_LIGHTING, false);
         smgr->addLightSceneNode(billboard, vector3df(0, 0, 0), video::SColorf(0, 0, 1), lightRadius);
     }
@@ -480,24 +480,24 @@ int main()
     std::vector<irr::video::ITexture *> digits;
 
     //Load digit textures for enigm 2
-    digits.push_back (driver->getTexture("data/digits/0.png"));
-    digits.push_back (driver->getTexture("data/digits/1.png"));
-    digits.push_back (driver->getTexture("data/digits/2.png"));
-    digits.push_back (driver->getTexture("data/digits/3.png"));
-    digits.push_back (driver->getTexture("data/digits/4.png"));
-    digits.push_back (driver->getTexture("data/digits/5.png"));
-    digits.push_back (driver->getTexture("data/digits/6.png"));
-    digits.push_back (driver->getTexture("data/digits/7.png"));
-    digits.push_back (driver->getTexture("data/digits/8.png"));
-    digits.push_back (driver->getTexture("data/digits/9.png"));
+    digits.push_back (driver->getTexture("../data/digits/0.png"));
+    digits.push_back (driver->getTexture("../data/digits/1.png"));
+    digits.push_back (driver->getTexture("../data/digits/2.png"));
+    digits.push_back (driver->getTexture("../data/digits/3.png"));
+    digits.push_back (driver->getTexture("../data/digits/4.png"));
+    digits.push_back (driver->getTexture("../data/digits/5.png"));
+    digits.push_back (driver->getTexture("../data/digits/6.png"));
+    digits.push_back (driver->getTexture("../data/digits/7.png"));
+    digits.push_back (driver->getTexture("../data/digits/8.png"));
+    digits.push_back (driver->getTexture("../data/digits/9.png"));
     load_cubes(smgr,nodes_cube, digits,driver);
 
     //Load paintings for digits for enigm 2
     std::vector<is::IMeshSceneNode*> nodes_painting;
     iv::ITexture *paintings[3];
-    paintings[0] = driver->getTexture("data/room2/enigme_9.jpg");
-    paintings[1] = driver->getTexture("data/room2/enigme_0.png");
-    paintings[2] = driver->getTexture("data/room2/enigme_7.jpg");
+    paintings[0] = driver->getTexture("../data/room2/enigme_9.jpg");
+    paintings[1] = driver->getTexture("../data/room2/enigme_0.png");
+    paintings[2] = driver->getTexture("../data/room2/enigme_7.jpg");
     load_paintings(smgr,nodes_painting, paintings,driver);
 
     //Create Gaming Camera
@@ -539,12 +539,12 @@ int main()
     // add a nice skybox
     driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, false);
     smgr->addSkyBoxSceneNode(
-                driver->getTexture("data/Skybox/irrlicht2_up.jpg"),
-                driver->getTexture("data/Skybox/irrlicht2_dn.jpg"),
-                driver->getTexture("data/Skybox/irrlicht2_lf.jpg"),
-                driver->getTexture("data/Skybox/irrlicht2_rt.jpg"),
-                driver->getTexture("data/Skybox/irrlicht2_ft.jpg"),
-                driver->getTexture("data/Skybox/irrlicht2_bk.jpg"));
+                driver->getTexture("../data/Skybox/irrlicht2_up.jpg"),
+                driver->getTexture("../data/Skybox/irrlicht2_dn.jpg"),
+                driver->getTexture("../data/Skybox/irrlicht2_lf.jpg"),
+                driver->getTexture("../data/Skybox/irrlicht2_rt.jpg"),
+                driver->getTexture("../data/Skybox/irrlicht2_ft.jpg"),
+                driver->getTexture("../data/Skybox/irrlicht2_bk.jpg"));
 
     driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, true);
 
