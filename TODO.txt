@@ -1,37 +1,5 @@
-
-
-Position de départ CITY	==> DONE
-
-Jungle changez la position de départ ==> DONE
-
-
-Apres reoslution enigme 1 replacer le bonhomme ==> DONE 
-
-WInodws.cpp mettre le font en parametre general ==> DONE
-
-
-
-Affichage de 2 fenetres quand on revient au decor 0
-WINDOW_BACK_ROOM0 s'affiche deux fois lors du retour
-et en même temps que 
-WINDOW_ENIGME_FINAL ==> un %4 (au lieu de %3) dans la condition de collision ? 
-==> DONE 
-
-Refaire les images des commandes à expliquer au début et pour l'énigme 2 ==> DONE 
-
-Idee simple 
--Cliquer sur Help dans le menu ESCAPE => raffiche la dernière fenetre d'entrée dans la salle ? (peut etre pas si simple a mettre en oeuvre) ==> DONE 
-
-========< DONE
-========> UNDONE 
-
 Position apres derneire enigme au milieu alors que pas bouger 
-Et cliquant sur Get back city ==> pas un pb 
+Et cliquant sur Get back city 
 
 
-DIre au début de faire gaffe de pas tomber
-
--Temps à mettre pour gagner ==> DONE 
-
-Nettoyer les datas inutiles au fonctionnement de ce jeu 
-
+gérer la chute d'une map ==> DEFAITE ou RESET 

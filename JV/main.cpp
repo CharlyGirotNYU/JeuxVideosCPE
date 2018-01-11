@@ -72,32 +72,32 @@ static void load_arches(is::ISceneManager* &smgr, std::vector<is::IAnimatedMesh*
                         std::vector<is::IMeshSceneNode*> &nodes,iv::IVideoDriver* &driver)
 {
     //Chargement du Nain
-    meshes.push_back(smgr->getMesh("data/arbre1/Dwarf_2_Low.obj"));
+    meshes.push_back(smgr->getMesh("data/dwarf/Dwarf_2_Low.obj"));
     nodes.push_back(smgr->addMeshSceneNode(meshes[0]->getMesh(0), nullptr, -1));
     nodes[0]->setMaterialFlag(iv::EMF_LIGHTING, true);
     nodes[0]->setScale(ic::vector3df(30.0f));
-    nodes[0]->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
+    nodes[0]->setMaterialTexture(0, driver->getTexture("data/dwarf/dwarf_2_1K_color.jpg"));
     nodes[0]->setPosition(ic::vector3df(800.0f,-40.0f,-400));
     nodes[0]->setVisible(false);
 
     nodes.push_back(smgr->addMeshSceneNode(meshes[0]->getMesh(0), nullptr, -1));
     nodes[1]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[1]->setScale(ic::vector3df(30.0f));
-    nodes[1]->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
+    nodes[1]->setMaterialTexture(0, driver->getTexture("data/dwarf/dwarf_2_1K_color.jpg"));
     nodes[1]->setPosition(ic::vector3df(-800.0f,-40.0f,-400));
     nodes[1]->setVisible(false);
 
     nodes.push_back(smgr->addMeshSceneNode(meshes[0]->getMesh(0), nullptr, -1));
     nodes[2]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[2]->setScale(ic::vector3df(30.0f));
-    nodes[2]->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
+    nodes[2]->setMaterialTexture(0, driver->getTexture("data/dwarf/dwarf_2_1K_color.jpg"));
     nodes[2]->setPosition(ic::vector3df(170.0f,30.0f,20));
     nodes[2]->setVisible(false);
 
     nodes.push_back(smgr->addMeshSceneNode(meshes[0]->getMesh(0), nullptr, -1));
     nodes[3]->setMaterialFlag(iv::EMF_LIGHTING, false);
     nodes[3]->setScale(ic::vector3df(30.0f));
-    nodes[3]->setMaterialTexture(0, driver->getTexture("data/arbre1/dwarf_2_1K_color.jpg"));
+    nodes[3]->setMaterialTexture(0, driver->getTexture("data/dwarf/dwarf_2_1K_color.jpg"));
     nodes[3]->setPosition(ic::vector3df(1166.7,-24.9925,958.817));
     nodes[3]->setVisible(false);
 }
@@ -539,12 +539,12 @@ int main()
     // add a nice skybox
     driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, false);
     smgr->addSkyBoxSceneNode(
-                driver->getTexture("data/media/irrlicht2_up.jpg"),
-                driver->getTexture("data/media/irrlicht2_dn.jpg"),
-                driver->getTexture("data/media/irrlicht2_lf.jpg"),
-                driver->getTexture("data/media/irrlicht2_rt.jpg"),
-                driver->getTexture("data/media/irrlicht2_ft.jpg"),
-                driver->getTexture("data/media/irrlicht2_bk.jpg"));
+                driver->getTexture("data/Skybox/irrlicht2_up.jpg"),
+                driver->getTexture("data/Skybox/irrlicht2_dn.jpg"),
+                driver->getTexture("data/Skybox/irrlicht2_lf.jpg"),
+                driver->getTexture("data/Skybox/irrlicht2_rt.jpg"),
+                driver->getTexture("data/Skybox/irrlicht2_ft.jpg"),
+                driver->getTexture("data/Skybox/irrlicht2_bk.jpg"));
 
     driver->setTextureCreationFlag(video::ETCF_CREATE_MIP_MAPS, true);
 

@@ -32,7 +32,8 @@ void myWindows::create_window_begin()
                                                           "Pour cela, il vous faudra résoudre les énigmes qui vous seront proposées par la suite. Chaque énigme vous mènera à la salle suivante par le biais des nains téléporteurs. "
                                                           "Des informations spécifiques vous seront données ultérieurement. "
                                                           "Pour démarrer, veuillez trouver le nain de jardin vous permettant de vous rendre à la salle de la première énigme \n"
-                                                          "N'oubliez pas qu'à tout instant vous pouvez accéder aux informations d'aide : ESCAPE -> HELP "
+                                                          "N'oubliez pas qu'à tout instant vous pouvez accéder aux informations d'aide : ESCAPE -> HELP \n"
+                                                          "NB : Attention a ne pas tomber en dehors des différentes cartes, c'est l'échec assuré"
                                                           , ic::rect<s32>(10,50,x2-50,y2-200), false,true,window_begin);
 
     texte->setOverrideFont(font);                               // utilisation de la police
@@ -149,6 +150,7 @@ void myWindows::create_window_answer_enigm_1()
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, ClOSE_BUTTON_ENIGM_1, L"Close Informations");
 
     active_window = true;
+    answer_1 = true;
     last_active_window = WINDOW_ANSWER_ENIGM_1;
 }
 
