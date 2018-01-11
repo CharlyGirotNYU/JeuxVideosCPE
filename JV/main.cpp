@@ -581,10 +581,14 @@ int main()
     camera = camera_FPS;
     bool previous_gui_state = windows->active_windows();
 
+    //std::cout << "time device " << device->getTimer()->getTime() << std::endl;
+    windows->set_begin_time(device->getTimer()->getTime());
+
     is::ISceneCollisionManager *collision_manager = smgr->getSceneCollisionManager();
 
     while(device->run())
     {
+
         driver->beginScene(true, true, iv::SColor(0,50,100,255));
 
         // Dessin de la scène :
@@ -631,7 +635,6 @@ int main()
         //When we change decors
         update_scene(nodes_decors, nodes_arches, nodes_persos, nodes_enigmes, nodes_cube,  nodes_painting,
                      camera, visible_node_decor,smgr,selector, anim, windows,receiver);
-
         driver->endScene();
     }
     device->drop();

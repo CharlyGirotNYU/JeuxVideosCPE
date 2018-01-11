@@ -31,7 +31,7 @@ Et cliquant sur Get back city ==> pas un pb
 
 DIre au début de faire gaffe de pas tomber
 
--Temps à mettre pour gagner
+-Temps à mettre pour gagner ==> DONE 
 
 Nettoyer les datas inutiles au fonctionnement de ce jeu 
 

@@ -1,6 +1,7 @@
 
 #include "myWindows.hpp"
 #include<iostream> //debug
+#include <sstream>
 
 using namespace irr;
 namespace ig = irr::gui;
@@ -166,7 +167,7 @@ void myWindows::create_window_answer_enigm_2()
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"SUCCESS ROOM 2");
 
     irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Bravo ! Tu as réussi la deuxième enigme. Trouve le prochain Nain Téléporteur maintenant.",
-                                                         ic::rect<s32>(10,50,x2-50,y2-200), false,false,window);
+                                                         ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
 
     texte->setOverrideFont(font);
 
@@ -200,7 +201,7 @@ void myWindows::create_window_enigm_final()
     irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Tu as réussi à atteindre la dernière enigme ! \n Mais pour échapper de ce monde magique tu vas devoir "
                                                          "utiliser toutes tes méninges.\n"
                                                          "Quelle est le nombre suivant de cette suite logique  2, dix ,12 ,17 ,18 ,19, ...? ",
-                                                         ic::rect<s32>(10,50,x2-50,y2-200), false,false,window);
+                                                         ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
 
     texte->setOverrideFont(font);
 
@@ -215,13 +216,33 @@ void myWindows::create_window_enigm_final()
 
 void myWindows::create_window_enigm_final_solution()
 {
+    time_end = device->getTimer()->getTime();
+    int time = (time_end - time_begin ) / 1000;
+
+    int heures = time/3600;
+    int minutes = (time-3600*heures)/60;
+    float secondes = (time - 3600*heures - 60*minutes);
+
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Enigme Finale");
 
-    irr::gui::IGUIStaticText *texte = gui->addStaticText(L"VICTOIRE !!!!!!! Clique sur Finish Game pour finir le jeu",
-                                                         ic::rect<s32>(10,50,x2-50,y2-200), false,false,window);
+    irr::gui::IGUIStaticText *texte = gui->addStaticText(L"VICTOIRE !!!!!!! Clique sur Finish Game pour finir le jeu: ",
+                                                         ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
 
+//    irr::core::string s = irr::core::string("COucou");
+    irr::core::stringw a = L"VICTOIRE !!!!!!! Tu as mis : " ;
+    irr::core::stringw b = irr::core::stringw(heures).c_str();
+     irr::core::stringw c = L" Heures ";
+              irr::core::stringw d = irr::core::stringw(minutes).c_str();
+              irr::core::stringw e = L" Minutes ";
+              irr::core::stringw f = irr::core::stringw(secondes).c_str();
+    irr::core::stringw g= L" secondes \nClique sur Finish Game pour finir le jeu: ";
+
+    irr::core::stringw str = a+b+c+d+e+g;
+    irr::gui::IGUIStaticText *texte2 = gui->addStaticText(str.c_str(),
+                                                         ic::rect<s32>(10,100,x2-50,y2-200), false,true,window);
 
     texte->setOverrideFont(font);
+    texte2->setOverrideFont(font);
 
     gui->addButton(ic::rect<s32>(x1+160,y2-60, x1+160+150,y2-20), window, CLOSE_GAME,L"Finish Game");
 
@@ -339,3 +360,8 @@ void myWindows::set_last_displayed_window(int w)
     last_active_window = w;
 }
 
+/** Set begin Time */
+void myWindows::set_begin_time(float t)
+{
+    time_begin =t;
+}

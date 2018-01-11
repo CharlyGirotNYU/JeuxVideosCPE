@@ -56,6 +56,9 @@ public:
     /** Set last displayed windows */
     void set_last_displayed_window(int w);
 
+    /** Set begin time */
+    void set_begin_time(float t);
+
     /** Quit the application */
     //    void action_quit();
 
@@ -70,7 +73,7 @@ private:
     /** Answer 1 is OK ? */
     bool answer_1=false;
 
-    bool answer_2=false;
+    bool answer_2=true;
     /** End of the game */
     bool win_game=false;
     /** SHow or not the window WINDOW_BACK_ROOM_0 */
@@ -99,6 +102,10 @@ private:
     bool active_window;
     /** last active_window */
     int last_active_window;
+    /** Store begin time */
+    float time_begin;
+    /** Store end time */
+    float time_end;
 
     /** Create beginning information winddow */
     void create_window_begin();
