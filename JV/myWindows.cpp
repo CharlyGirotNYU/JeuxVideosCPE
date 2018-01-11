@@ -116,13 +116,13 @@ void myWindows::create_window_enigm_1()
     texte->setOverrideFont(font);                               // utilisation de la police
 
     texte = gui->addStaticText(L"Jour : \n", ic::rect<s32>(40,190,160,200), false,true,window);
-//     texte->setOverrideFont(font);
+    //     texte->setOverrideFont(font);
     gui->addSpinBox(L"14", ic::rect<s32>(40,200, 160,220), true, window, DAY_SPIN);
     texte = gui->addStaticText(L"Mois : \n",ic::rect<s32>(40,230, 160,240), false,true,window);
-//     texte->setOverrideFont(font);
+    //     texte->setOverrideFont(font);
     gui->addSpinBox(L"12", ic::rect<s32>(40,240, 160,260), true, window, MONTH_SPIN);
     texte = gui->addStaticText(L"Année : \n",  ic::rect<s32>(40,270, 160,280), false,true,window);
-//     texte->setOverrideFont(font);
+    //     texte->setOverrideFont(font);
     gui->addSpinBox(L"1994", ic::rect<s32>(40,280, 160,300), true, window, YEAR_SPIN);
 
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, TRY_BUTTON_1, L"Essai");
@@ -180,6 +180,7 @@ void myWindows::create_windows_back_room_0()
     texte->setOverrideFont(font);                               // utilisation de la police
 
     gui->addButton(ic::rect<s32>(x1,y2-60, x1+150,y2-20), window, ClOSE_BUTTON_ENIGM_1, L"UNDERSTOOD!");
+    back_0=true;
     active_window = true;
 }
 
@@ -236,7 +237,7 @@ void myWindows::create_window(int win_num)
         break;
     case WINDOW_ENIGM_1:
         if(!active_windows()) //TODO : Should be replaced by a boolean proper to this windows or could create conflict or bug in windows display
-        create_window_enigm_1();
+            create_window_enigm_1();
         break;
     case WINDOW_ANSWER_ENIGM_1:
         create_window_answer_enigm_1();
@@ -251,10 +252,12 @@ void myWindows::create_window(int win_num)
         create_window_enigm_final();
         break;
     case WINDOW_BACK_ROOM_0:
-        create_windows_back_room_0();
+        if(!back_0)
+            create_windows_back_room_0();
         break;
     case END_GAME:
-        create_window_enigm_final_solution();
+        if(!active_windows())
+            create_window_enigm_final_solution();
         break;
     default:
         break;

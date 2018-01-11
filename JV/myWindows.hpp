@@ -69,7 +69,7 @@ private:
     /** End of the game */
     bool win_game=false;
     /** SHow or not the window WINDOW_BACK_ROOM_0 */
-    bool back_0=true;
+    bool back_0=false;
 
 
 

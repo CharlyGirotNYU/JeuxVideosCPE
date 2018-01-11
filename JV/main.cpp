@@ -325,19 +325,20 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     switch(visible_node_decor)
     {
     case 0: // Decor ville
+        nodes_arches[1]->setVisible(false);
+        nodes_arches[2]->setVisible(false);
+        nodes_enigmes[0]->setVisible(false);
+
+        std::cout << "answer_final  : " << windows ->getAnswer_Final() << std::endl;
         if(!windows->getAnswer_2())
             nodes_arches[0]->setVisible(true);
         else
             nodes_arches[3]->setVisible(true);
         if(windows->getAnswer_2() && windows->getBack_0_show())
-        {
             windows->create_window(WINDOW_BACK_ROOM_0);
-            windows->setBack_0(false);
-        }
 
-        nodes_arches[1]->setVisible(false);
-        nodes_arches[2]->setVisible(false);
-        nodes_enigmes[0]->setVisible(false);
+
+
 
         for(auto& node : nodes_cube)
             node->setVisible(false);
@@ -346,7 +347,6 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
 
         if(windows->getAnswer_Final())
         {
-            std::cout << "Final " << windows->getAnswer_Final()<<std::endl;
             windows->create_window(END_GAME);
         }
         break;
@@ -400,9 +400,9 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
     {
         //TODO : Changement couleur fonciton de la distance a l'arche
 
-        if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 25.0f && !nodes_decors[(i+1)%3]->isVisible() && nodes_arches[i]->isVisible())
+        std::cout <<"Arche 2 Visible : " <<  nodes_arches[2]-> isVisible() << std::endl;
+        if(position.getDistanceFrom(nodes_arches[i]->getPosition()) < 25.0f && nodes_arches[i]->isVisible()) //IN CASE CA MARCHE PLUS && !nodes_decors[(i+1)%3]->isVisible()
         {
-
             colli = true;
             if(i < 2)
                 visible_node_decor = i+1;
@@ -415,7 +415,7 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
             anim = smgr->createCollisionResponseAnimator(selector,
                                                          nodes_persos[0],  // Le noeud que l'on veut gérer
                                                          ic::vector3df(10,8,10), // "rayons" de la caméra
-                                                         ic::vector3df(0, -100, 0),  // gravité
+                                                         ic::vector3df(0, -10, 0),  // gravité
                                                          ic::vector3df(-4,0,0));  // décalage du centre
 
             nodes_persos[0]->addAnimator(anim);
@@ -433,9 +433,12 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
                 break;
             case 2:
                 windows->create_window(WINDOW_BACK_ROOM_0);
+                break;
             case 3:
-                    //std::cout << " position : " <<position.X << " " << position.Y << " " << position.Z << std::endl;
+                std::cout << " position : " <<position.X << " " << position.Y << " " << position.Z << std::endl;
+                std::cout << position.getDistanceFrom(nodes_arches[i]->getPosition()) << std::endl;
                 windows->create_window(WINDOW_ENIGM_FINAL);
+                break;
             default:
                 break;
             }
@@ -455,7 +458,7 @@ int main()
 {
     // Le gestionnaire d'événements
     EventReceiver receiver;
-    int visible_node_decor = 0;
+    int visible_node_decor = 2;
 
     // Création de la fenêtre et du système de rendu.
     IrrlichtDevice *device = createDevice(iv::EDT_OPENGL,
@@ -520,7 +523,7 @@ int main()
     position_perso.X -=70;
     position_perso.Y +=100;
 
-    camera_FPS = smgr->addCameraSceneNode(nodes_persos[0],position_perso-ic::vector3df(0.0f,20.0f,0.0f));
+    camera_FPS = smgr->addCameraSceneNode(nodes_persos[0],position_perso-ic::vector3df(0.0f,40.0f,0.0f));
     camera_FPS->setTarget(position_perso);
 
     //Création GUI Caméra
@@ -529,8 +532,8 @@ int main()
 
     // Création du triangle selector
     scene::ITriangleSelector *selector;
-    selector = smgr->createOctreeTriangleSelector(nodes_decors[0]->getMesh(), nodes_decors[0]);
-    nodes_decors[0]->setTriangleSelector(selector);
+    selector = smgr->createOctreeTriangleSelector(nodes_decors[visible_node_decor]->getMesh(), nodes_decors[visible_node_decor]);
+    nodes_decors[visible_node_decor]->setTriangleSelector(selector);
 
     // Création animateur collisionneur initiale avec le décor de départ
     scene::ISceneNodeAnimator *anim;
@@ -628,6 +631,12 @@ int main()
         update_scene(nodes_decors, nodes_arches, nodes_persos, nodes_enigmes, nodes_cube,  nodes_painting,
                      camera, visible_node_decor,smgr,selector, anim, windows,receiver);
 
+        if(visible_node_decor == 0)
+        {
+            ic::vector3df position = nodes_persos[0]->getPosition();
+            std::cout << " position : " <<position.X << " " << position.Y << " " << position.Z << std::endl;
+            std::cout << position.getDistanceFrom(nodes_arches[3]->getPosition()) << std::endl;
+        }
         driver->endScene();
     }
     device->drop();
