@@ -93,7 +93,8 @@ void myWindows::create_window_room_2()
                                                          "Vous trouverez sur les murs de ce club, une combinaison de chiffres. Assurez vous de trouver "
                                                          "la bonne combinaison pour pouvoir dévérouiller votre nain de jardin de téléportation suivant \n"
                                                          "Fonctionnement des Digits sur les murs (Assurez vous de bien les comprendre, vous pouvez revenir ici à tout instant en utilisant ESCAPE->HELP: \n"
-                                                         "    -Sélectionnez le digit souhaité à l'aide d'un clic gauche de la souris en pointant bien précisemment le digit voulu. \n "
+                                                         "    -Sélectionnez le digit souhaité sur le mur  à l'aide d'un clic gauche de la souris en pointant bien précisemment le digit voulu."
+                                                         "Attention les digits sont un peu capricieux, n'hésitez pas à cliquer plusieurs fois à différents endroits pour BIEN les sélectionner' \n "
                                                          "    -Modifiez sa valeur en utilisant la molette de votre souris.  ",
                                                          ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
 
