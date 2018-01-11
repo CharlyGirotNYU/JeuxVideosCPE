@@ -24,12 +24,14 @@ void myWindows::create_window_begin()
 {
     ig::IGUIWindow *window_begin = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Welcome To Our World");
 
-    irr::gui::IGUIStaticText *texte =  gui->addStaticText(L"Vous n'auriez jamais du pénétrer notre monde. Vous en êtes maintenant le prisonnier. Laissez moi vous expliquer. Il y a bien longtemps, dans le temps du CPE antique"
-                                                          "une momie se retrouva prise au piège de cette ville qui de plus n'était pas très jolie, ayant perdu beaucoup de décorations sur les facades de ces batiments. "
+    irr::gui::IGUIStaticText *texte =  gui->addStaticText(L"Vous n'auriez jamais du pénétrer notre monde. Vous en êtes maintenant le prisonnier. Laissez moi vous expliquer. Il y a bien longtemps, dans le temps du CPE antique "
+                                                          "une momie se retrouva prise au piège de cette ville qui de plus n'était pas très jolie, ayant perdu beaucoup de décorations sur les facades de ses batiments. "
                                                           "Vous avez été appelé à l'aide pour aider MOMIE (et non pas MAMIE bien au chaud dans son canapé sous son plaid) à s'échapper. "
-                                                          "Pour cela il vous faudra résoudre les énigmes qui vous seront proposées par la suite. Chaque énigme vous ménéra à la salle suivante par le biais des nains téléporteurs. "
+                                                          "Pour cela, il vous faudra résoudre les énigmes qui vous seront proposées par la suite. Chaque énigme vous mènera à la salle suivante par le biais des nains téléporteurs. "
                                                           "Des informations spécifiques vous seront données ultérieurement. "
-                                                          "Pour démarrer, veuillez trouver le nain de jardin vous permettant de vous rendre à la salle de la première énigme ", ic::rect<s32>(10,50,x2-50,y2-200), false,true,window_begin);
+                                                          "Pour démarrer, veuillez trouver le nain de jardin vous permettant de vous rendre à la salle de la première énigme \n"
+                                                          "N'oubliez pas qu'à tout instant vous pouvez accéder aux informations d'aide : ESCAPE -> HELP "
+                                                          , ic::rect<s32>(10,50,x2-50,y2-200), false,true,window_begin);
 
     texte->setOverrideFont(font);                               // utilisation de la police
 
@@ -67,7 +69,7 @@ void myWindows::create_window_room_1()
                                                          "néanmoins il vous faudra résoudre son énigme pour pouvoir accéder à son contenu"
                                                          "\n"
                                                          "\n"
-                                                         "Vous disposez d'un indice pour le localiser : "
+                                                         "Vous disposez d'un indice pour le localiser : (oui c'est bien la photo de l'énorme coffre) "
                                                          , ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
 
     texte->setOverrideFont(font);                               // utilisation de la police
@@ -87,7 +89,7 @@ void myWindows::create_window_room_2()
     irr::gui::IGUIStaticText *texte = gui->addStaticText(L" Bienvenue dans le Club CPE Baila Baila Baila \n"
                                                          "Vous trouverez sur les murs de ce club, une combinaison de chiffres. Assurez vous de trouver "
                                                          "la bonne combinaison pour pouvoir dévérouiller votre nain de jardin de téléportation suivant \n"
-                                                         "Fonctionnement des Digits sur les murs : \n"
+                                                         "Fonctionnement des Digits sur les murs (Assurez vous de bien les comprendre, vous pouvez revenir ici à tout instant en utilisant ESCAPE->HELP: \n"
                                                          "    -Sélectionnez le digit souhaité à l'aide d'un clic gauche de la souris en pointant bien précisemment le digit voulu. \n "
                                                          "    -Modifiez sa valeur en utilisant la molette de votre souris.  ",
                                                          ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
@@ -109,10 +111,10 @@ void myWindows::create_window_enigm_1()
 
     irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Pour ouvrir ce coffre vous devez trouver la date de naissance de ... Maxime Di Folco le Terrible (célèbre pour ses shots à 3 poissons)"
                                                          "Vous pouvez retourner sur l'ile ou faire des essais (illimités) de date. \n "
-                                                         "Voici quelques indices pour la trouver : \n "
+                                                         "Voici quelques indices pour trouver la date : \n "
                                                          " - son jour de naissance est le premier nombre premier à 2 chiffres \n"
-                                                         " -  l'été commence pendant son mois de naissance \n"
-                                                         " - il va avoir 23 ans cette année.",
+                                                         " - l'été commence pendant son mois de naissance \n"
+                                                         " - il va avoir 23 ans cette année 2018.",
 
                                                          ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
 
@@ -139,7 +141,7 @@ void myWindows::create_window_answer_enigm_1()
 {
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Answer");
 
-    irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Félicitation, vous avez déverouiller le coffre et ainsi dévérouillez l'accès à la prochaine salle qui vous proposera l'énigme suivante."
+    irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Félicitation, vous avez déverouillé le coffre et ainsi dévérouillé l'accès à la prochaine salle qui vous proposera l'énigme suivante."
                                                          " Le Nain de jardin qui vous y emmenera se trouve non loin de vous, proche de votre lieu d'arrivée,\n"
                                                          "Bon Courage et à très vite",
                                                          ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
@@ -163,7 +165,7 @@ void myWindows::create_window_answer_enigm_2()
 
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"SUCCESS ROOM 2");
 
-    irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Bravo ! Tu as réussi la deuxième enigme. Trouve le prochain téléporteur maintenant.",
+    irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Bravo ! Tu as réussi la deuxième enigme. Trouve le prochain Nain Téléporteur maintenant.",
                                                          ic::rect<s32>(10,50,x2-50,y2-200), false,false,window);
 
     texte->setOverrideFont(font);
@@ -179,7 +181,7 @@ void myWindows::create_windows_back_room_0()
 
     ig::IGUIWindow *window = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Retour dans la ville");
 
-    irr::gui::IGUIStaticText *texte = gui->addStaticText(L" De retour au point de départ ? Non, pas du tout ! Une nouvelle arche est apparu et tu as besoin de l'a trouver pour t'en sortir."
+    irr::gui::IGUIStaticText *texte = gui->addStaticText(L" De retour au point de départ ? Non, pas du tout ! Un nouveau Nain Téléporteur est apparu et tu as besoin de la trouver pour t'en sortir."
                                                          "   Mais attention, elle est difficile à trouver !",
                                                          ic::rect<s32>(10,50,x2-50,y2-200), false,true,window);
     irr::gui::IGUIFont *font = gui->getFont("data/font_a/myfont.xml");  // chargement de la police
@@ -197,7 +199,7 @@ void myWindows::create_window_enigm_final()
 
     irr::gui::IGUIStaticText *texte = gui->addStaticText(L"Tu as réussi à atteindre la dernière enigme ! \n Mais pour échapper de ce monde magique tu vas devoir "
                                                          "utiliser toutes tes méninges.\n"
-                                                         "Quelle est le nombre suivant de cette suite logique  2, 10 ,12 ,17 ,18 ,19, ...? ",
+                                                         "Quelle est le nombre suivant de cette suite logique  2, dix ,12 ,17 ,18 ,19, ...? ",
                                                          ic::rect<s32>(10,50,x2-50,y2-200), false,false,window);
 
     texte->setOverrideFont(font);

@@ -158,6 +158,7 @@ bool EventReceiver::gui_handler(const SEvent &event)
         {
             gui->clear();
             windows->active_windows(false);
+            node->setPosition(node->getPosition() + ic::vector3df(-50.0,0.0f,-50.0f));
             break;
         }
         if(id == TRY_BUTTON_FINAL)

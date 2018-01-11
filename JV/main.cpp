@@ -420,7 +420,8 @@ void update_scene(std::vector<is::IMeshSceneNode*> &nodes_decors,
 
             nodes_persos[0]->addAnimator(anim);
 
-            //Reset le personnage au centre du nouveau décor
+            //Reset le personnage au centre du nouveau décor sauf si collision avec arches de back 0 ??
+            //if(windows->get_last_displayed_window() != WINDOW_ENIGM_FINAL)
             nodes_persos[0]->setPosition(ic::vector3df(0.0f,0.0f,0.0f));
 
             switch(i)

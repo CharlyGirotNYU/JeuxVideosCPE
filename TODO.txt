@@ -4,15 +4,12 @@ Position de départ CITY	==> DONE
 
 Jungle changez la position de départ ==> DONE
 
-DIre au début de faire gaffe de pas tomber
 
 Apres reoslution enigme 1 replacer le bonhomme ==> DONE 
 
 WInodws.cpp mettre le font en parametre general ==> DONE
 
 
-Position apres derneire enigme au milieu alors que pas bouger 
-Et cliquant sur Get back city ==> pas un pb 
 
 Affichage de 2 fenetres quand on revient au decor 0
 WINDOW_BACK_ROOM0 s'affiche deux fois lors du retour
@@ -20,10 +17,19 @@ et en même temps que
 WINDOW_ENIGME_FINAL ==> un %4 (au lieu de %3) dans la condition de collision ? 
 ==> DONE 
 
-Refaire les images des commandes à expliquer au début et pour l'énigme 2 
+Refaire les images des commandes à expliquer au début et pour l'énigme 2 ==> DONE 
 
 Idee simple 
--Temps à mettre pour gagner
--Cliquer sur Help dans le menu ESCAPE => raffiche la dernière fenetre d'entrée dans la salle ? (peut etre pas si simple a mettre en oeuvre)
+-Cliquer sur Help dans le menu ESCAPE => raffiche la dernière fenetre d'entrée dans la salle ? (peut etre pas si simple a mettre en oeuvre) ==> DONE 
 
+========< DONE
+========> UNDONE 
+
+Position apres derneire enigme au milieu alors que pas bouger 
+Et cliquant sur Get back city ==> pas un pb 
+
+
+DIre au début de faire gaffe de pas tomber
+
+-Temps à mettre pour gagner
 
