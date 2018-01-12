@@ -6,8 +6,6 @@
 using namespace irr;
 namespace ig = irr::gui;
 namespace ic = irr::core;
-//namespace is = irr::scene;
-//namespace iv = irr::video;
 
 myWindows::myWindows(){}
 
@@ -27,7 +25,7 @@ void myWindows::create_window_begin()
     ig::IGUIWindow *window_begin = gui->addWindow(ic::rect<s32>(x1,y1, x2,y2), false, L"Welcome To Our World");
 
     irr::gui::IGUIStaticText *texte =  gui->addStaticText(L"Vous n'auriez jamais du pénétrer notre monde. Vous en êtes maintenant le prisonnier. Laissez moi vous expliquer. Il y a bien longtemps, dans le temps du CPE antique "
-                                                          "une momie se retrouva prise au piège de cette ville qui de plus n'était pas très jolie, ayant perdu beaucoup de décorations sur les facades de ses batiments. "
+                                                          "une momie se retrouva prise au piège de cette ville MAGNIFIQUE "
                                                           "Vous avez été appelé à l'aide pour aider MOMIE (et non pas MAMIE bien au chaud dans son canapé sous son plaid) à s'échapper. "
                                                           "Pour cela, il vous faudra résoudre les énigmes qui vous seront proposées par la suite. Chaque énigme vous mènera à la salle suivante par le biais des nains téléporteurs. "
                                                           "Des informations spécifiques vous seront données ultérieurement. "
